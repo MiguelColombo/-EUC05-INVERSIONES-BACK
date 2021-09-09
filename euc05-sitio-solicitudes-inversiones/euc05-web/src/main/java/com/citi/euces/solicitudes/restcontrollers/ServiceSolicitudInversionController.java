@@ -72,7 +72,7 @@ public class ServiceSolicitudInversionController  {
 	//Page_Load
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/ObtenerAutoRangos", produces = "application/json")//CargarGrid CrearFuncionJavaRangos
+	@PostMapping(path = "/ObtenerAutoRangos", produces = "application/json")//CargarGrid CrearFuncionJavaRangos
 	public  ResponseEntity<?> ObtenerAutoRangos(){
 		try {
 	
@@ -97,7 +97,7 @@ public class ServiceSolicitudInversionController  {
 		}
 	}
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/ObtenerSucursalesPorSuc", produces = "application/json") //CrearFuncionesJavaScript 
+	@PostMapping(path = "/ObtenerSucursalesPorSuc", produces = "application/json") //CrearFuncionesJavaScript 
 	public ResponseEntity<?> ObtenerSucursalesPorSuc(){
 	try {
 		SucursalesPorSucResponse response  = new SucursalesPorSucResponse(serviceSolicitudInversionImp.ObtenerSucursalesPorSuc(), "200");
@@ -122,7 +122,7 @@ public class ServiceSolicitudInversionController  {
 	}
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/ObtenerListaPlazos", produces = "application/json") //CrearFuncionesJavaScript faltan
+	@PostMapping(path = "/ObtenerListaPlazos", produces = "application/json") //CrearFuncionesJavaScript faltan
 	public ResponseEntity<?> ObtenerListaPlazos(@RequestBody final TasaPorsentajeBEDTO request) {
 		try {
 			TasaPorsentajeResponce response  = new TasaPorsentajeResponce(serviceSolicitudInversionImp.ObtenerListaPlazos(request), "200");
@@ -148,7 +148,7 @@ public class ServiceSolicitudInversionController  {
 	}
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path ="/ObtenerAutoCetes", produces = "application/json") //CrearFuncionJavaCurvaCETES
+	@PostMapping(path ="/ObtenerAutoCetes", produces = "application/json") //CrearFuncionJavaCurvaCETES
 	public  ResponseEntity<?> ObtenerAutoCetes(){
 		try {
 			AutoCetesResponse response  = new AutoCetesResponse(serviceSolicitudInversionImp.ObtenerAutoCetes(), "200");
@@ -173,7 +173,7 @@ public class ServiceSolicitudInversionController  {
 	}
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/ObtenerDiasFeriados", produces = "application/json")
+	@PostMapping(path = "/ObtenerDiasFeriados", produces = "application/json")
 	public  ResponseEntity<?> ObtenerDiasFeriados(@RequestBody final DiasFestivosBEDTO request){
 		try {
 			DiasFestivosResponse response  = new DiasFestivosResponse(serviceSolicitudInversionImp.ObtenerDiasFeriados(request), "200");
@@ -202,7 +202,7 @@ public class ServiceSolicitudInversionController  {
 	
 	//btnCheckautorizadores_Click
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/autorizador", produces = "application/json") //Obtener autorizadore para el boton ver auatorizadores
+	@PostMapping(path = "/autorizador", produces = "application/json") //Obtener autorizadore para el boton ver auatorizadores
 	public ResponseEntity<?> checkAutorizadores(@RequestBody final SucursalesBEDTO request){
 		try {
 		AutorizadoresResponse response = new AutorizadoresResponse(serviceSolicitudInversionImp.checkAutorizadores(request), "200");
@@ -238,7 +238,7 @@ public class ServiceSolicitudInversionController  {
 	
 	//ObtenerAutoCetes()
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/ObtenerUltFolioAutoTasas", produces = "application/json")//u
+	@PostMapping(path = "/ObtenerUltFolioAutoTasas", produces = "application/json")//u
 	public ResponseEntity<?> ObtenerUltFolioAutoTasas(){
 		try {
 			FolioAutoTasaResponse response = new FolioAutoTasaResponse(serviceSolicitudInversionImp.ObtenerUltFolioAutoTasas(), "200");
@@ -260,7 +260,7 @@ public class ServiceSolicitudInversionController  {
     //ObtenerListaPlazos()
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/AutorizadoresDivisionales", produces = "application/json")                                                                                  
+	@PostMapping(path = "/AutorizadoresDivisionales", produces = "application/json")                                                                                  
 	public ResponseEntity<?> ObtenerAutorizadoresDivisionales(@RequestBody final AutorizadoresBEDTO request){
 		try {
 			AutorizadoresDivisionalesResponse response = new AutorizadoresDivisionalesResponse(serviceSolicitudInversionImp.ObtenerAutorizadoresDivisionales(request), "200");
@@ -314,7 +314,7 @@ public class ServiceSolicitudInversionController  {
     }
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/ObtenerAutorizadorAutomatico", produces = "application/json") //Validar Folio btnSave_Click
+	@PostMapping(path = "/ObtenerAutorizadorAutomatico", produces = "application/json") //Validar Folio btnSave_Click
 	public ResponseEntity<?> ObtenerAutorizadorAutomatico(){
 		try {
 			AutorizadoresDivisionalesResponse response = new AutorizadoresDivisionalesResponse(serviceSolicitudInversionImp.ObtenerAutorizadorAutomatico(), "200");
@@ -339,7 +339,7 @@ public class ServiceSolicitudInversionController  {
 	}
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/ObtenerAutorizadoresGerencia", produces = "application/json")//Validar Folio btnSave_Click
+	@PostMapping(path = "/ObtenerAutorizadoresGerencia", produces = "application/json")//Validar Folio btnSave_Click
 	public ResponseEntity<?> ObtenerAutorizadoresGerencia(){
 		try {
 			AutorizadoresDivisionalesResponse response = new AutorizadoresDivisionalesResponse(serviceSolicitudInversionImp.ObtenerAutorizadoresGerencia(), "200");
@@ -427,7 +427,7 @@ public class ServiceSolicitudInversionController  {
 	//CalcularSoeidAsignado
 	
 	@ResponseStatus(code = HttpStatus.OK) ///u
-	@GetMapping(path ="/CalcularSoeidAsignado", produces = "application/json")
+	@PostMapping(path ="/CalcularSoeidAsignado", produces = "application/json")
 	public ResponseEntity<?> CalcularSoeidAsignado(){
 		try {
 			CalcularSoeidAsignadoResponse response  = new CalcularSoeidAsignadoResponse(serviceSolicitudInversionImp.CalcularSoeidAsignado(), "200");
@@ -453,7 +453,7 @@ public class ServiceSolicitudInversionController  {
 	//EnviarPHP   
 	//ObtenerSucursalesPorSuc();
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/ObtenerRegCampTasa", produces = "application/json") //EnviarPHP AutoTasaResponseDTO
+	@PostMapping(path = "/ObtenerRegCampTasa", produces = "application/json") //EnviarPHP AutoTasaResponseDTO
 	public ResponseEntity<?> ObtenerRegCampTasa(@RequestBody final AutoTasaBEDTO request){
 		try {
 			AutoTasaResponse response  = new AutoTasaResponse(serviceSolicitudInversionImp.ObtenerRegCampTasa(request), "200");
@@ -480,7 +480,7 @@ public class ServiceSolicitudInversionController  {
 
 	//Obtener Tipo de solicitud
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/solicitud", produces = "application/json") 
+	@PostMapping(path = "/solicitud", produces = "application/json") 
 	public ResponseEntity<?> obtenerSolicitudes(){
 		
 		try {
@@ -512,7 +512,7 @@ public class ServiceSolicitudInversionController  {
 	//btnEnviar_Click VOBO
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path ="/ObtenerRegAutoTasa", produces = "application/json") // F PREGUNTA
+	@PostMapping(path ="/ObtenerRegAutoTasa", produces = "application/json") // F PREGUNTA
 	public ResponseEntity<?> ObtenerRegAutoTasa(@RequestBody final AutoTasaBEDTO request){// ObtenerRegAutoTasaResposeDTO
 		try {
 			ObtenerRegAutoTasaRespose response  = new ObtenerRegAutoTasaRespose(serviceSolicitudInversionImp.ObtenerRegAutoTasa(request), "200");
@@ -537,7 +537,7 @@ public class ServiceSolicitudInversionController  {
 	}
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path ="/ObtenerAutoDivisional", produces = "application/json")//falta
+	@PostMapping(path ="/ObtenerAutoDivisional", produces = "application/json")//falta
 	public ResponseEntity<?> ObtenerAutoDivisional(@RequestBody final ObtenerAutoDivisionalBEDTO request){ //ObtenerAutoDivisionalRespose
 		try {
 			ObtenerAutoDivisionalRespose response  = new ObtenerAutoDivisionalRespose(serviceSolicitudInversionImp.ObtenerAutoDivisional(request), "200");
@@ -607,7 +607,7 @@ public class ServiceSolicitudInversionController  {
 	
     /// ----------Vista Ejecutivo ---------------
 	//LoadData
-	@GetMapping(path = "/ObtenerRegistrosAutoTasasPorEjecutivo", produces = "application/json")//prueba
+	@PostMapping(path = "/ObtenerRegistrosAutoTasasPorEjecutivo", produces = "application/json")//prueba
 	public ResponseEntity<?> ObtenerRegistrosAutoTasasPorEjecutivo(
 			ObtenerRegistrosAutoTasasPorEjecutivoRequest request){
     try{
@@ -644,7 +644,7 @@ public class ServiceSolicitudInversionController  {
 	//btnSave_Click1
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@PutMapping(path ="/UPDATE_SOLIC_CANCEL_CAMPTASAS", produces = "application/json")//btnSave_Click
+	@PostMapping(path ="/UPDATE_SOLIC_CANCEL_CAMPTASAS", produces = "application/json")//btnSave_Click
 	public ResponseEntity<?> UPDATE_SOLIC_CANCEL_CAMPTASAS(@RequestBody final AutoTasaUpdateCamTasasRequest request) {
 		try {		
 			String mensaje = serviceSolicitudInversionImp.UPDATE_SOLIC_CANCEL_CAMPTASAS(request); 
@@ -677,7 +677,7 @@ public class ServiceSolicitudInversionController  {
 	//btnSave_Click1
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/ExisteFolioBancanet", produces = "application/json")//u
+	@PostMapping(path = "/ExisteFolioBancanet", produces = "application/json")//u
 	public ResponseEntity<?>  ExisteFolioBancanet(){
 		try {
 			ExisteFolioBancanetResponse response = new ExisteFolioBancanetResponse(serviceSolicitudInversionImp.ExisteFolioBancanet(), "200");
