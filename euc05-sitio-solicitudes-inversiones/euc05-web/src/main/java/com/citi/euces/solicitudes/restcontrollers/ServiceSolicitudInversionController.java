@@ -644,7 +644,7 @@ public class ServiceSolicitudInversionController  {
 	//btnSave_Click1
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@PostMapping(path ="/UPDATE_SOLIC_CANCEL_CAMPTASAS", produces = "application/json")//btnSave_Click
+	@PutMapping(path ="/UPDATE_SOLIC_CANCEL_CAMPTASAS", produces = "application/json")//btnSave_Click
 	public ResponseEntity<?> UPDATE_SOLIC_CANCEL_CAMPTASAS(@RequestBody final AutoTasaUpdateCamTasasRequest request) {
 		try {		
 			String mensaje = serviceSolicitudInversionImp.UPDATE_SOLIC_CANCEL_CAMPTASAS(request); 

@@ -9,8 +9,8 @@ public class AutoTasaUpdateVOBOBEDTO {
 	private String estatus;
 	private String soeid_Asig;
 	private String observa_Web;
-	private Timestamp fecha_Autori;
-	private Timestamp fecha_Estatus;
+	private String fecha_Autori;
+	private String fecha_Estatus;
 	private Long id_Tasauto;
 	public String getSoeid_Autori() {
 		return soeid_Autori;
@@ -48,16 +48,16 @@ public class AutoTasaUpdateVOBOBEDTO {
 	public void setId_Tasauto(Long id_Tasauto) {
 		this.id_Tasauto = id_Tasauto;
 	}
-	public Timestamp getFecha_Autori() {
+	public String getFecha_Autori() {
 		return fecha_Autori;
 	}
-	public void setFecha_Autori(Timestamp fecha_Autori) {
+	public void setFecha_Autori(String fecha_Autori) {
 		this.fecha_Autori = fecha_Autori;
 	}
-	public Timestamp getFecha_Estatus() {
+	public String getFecha_Estatus() {
 		return fecha_Estatus;
 	}
-	public void setFecha_Estatus(Timestamp fecha_Estatus) {
+	public void setFecha_Estatus(String fecha_Estatus) {
 		this.fecha_Estatus = fecha_Estatus;
 	}
 	

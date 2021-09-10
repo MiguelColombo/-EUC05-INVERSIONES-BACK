@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class AutoTasaInsertBEDTO {
 	
 	private Long id_TasAuto;
-	private Timestamp  fecha_Solic;
+	private String  fecha_Solic;
 	private String estatus;
 	private Long suc_Solic;
 	private String divicion;
@@ -31,10 +31,10 @@ public class AutoTasaInsertBEDTO {
 	public void setId_TasAuto(Long id_TasAuto) {
 		this.id_TasAuto = id_TasAuto;
 	}
-	public Timestamp getFecha_Solic() {
+	public String getFecha_Solic() {
 		return fecha_Solic;
 	}
-	public void setFecha_Solic(Timestamp fecha_Solic) {
+	public void setFecha_Solic(String fecha_Solic) {
 		this.fecha_Solic = fecha_Solic;
 	}
 	public String getEstatus() {

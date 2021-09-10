@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -229,8 +230,11 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		
 		try {
 		int salida = 0;
+		Timestamp timestamp = Timestamp.valueOf(request.getFecha_Solic());
+		
 		salida = autoTasaRepo.SAVE_AUTOTASAS(request.getId_TasAuto(), 
-				request.getFecha_Solic(), 
+				//request.getFecha_Solic(), 
+				timestamp,
 				request.getEstatus(), 
 				request.getSuc_Solic(), 
 				request.getDivicion(), 
@@ -622,9 +626,25 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	public List<ObtenerRegAutoTasaResposeDTO> ObtenerRegAutoTasa(AutoTasaBEDTO request) throws GenericException, IOException{ //si
 		List<ObtenerRegAutoTasaResposeDTO> obtenerRegAutoTasaRespose = new  ArrayList<ObtenerRegAutoTasaResposeDTO>();
 		SimpleDateFormat objSDF2 = new SimpleDateFormat("dd/MM/yyyy");
+		String autorizadores = null;
 		try {
 			listAutoTasa = autoTasaRepo.ObtenerRegAutoTasa(request.getId_tasauto() );
-			for(AutoTasa autTasa : listAutoTasa) {
+			for(AutoTasa autTasa : listAutoTasa) {		
+				if(autTasa.getAUTORIZADORES().isEmpty()) {
+					lstAut = autorizadoresRepo.ObtenerAutorizadoresDivisionales(autTasa.getAUTORIZADORES().split("|").toString());
+					for(Autorizadores aut : lstAut) {
+						autorizadores =	aut.getDivision()+
+									aut.getNombre()+
+									aut.getInic()+
+									objSDF2.format(aut.getFecha_Inicio())+
+									objSDF2.format(aut.getFecha_Termino())+
+									aut.getAlta()+
+									aut.getId_nivel_auto()+
+									aut.getCorreo();
+					}
+				}
+
+				
 				obtenerRegAutoTasaRespose.add(new ObtenerRegAutoTasaResposeDTO(
 					autTasa.getID_TASAUTO(),
 					objSDF2.format(autTasa.getFECHA_SOLIC()), 
@@ -656,8 +676,12 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					autTasa.getNOMINA_CANCEL(),
 					autTasa.getNOMEJEC_CANCEL(),
 					autTasa.getJUSTIFICACION_CANCEL(),
-					autTasa.getAUTORIZADORES()));		
-			}
+					autorizadores));		
+				
+                           
+
+				
+			}			
 		}catch (Exception ex) {
 			System.out.println("ex ->" + ex.getMessage());
 			System.out.println("ex ->" + ex.getCause());
@@ -716,7 +740,9 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		String mensaje = null;
 		try {
 			int salidaUp = 0;
-			salidaUp = autoTasaRepo.UPDATE_VOBO_AUTOTASAS(request.getSoeid_Autori(), request.getId_Tasauto(), request.getEstatus(), request.getSoeid_Asig(), request.getObserva_Web(), request.getFecha_Autori(),request.getFecha_Estatus(), request.getInic_Autori());
+			Timestamp timestamp = Timestamp.valueOf(request.getFecha_Autori());
+			Timestamp timestampE = Timestamp.valueOf(request.getFecha_Estatus());
+			salidaUp = autoTasaRepo.UPDATE_VOBO_AUTOTASAS(request.getSoeid_Autori(), request.getId_Tasauto(), request.getEstatus(), request.getSoeid_Asig(), request.getObserva_Web(), timestamp,timestampE, request.getInic_Autori());
 
 
 			if(salidaUp > 0) {
@@ -880,7 +906,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		String mensaje = null;
 		try {
 			int salidaUp = 0;
-			salidaUp = autoTasaRepo.UPDATE_SOLIC_CANCEL_CAMPTASAS(request.getSoeid_Asig(), request.getSoeid_Ope(), request.getNomina_Cancel(), request.getNomejec_Cancel(), request.getJustificacion_Cancel(), request.getFecha_Solic_Cancel(), request.getId_Tasauto());
+			Timestamp timestamp = Timestamp.valueOf(request.getFecha_Solic_Cancel());
+			salidaUp = autoTasaRepo.UPDATE_SOLIC_CANCEL_CAMPTASAS(request.getSoeid_Asig(), request.getSoeid_Ope(), request.getNomina_Cancel(), request.getNomejec_Cancel(), request.getJustificacion_Cancel(), timestamp, request.getId_Tasauto());
 
 
 			if(salidaUp > 0) {

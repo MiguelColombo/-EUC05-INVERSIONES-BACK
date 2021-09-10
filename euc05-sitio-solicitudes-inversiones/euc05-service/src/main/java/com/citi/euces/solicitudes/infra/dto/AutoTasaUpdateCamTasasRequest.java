@@ -8,7 +8,7 @@ public class AutoTasaUpdateCamTasasRequest {
 	private String nomina_Cancel;
 	private String nomejec_Cancel;
 	private String justificacion_Cancel;
-	private Timestamp fecha_Solic_Cancel;
+	private String fecha_Solic_Cancel;
 	private Long id_Tasauto;
 	public String getSoeid_Asig() {
 		return soeid_Asig;
@@ -40,10 +40,10 @@ public class AutoTasaUpdateCamTasasRequest {
 	public void setJustificacion_Cancel(String justificacion_Cancel) {
 		this.justificacion_Cancel = justificacion_Cancel;
 	}
-	public Timestamp getFecha_Solic_Cancel() {
+	public String getFecha_Solic_Cancel() {
 		return fecha_Solic_Cancel;
 	}
-	public void setFecha_Solic_Cancel(Timestamp fecha_Solic_Cancel) {
+	public void setFecha_Solic_Cancel(String fecha_Solic_Cancel) {
 		this.fecha_Solic_Cancel = fecha_Solic_Cancel;
 	}
 	public Long getId_Tasauto() {
