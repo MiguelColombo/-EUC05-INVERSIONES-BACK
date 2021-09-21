@@ -227,12 +227,16 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	@Override
 	public String Solicitar(AutoTasaInsertBEDTO request) throws GenericException, IOException, SQLException{ 
          String mensaje = null ;
-		
+         SimpleDateFormat objSDF2 = new SimpleDateFormat("ddMMyy");
+         Date  fecha=  new Date();
 		try {
 		int salida = 0;
 		Timestamp timestamp = Timestamp.valueOf(request.getFecha_Solic());
-		
-		salida = autoTasaRepo.SAVE_AUTOTASAS(request.getId_TasAuto(), 
+		id_Tasa = autoTasaRepo.ObtenerUltFolioAutoTasas();
+		String id = id_Tasa.toString();
+		id_Tasa =   (id_Tasa == 0) ? 1: (long) (Integer.parseInt(id.substring(6))+1);
+		id_Tasa =  (Integer.parseInt(objSDF2.format(fecha))*(10000))+id_Tasa;
+		salida = autoTasaRepo.SAVE_AUTOTASAS(id_Tasa, 
 				//request.getFecha_Solic(), 
 				timestamp,
 				request.getEstatus(), 
@@ -254,7 +258,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 				request.getCel(), 
 				request.getPorta());
 		if(salida > 0) {
-			mensaje ="Guardado";	
+			mensaje ="Guardado | id : "+ id_Tasa;	
 			
 		}else {
 			mensaje = "Error";	
@@ -359,10 +363,10 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			                c.add(Calendar.DATE, 2);
 			                actual = c.getTime();
 			                plazo = request.getPlazo().intValue() +aumento; 
-			                diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo) ,"11"+objSDF2.format(actual)));
+			                diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo) , objSDF2.format(actual)));
 			            }else {
 			            	plazo = request.getPlazo().intValue() +aumento;
-			            	diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo),"21"+objSDF2.format(actual)));
+			            	diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo),objSDF2.format(actual)));
 			            }
 					}else {
 						c.setTime(actual);
@@ -376,10 +380,10 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			                c.add(Calendar.DATE, 2);
 			                actual = c.getTime();
 			                plazo = request.getPlazo().intValue() +aumento;
-			                diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo),"1"+objSDF2.format(actual)));
+			                diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo),objSDF2.format(actual)));
 			            }else {
 			            	plazo = request.getPlazo().intValue() +aumento;
-			            	diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo),"2"+objSDF2.format(actual)));
+			            	diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo),objSDF2.format(actual)));
 			            }
 					}
 					
@@ -392,16 +396,16 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					c.add(Calendar.DATE, aumento);
 					actual = c.getTime();
 					plazo = request.getPlazo().intValue() +aumento;
-					diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo),"3"+objSDF2.format(actual)));
+					diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo),objSDF2.format(actual)));
 				}else if (objSDF.format(actual).toString().equals("dom")) {
 					c.setTime(actual);
 					aumento = 1;
 					c.add(Calendar.DATE, aumento);
 					actual = c.getTime();
 					plazo = request.getPlazo().intValue() +aumento;
-					diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo),"4"+objSDF2.format(actual)));
+					diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo),objSDF2.format(actual)));
 				}else {
-					diasFestivosResponse.add(new DiasFestivosResponseDTO(request.getPlazo(),"5"+objSDF2.format(actual)));
+					diasFestivosResponse.add(new DiasFestivosResponseDTO(request.getPlazo(),objSDF2.format(actual)));
 
 				}
 			}
