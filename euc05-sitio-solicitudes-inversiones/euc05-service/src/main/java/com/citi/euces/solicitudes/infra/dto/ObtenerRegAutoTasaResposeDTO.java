@@ -7,7 +7,7 @@ public class ObtenerRegAutoTasaResposeDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-	private Long ID_TASAUTO;
+	private BigInteger ID_TASAUTO;
 	private String FECHA_SOLIC;
 	private String FECHA_AUTORI;
 	private String FECHA_PROCESS;
@@ -71,7 +71,7 @@ public class ObtenerRegAutoTasaResposeDTO implements Serializable {
 	 * @param jUSTIFICACION_CANCEL
 	 * @param autorizadores
 	 */
-	public ObtenerRegAutoTasaResposeDTO(Long iD_TASAUTO, String fECHA_SOLIC, String fECHA_AUTORI,
+	public ObtenerRegAutoTasaResposeDTO(BigInteger iD_TASAUTO, String fECHA_SOLIC, String fECHA_AUTORI,
 			String fECHA_PROCESS, String fECHA_ESTATUS, String eSTATUS, Long sUC_SOLIC, String dIVISION,
 			BigInteger nUM_CTE, String nOM_CTE, BigInteger cONTRATO, String nOMINA, String nOMEJEC, Long mONTO,
 			Long pLAZO, Long tASA_AUTORI, String tIPO_AUTORI, String sOEID_AUTORI, String sOEID_ASIG,
@@ -111,10 +111,10 @@ public class ObtenerRegAutoTasaResposeDTO implements Serializable {
 		JUSTIFICACION_CANCEL = jUSTIFICACION_CANCEL;
 		Autorizadores = autorizadores;
 	}
-	public Long getID_TASAUTO() {
+	public BigInteger getID_TASAUTO() {
 		return ID_TASAUTO;
 	}
-	public void setID_TASAUTO(Long iD_TASAUTO) {
+	public void setID_TASAUTO(BigInteger iD_TASAUTO) {
 		ID_TASAUTO = iD_TASAUTO;
 	}
 	public String getFECHA_SOLIC() {

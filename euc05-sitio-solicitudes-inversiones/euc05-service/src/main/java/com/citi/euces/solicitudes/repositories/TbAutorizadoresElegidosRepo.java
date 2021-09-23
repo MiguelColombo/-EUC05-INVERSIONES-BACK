@@ -1,5 +1,7 @@
 package com.citi.euces.solicitudes.repositories;
 
+import java.math.BigInteger;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +16,5 @@ public interface TbAutorizadoresElegidosRepo extends JpaRepository<TbAutorizador
 	@Modifying
 	@Query(value = "INSERT INTO UEC_TB_AUTORIZADORES_ELEGIDOS (id_TasaAuto, Autorizadores) "
 			+ "  VALUES ( :Id_TasaAuto,:Autorizadores )  ",nativeQuery = true )
-	int Guardar_Autorizacion(@Param("Id_TasaAuto") Long Id_TasaAuto, @Param("Autorizadores") String Autorizadores);
+	int Guardar_Autorizacion(@Param("Id_TasaAuto") BigInteger Id_TasaAuto, @Param("Autorizadores") String Autorizadores);
 }

@@ -9,7 +9,7 @@ import com.citi.euces.solicitudes.entities.AutoCetes;
 
 public interface AutoCetesRepo extends JpaRepository<AutoCetes, Integer> {
 	
-	@Query(value = " SELECT c.ID_PLAZO,c.CETE FROM UEC_TB_AUTOCETES c",nativeQuery = true )
+	@Query(value = " SELECT c.ID_PLAZO,NVL(c.CETE,0) AS CETE  FROM UEC_TB_AUTOCETES c",nativeQuery = true )
 	List<AutoCetes> ObtenerAutoCetes();
 
 }

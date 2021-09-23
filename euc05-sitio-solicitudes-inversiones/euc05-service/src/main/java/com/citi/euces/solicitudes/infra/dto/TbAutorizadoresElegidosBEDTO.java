@@ -2,12 +2,12 @@ package com.citi.euces.solicitudes.infra.dto;
 
 public class TbAutorizadoresElegidosBEDTO {
 	
-	private Long id_TasaAuto;
+	private String id_TasaAuto;
 	private String autorizadores;
-	public Long getId_TasaAuto() {
+	public String getId_TasaAuto() {
 		return id_TasaAuto;
 	}
-	public void setId_TasaAuto(Long id_TasaAuto) {
+	public void setId_TasaAuto(String id_TasaAuto) {
 		this.id_TasaAuto = id_TasaAuto;
 	}
 	public String getAutorizadores() {

@@ -6,11 +6,11 @@ public class SucursalesBEDTO {
 	private String soeid;
 	private String division;
 	private String distrito;
-	private Long id;
-	public Long getId() {
+	private String id;
+	public String  getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getDivision() {

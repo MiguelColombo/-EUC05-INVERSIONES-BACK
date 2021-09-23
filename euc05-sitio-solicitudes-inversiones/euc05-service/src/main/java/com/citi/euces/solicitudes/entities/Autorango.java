@@ -20,7 +20,7 @@ public class Autorango implements Serializable {
 	private Long id_Rango;
 	@Column(name ="RANGOMIN" )
 	private Long RangoMin;
-	@Column(name ="COLUMN3" )
+	@Column(name ="RANGOMAX" )
 	private Long RangoMax;
 	@Column(name ="MILL_DOSMILLQUIN" )
 	private Long MILL_DOSMILLQUIN; //double

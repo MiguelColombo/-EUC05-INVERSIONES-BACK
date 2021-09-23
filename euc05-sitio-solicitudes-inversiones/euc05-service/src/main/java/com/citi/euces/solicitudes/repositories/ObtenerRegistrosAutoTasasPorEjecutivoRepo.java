@@ -11,10 +11,10 @@ import com.citi.euces.solicitudes.entities.AutoTasasPorEjecutivo;
 public interface ObtenerRegistrosAutoTasasPorEjecutivoRepo extends JpaRepository<AutoTasasPorEjecutivo, Integer>{
 
 	@Query(value = " SELECT tas.ID_TASAUTO, tas.ESTATUS,tas.NUM_AUTORI_UEC,tas.FECHA_SOLIC, tas.FECHA_AUTORI, tas.FECHA_ESTATUS, "
-            + " tas.SUC_SOLIC,(sucu.SIRH_SUCURSAL_ID||' - '||sucu.NOMBRE_SUCURSAL||' - '||sucu.DISTRITO_NOMBRE) as suc, tas.NUM_CTE, tas.NOM_CTE,  tas.CONTRATO,tas.NOMINA,tas.MONTO,tas.PLAZO, "
+            + " tas.SUC_SOLIC,(sucu.SIRH||' - '||sucu.SUCURSAL||' - '||sucu.DISTRITO) as suc, tas.NUM_CTE, tas.NOM_CTE,  tas.CONTRATO,tas.NOMINA,tas.MONTO,tas.PLAZO, "
             + " tas.TASA_AUTORI, tas.TIPO_AUTORI, tas.SOEID_AUTORI, tas.SOEID_ASIG, tas.SOEID_OPE,tas.INIC_AUTORI, tas.CETE,tas.PORCEN_CETE, "
             + " eleg.autorizadores,   tas.OBSERVA_WEB,   certifisicos.folio as certificado_fisico, certimorales.folio as certificado_moral    "
-			+ " FROM UEC_TB_AUTOTASAS tas  inner join PER_CAT_SUCURSALES sucu on tas.SUC_SOLIC = sucu.SIRH_SUCURSAL_ID "
+			+ " FROM UEC_TB_AUTOTASAS tas  inner join UEC_CAT_SUC2021 sucu on tas.SUC_SOLIC = sucu.SIRH "
 			+ " left join UEC_TB_CERTIFICADOS_FISICOS certifisicos on certifisicos.num_cte = tas.NUM_CTE "
 			+ " left join UEC_TB_CERTIFICADOS_MORALES certimorales on certimorales.num_cte = tas.NUM_CTE "
             + " left join UEC_TB_AUTORIZADORES_ELEGIDOS eleg on tas.ID_TASAUTO = eleg.id_TasaAuto " 

@@ -1,22 +1,24 @@
 package com.citi.euces.solicitudes.models;
 
+import java.math.BigInteger;
+
 public class FolioAutoTasaResponse {
 	
-	 private Long Folio;
+	 private BigInteger Folio;
 	 private String code;
 	/**
 	 * @param folio
 	 * @param code
 	 */
-	public FolioAutoTasaResponse(Long folio, String code) {
+	public FolioAutoTasaResponse(BigInteger folio, String code) {
 		super();
 		Folio = folio;
 		this.code = code;
 	}
-	public Long getFolio() {
+	public BigInteger getFolio() {
 		return Folio;
 	}
-	public void setFolio(Long folio) {
+	public void setFolio(BigInteger folio) {
 		Folio = folio;
 	}
 	public String getCode() {

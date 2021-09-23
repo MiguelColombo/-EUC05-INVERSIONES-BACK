@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +99,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	List<Tb_Asignaciones> listAsignacion = null;
 	List<AutoTasasPorEjecutivo> listAutoTasaPor = null;
 	Long id_Tasa;
+	BigInteger id_Tasa_long;
 	double porsentaje  ;
 	double tasa100Porc;
 	
@@ -154,7 +157,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	public List<AutorizadoresResponseDTO> checkAutorizadores(SucursalesBEDTO request) throws GenericException, IOException  { //si
 		List<AutorizadoresResponseDTO> lstAut2 = new  ArrayList<AutorizadoresResponseDTO>();
 		String puesto;
-		String distrito = sucursalesRepo.ObtenerRegionDeNumSuc(request.getId());
+		BigInteger id = new BigInteger(request.getId());
+		String distrito = sucursalesRepo.ObtenerRegionDeNumSuc(id);
 		try {
 		LOGGER.debug( distrito );
 			switch (request.getId_Solicitud().intValue()) {
@@ -229,14 +233,37 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
          String mensaje = null ;
          SimpleDateFormat objSDF2 = new SimpleDateFormat("ddMMyy");
          Date  fecha=  new Date();
+         BigInteger id_Tasa_long_n =new BigInteger("1"); 
 		try {
 		int salida = 0;
 		Timestamp timestamp = Timestamp.valueOf(request.getFecha_Solic());
-		id_Tasa = autoTasaRepo.ObtenerUltFolioAutoTasas();
-		String id = id_Tasa.toString();
-		id_Tasa =   (id_Tasa == 0) ? 1: (long) (Integer.parseInt(id.substring(6))+1);
-		id_Tasa =  (Integer.parseInt(objSDF2.format(fecha))*(10000))+id_Tasa;
-		salida = autoTasaRepo.SAVE_AUTOTASAS(id_Tasa, 
+		id_Tasa_long = autoTasaRepo.ObtenerUltFolioAutoTasas();
+		LOGGER.debug( id_Tasa_long.toString());
+		//String id = id_Tasa.toString();
+		
+		//id_Tasa =   (id_Tasa == 0) ? 1: (long) (Integer.parseInt(id.substring(6))+1);
+		//id_Tasa_long =   (id_Tasa_long.toString().equals("0")) ? id_Tasa_long_n: id_tasa_op;
+		if(id_Tasa_long.toString().equals("0")) {
+			id_Tasa_long = id_Tasa_long_n;
+		}else {
+			String id = id_Tasa_long.toString();
+			BigInteger id_Tasa =new BigInteger(id.substring(6).toString());
+			BigInteger id_tasa_op = new BigInteger(id_Tasa.add(id_Tasa_long_n).toString());
+			id_Tasa_long= id_tasa_op;
+			LOGGER.debug( id_Tasa_long.toString());
+		}
+		
+		
+		
+		Long fecha_act = (long) Integer.parseInt(objSDF2.format(fecha));
+		BigInteger f_div =new BigInteger(fecha_act.toString()); 
+		BigInteger f_div2 =new BigInteger("100000");  
+		BigInteger res =new BigInteger(f_div.multiply(f_div2).add(id_Tasa_long).toString());
+		//id_Tasa_long =  (Integer.parseInt(objSDF2.format(fecha))*(10000))+id_Tasa_long;
+		LOGGER.debug( id_Tasa_long.toString());
+		LOGGER.debug(res.toString() );
+		
+		salida = autoTasaRepo.SAVE_AUTOTASAS(res, 
 				//request.getFecha_Solic(), 
 				timestamp,
 				request.getEstatus(), 
@@ -258,7 +285,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 				request.getCel(), 
 				request.getPorta());
 		if(salida > 0) {
-			mensaje ="Guardado | id : "+ id_Tasa;	
+			mensaje ="Guardado | id : "+ res;	
 			
 		}else {
 			mensaje = "Error";	
@@ -452,14 +479,14 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 
 
 	@Override
-	public Long ObtenerUltFolioAutoTasas() throws GenericException, IOException{//si
+	public BigInteger ObtenerUltFolioAutoTasas() throws GenericException, IOException{//si
 		try {
-			id_Tasa = autoTasaRepo.ObtenerUltFolioAutoTasas();
+			id_Tasa_long = autoTasaRepo.ObtenerUltFolioAutoTasas();
 		}catch (Exception ex) {
 			System.out.println("ex ->" + ex.getMessage());
 			System.out.println("ex ->" + ex.getCause());
 		}
-		return id_Tasa;
+		return id_Tasa_long;
 		
 	}
 	
@@ -543,7 +570,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		SimpleDateFormat objSDF2 = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			LOGGER.debug( request.getId_tasauto() );
-		listAutoTasa = autoTasaRepo.ObtenerRegCampTasa(request.getId_tasauto() );
+		BigInteger id_tasa = new BigInteger(request.getId_tasauto());
+		listAutoTasa = autoTasaRepo.ObtenerRegCampTasa(id_tasa );
 		LOGGER.debug( request.getId_tasauto()  );
 		for(AutoTasa autTasa : listAutoTasa) {
 				listObtenerRegCampTasas.add(new AutoTasaResponseDTO(
@@ -588,7 +616,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		
 		try {
 		int salida = 0;
-		salida = tbAutorizadoresElegidosRepo.Guardar_Autorizacion(request.getId_TasaAuto(),request.getAutorizadores());
+		BigInteger id_aut = new BigInteger(request.getId_TasaAuto());
+		salida = tbAutorizadoresElegidosRepo.Guardar_Autorizacion(id_aut,request.getAutorizadores());
 		if(salida > 0) {
 			mensaje ="Guardado";	
 			
@@ -611,7 +640,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		String mensaje =null;
 		try {
 		int salidaUp = 0;
-		salidaUp = autoTasaRepo.UPDATE_Autorizador_Solicitud(request.getId_TasAuto(),
+		BigInteger id_tasa = new BigInteger(request.getId_TasAuto());
+		salidaUp = autoTasaRepo.UPDATE_Autorizador_Solicitud(id_tasa,
 				request.getSoeid_Autori(),
 				request.getInic_Autori());
 
@@ -632,7 +662,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		SimpleDateFormat objSDF2 = new SimpleDateFormat("dd/MM/yyyy");
 		String autorizadores = null;
 		try {
-			listAutoTasa = autoTasaRepo.ObtenerRegAutoTasa(request.getId_tasauto() );
+			BigInteger id_tasa = new BigInteger(request.getId_tasauto());
+			listAutoTasa = autoTasaRepo.ObtenerRegAutoTasa(id_tasa );
 			for(AutoTasa autTasa : listAutoTasa) {		
 				if(autTasa.getAUTORIZADORES().isEmpty()) {
 					lstAut = autorizadoresRepo.ObtenerAutorizadoresDivisionales(autTasa.getAUTORIZADORES().split("|").toString());
@@ -746,7 +777,9 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			int salidaUp = 0;
 			Timestamp timestamp = Timestamp.valueOf(request.getFecha_Autori());
 			Timestamp timestampE = Timestamp.valueOf(request.getFecha_Estatus());
-			salidaUp = autoTasaRepo.UPDATE_VOBO_AUTOTASAS(request.getSoeid_Autori(), request.getId_Tasauto(), request.getEstatus(), request.getSoeid_Asig(), request.getObserva_Web(), timestamp,timestampE, request.getInic_Autori());
+			BigInteger id_tasa = new BigInteger(request.getId_Tasauto());
+
+			salidaUp = autoTasaRepo.UPDATE_VOBO_AUTOTASAS(request.getSoeid_Autori(), id_tasa, request.getEstatus(), request.getSoeid_Asig(), request.getObserva_Web(), timestamp,timestampE, request.getInic_Autori());
 
 
 			if(salidaUp > 0) {
@@ -766,33 +799,23 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		String soeidAsignado = "";
 		try {
 		listAsignacion = tb_AsignacionesRepo.ObtenerAsignaciones();
-
+     
 		// obtenemos el ultimo soeid asignado
 		String soeid_asig_ant  = autoTasaRepo.ObtenerUltSoeidAsignado();
-	    //	Tb_AsignacionesResponse tb_AsignacionesResponse = new Tb_AsignacionesResponse();
-		//String soeid_asig_ant  =auto.getSOEID_ASIG();
+		LOGGER.debug( soeid_asig_ant);
 		// obtenemos la posicion en el arreglo del elemento
-		int pos  = Integer.parseInt(listAsignacion.stream().filter(x -> x.getSOEID() == soeid_asig_ant ).findFirst().toString());
-		//int sum = 0;
-	/*	for(Tb_Asignaciones asign : listAsignacion) {
-				sum += asign.getONLINE_();
-				while(listAsignacion.iterator().hasNext()) {
-					if(listAsignacion.stream().anyMatch(ls -> ls.getSOEID().equals(soeid_asig_ant))) {
-						pos = listAsignacion.indexOf(asign);
-						break;
-					}
-					
-				}*/
-			
-		//	tb_AsignacionesResponse.add(new Tb_AsignacionesResponse(asign.getID(), asign.getSOEID(), asign.getONLINE_(), asign.getNOMBRE()));
-	//	}
+		int pos  = IntStream.range(0, listAsignacion.size())
+				.filter(x -> soeid_asig_ant.equals(listAsignacion.get(x)) )
+				.findFirst().orElse(-1);
+
+		//int pos  = Integer.parseInt(listAsignacion.stream().filter(x -> x.getSOEID().equals(soeid_asig_ant) ).findFirst().get().toString());
+		LOGGER.debug( pos);
+		LOGGER.debug( listAsignacion.size() );
 		String val = "";
 		if (listAsignacion.size() == 0) {
 			return val;
 		}
-	//	if(sum == 0) {
-		//	listAsignacion =null;
-	//	}
+
 		for (int i = pos; i < listAsignacion.size() - 1; i++)
         {
             if (listAsignacion.get(i+1) != null)
@@ -803,6 +826,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
                 	}
             }
         }
+		LOGGER.debug( soeidAsignado);
 		if ((soeidAsignado.isEmpty()) || (soeidAsignado.equals(null)) || (soeidAsignado.equals("")))
         {
             for (int i = -1; i < listAsignacion.size(); i++)
@@ -816,6 +840,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
                 }
             }
         }
+		LOGGER.debug( soeidAsignado);
 	} catch (Exception ex) {
 		System.out.println("ex ->" + ex.getMessage());
 		System.out.println("ex ->" + ex.getCause());
@@ -911,7 +936,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		try {
 			int salidaUp = 0;
 			Timestamp timestamp = Timestamp.valueOf(request.getFecha_Solic_Cancel());
-			salidaUp = autoTasaRepo.UPDATE_SOLIC_CANCEL_CAMPTASAS(request.getSoeid_Asig(), request.getSoeid_Ope(), request.getNomina_Cancel(), request.getNomejec_Cancel(), request.getJustificacion_Cancel(), timestamp, request.getId_Tasauto());
+			BigInteger id_tasa = new BigInteger(request.getId_Tasauto());
+			salidaUp = autoTasaRepo.UPDATE_SOLIC_CANCEL_CAMPTASAS(request.getSoeid_Asig(), request.getSoeid_Ope(), request.getNomina_Cancel(), request.getNomejec_Cancel(), request.getJustificacion_Cancel(), timestamp, id_tasa);
 
 
 			if(salidaUp > 0) {

@@ -18,7 +18,7 @@ public class AutoTasa implements Serializable {
 	
 	@Id
     @Column(name ="ID_TASAUTO")
-	private Long ID_TASAUTO;
+	private BigInteger ID_TASAUTO;
 	@Column(name ="FECHA_SOLIC")
 	private Timestamp  FECHA_SOLIC;
     @Column(name ="FECHA_AUTORI")
@@ -143,7 +143,7 @@ public class AutoTasa implements Serializable {
 	 * @param eMAIL
 	 * @param aUTORIZADORES
 	 */
-	public AutoTasa(Long iD_TASAUTO, Timestamp fECHA_SOLIC, Timestamp fECHA_AUTORI, Timestamp fECHA_PROCESS,
+	public AutoTasa(BigInteger iD_TASAUTO, Timestamp fECHA_SOLIC, Timestamp fECHA_AUTORI, Timestamp fECHA_PROCESS,
 			Timestamp fECHA_ESTATUS, Long iS_PROCESS, String eSTATUS, Long sUC_SOLIC, String dIVISION,
 			BigInteger nUM_CTE, String nOM_CTE, BigInteger cONTRATO, String nOMINA, String nOMEJEC, Long mONTO,
 			Long pLAZO, Long tASA_AUTORI, String tIPO_AUTORI, String sOEID_AUTORI, String iNIC_AUTORI,
@@ -194,12 +194,12 @@ public class AutoTasa implements Serializable {
 	}
 
 
-	public Long getID_TASAUTO() {
+	public BigInteger getID_TASAUTO() {
 		return ID_TASAUTO;
 	}
 
 
-	public void setID_TASAUTO(Long iD_TASAUTO) {
+	public void setID_TASAUTO(BigInteger iD_TASAUTO) {
 		ID_TASAUTO = iD_TASAUTO;
 	}
 

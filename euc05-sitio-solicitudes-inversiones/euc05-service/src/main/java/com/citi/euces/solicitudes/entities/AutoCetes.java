@@ -21,7 +21,7 @@ public class AutoCetes implements Serializable{
 	@Column(name ="ID_PLAZO" )
 	private Long Id_Plazo;
 	@Column(name ="CETE" )
-	private Long cete;
+	private double cete;
 	/**
 	 * @param id_Plazo
 	 * @param cete
@@ -29,7 +29,7 @@ public class AutoCetes implements Serializable{
 	public AutoCetes() {
 		
 	}
-	public AutoCetes(Long id_Plazo, Long cete) {
+	public AutoCetes(Long id_Plazo, double cete) {
 		super();
 		Id_Plazo = id_Plazo;
 		this.cete = cete;
@@ -40,10 +40,10 @@ public class AutoCetes implements Serializable{
 	public void setId_Plazo(Long id_Plazo) {
 		Id_Plazo = id_Plazo;
 	}
-	public Long getCete() {
+	public double getCete() {
 		return cete;
 	}
-	public void setCete(Long cete) {
+	public void setCete(double cete) {
 		this.cete = cete;
 	}
 	

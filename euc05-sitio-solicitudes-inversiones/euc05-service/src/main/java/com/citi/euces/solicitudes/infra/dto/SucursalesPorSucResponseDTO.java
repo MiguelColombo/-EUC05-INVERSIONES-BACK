@@ -1,9 +1,11 @@
 package com.citi.euces.solicitudes.infra.dto;
 
+import java.math.BigInteger;
+
 public class SucursalesPorSucResponseDTO {
 
 	private String suc;
-	private Long NUMSUC;
+	private BigInteger NUMSUC;
 	private String distrito;
 	private Long IS_CLOSED;
 	/**
@@ -12,7 +14,7 @@ public class SucursalesPorSucResponseDTO {
 	 * @param distrito
 	 * @param iS_CLOSED
 	 */
-	public SucursalesPorSucResponseDTO(String suc, Long nUMSUC, String distrito, Long iS_CLOSED) {
+	public SucursalesPorSucResponseDTO(String suc, BigInteger nUMSUC, String distrito, Long iS_CLOSED) {
 		super();
 		this.suc = suc;
 		NUMSUC = nUMSUC;
@@ -25,10 +27,10 @@ public class SucursalesPorSucResponseDTO {
 	public void setSuc(String suc) {
 		this.suc = suc;
 	}
-	public Long getNUMSUC() {
+	public BigInteger getNUMSUC() {
 		return NUMSUC;
 	}
-	public void setNUMSUC(Long nUMSUC) {
+	public void setNUMSUC(BigInteger nUMSUC) {
 		NUMSUC = nUMSUC;
 	}
 	public String getDistrito() {

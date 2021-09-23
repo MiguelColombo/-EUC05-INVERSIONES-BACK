@@ -1,6 +1,7 @@
 package com.citi.euces.solicitudes.repositories;
 
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -21,11 +22,11 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 			+ ", a.SOEID_OPE,a.CETE,a.PORCEN_CETE,a.OBSERVA_WEB,a.JUSTIFICACION,a.CEL,a.T_PER,a.FECHA_SOLIC_CANCEL,a.NOMINA_CANCEL "
 			+ ", a.NOMEJEC_CANCEL,a.JUSTIFICACION_CANCEL,a.REINVERSION,a.IS_CUENTA_MAESTRA,a.IS_PORTABILIDAD,a.EMAIL,a.AUTORIZADORES "
 			+ " from UEC_TB_AUTOTASAS a where a.ID_TASAUTO =:ID_TASAUTO  ",nativeQuery = true )
-	List<AutoTasa> ObtenerRegCampTasa(@Param("ID_TASAUTO") Long ID_TASAUTO);
+	List<AutoTasa> ObtenerRegCampTasa(@Param("ID_TASAUTO") BigInteger ID_TASAUTO);
 	
 	@Query(value = " select NVL(MAX(t.ID_TASAUTO),0) AS ID_TASAUTO  from UEC_TB_AUTOTASAS t "
 			+ " where TO_CHAR(t.FECHA_SOLIC, ' YYYY/DD/MM') = TO_CHAR(SYSDATE, ' YYYY/DD/MM')  ",nativeQuery = true )
-	Long ObtenerUltFolioAutoTasas();
+	BigInteger ObtenerUltFolioAutoTasas();
 
 	@Transactional
 	@Modifying
@@ -33,7 +34,7 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 			+ " INIC_AUTORI= :INIC_AUTORI, "
 			+ " SOEID_AUTORI=:SOEID_AUTORI "
 			+ " WHERE ID_TASAUTO= :ID_TASAUTO ",nativeQuery = true )
-	int UPDATE_Autorizador_Solicitud(@Param("ID_TASAUTO") Long ID_TASAUTO, @Param("SOEID_AUTORI") String SOEID_AUTORI,
+	int UPDATE_Autorizador_Solicitud(@Param("ID_TASAUTO") BigInteger ID_TASAUTO, @Param("SOEID_AUTORI") String SOEID_AUTORI,
 			@Param("INIC_AUTORI") String INIC_AUTORI);
 	
 	@Query(value = " select a.ID_TASAUTO,a.FECHA_SOLIC,NVL(a.FECHA_AUTORI,TO_DATE('1000/01/01',' YYYY/DD/MM')) AS FECHA_AUTORI,NVL(a.FECHA_PROCESS,TO_DATE('1000/01/01',' YYYY/DD/MM')) AS FECHA_PROCESS "
@@ -44,7 +45,7 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 			+ ", NVL(a.FECHA_SOLIC_CANCEL,TO_DATE('1000/01/01',' YYYY/DD/MM')) AS FECHA_SOLIC_CANCEL,a.NOMINA_CANCEL "
 			+ ", a.NOMEJEC_CANCEL,a.JUSTIFICACION_CANCEL,a.REINVERSION,a.IS_CUENTA_MAESTRA,a.IS_PORTABILIDAD,a.EMAIL,e.AUTORIZADORES "
 			+ " FROM UEC_TB_AUTOTASAS a left join UEC_TB_AUTORIZADORES_ELEGIDOS e on a.ID_TASAUTO= e.ID_TASAAUTO WHERE a.ID_TASAUTO = :ID_TASAUTO ",nativeQuery = true )
-	List<AutoTasa> ObtenerRegAutoTasa(@Param("ID_TASAUTO") Long ID_TASAUTO);
+	List<AutoTasa> ObtenerRegAutoTasa(@Param("ID_TASAUTO") BigInteger ID_TASAUTO);
 	
 	@Transactional
 	@Modifying
@@ -58,7 +59,7 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 			+ " FECHA_ESTATUS=:FECHA_ESTATUS "
 			+ " WHERE ID_TASAUTO= :ID_TASAUTO ",nativeQuery = true )
 	int UPDATE_VOBO_AUTOTASAS(@Param("SOEID_AUTORI") String SOEID_AUTORI, 
-			@Param("ID_TASAUTO") Long ID_TASAUTO, 
+			@Param("ID_TASAUTO") BigInteger ID_TASAUTO, 
 			@Param("ESTATUS") String ESTATUS,
 			@Param("SOEID_ASIG") String SOEID_ASIG,
 			@Param("OBSERVA_WEB") String OBSERVA_WEB,
@@ -67,7 +68,7 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 			@Param("INIC_AUTORI") String INIC_AUTORI);
 	
 	@Query(value = " SELECT a.SOEID_ASIG FROM UEC_TB_AUTOTASAS a where a.ID_TASAUTO = "
-			+ " (SELECT max(b.ID_TASAUTO) FROM UEC_TB_AUTOTASAS b where b.SOEID_ASIG is not null and b.SOEID_ASIG <> '' )",nativeQuery = true )
+			+ " (SELECT max(b.ID_TASAUTO) FROM UEC_TB_AUTOTASAS b where b.SOEID_ASIG is not null and b.SOEID_ASIG <> ' ' )",nativeQuery = true )
 	String ObtenerUltSoeidAsignado();
 	
 	@Transactional
@@ -88,7 +89,7 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 			@Param("NOMEJEC_CANCEL") String NOMEJEC_CANCEL,
 			@Param("JUSTIFICACION_CANCEL") String JUSTIFICACION_CANCEL,
 			@Param("FECHA_SOLIC_CANCEL") Timestamp FECHA_SOLIC_CANCEL,
-			@Param("ID_TASAUTO") Long ID_TASAUTO);
+			@Param("ID_TASAUTO") BigInteger ID_TASAUTO);
 	
 	@Transactional
 	@Modifying
@@ -100,7 +101,7 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 			+ " :DIVISION,:NUM_CTE,:NOM_CTE,:SOEID_ASIG,:CONTRATO, "
 			+ " :NOMINA,:NOMEJEC,:MONTO,:PLAZO,:TASA_AUTORI,:TIPO_AUTORI, "
 			+ " :CETE,:PORCEN_CETE,:JUSTIFICACION,:CEL,:IS_PORTABILIDAD)  ",nativeQuery = true )
-	int SAVE_AUTOTASAS(@Param("ID_TASAUTO") Long ID_TASAUTO,
+	int SAVE_AUTOTASAS(@Param("ID_TASAUTO") BigInteger ID_TASAUTO,
 			@Param("FECHA_SOLIC") Timestamp FECHA_SOLIC,
 			@Param("ESTATUS") String ESTATUS,
 			@Param("SUC_SOLI") Long SUC_SOLI,

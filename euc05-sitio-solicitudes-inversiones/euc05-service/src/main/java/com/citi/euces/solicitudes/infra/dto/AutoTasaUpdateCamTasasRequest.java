@@ -9,7 +9,7 @@ public class AutoTasaUpdateCamTasasRequest {
 	private String nomejec_Cancel;
 	private String justificacion_Cancel;
 	private String fecha_Solic_Cancel;
-	private Long id_Tasauto;
+	private String id_Tasauto;
 	public String getSoeid_Asig() {
 		return soeid_Asig;
 	}
@@ -46,10 +46,10 @@ public class AutoTasaUpdateCamTasasRequest {
 	public void setFecha_Solic_Cancel(String fecha_Solic_Cancel) {
 		this.fecha_Solic_Cancel = fecha_Solic_Cancel;
 	}
-	public Long getId_Tasauto() {
+	public String getId_Tasauto() {
 		return id_Tasauto;
 	}
-	public void setId_Tasauto(Long id_Tasauto) {
+	public void setId_Tasauto(String id_Tasauto) {
 		this.id_Tasauto = id_Tasauto;
 	}
 	

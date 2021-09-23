@@ -1,5 +1,6 @@
 package com.citi.euces.solicitudes.services.api;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public interface ServiceSolicitudInversion {
 	List<SucursalesPorSucResponseDTO> ObtenerSucursalesPorSuc() throws GenericException, IOException;
 	List<TasaPorsentajeResponceDTO> ObtenerListaPlazos(TasaPorsentajeBEDTO request) throws GenericException, IOException;
 	List<AutoTasaResponseDTO> ObtenerRegCampTasa(AutoTasaBEDTO request) throws GenericException, IOException;
-	Long ObtenerUltFolioAutoTasas() throws GenericException, IOException;
+	BigInteger ObtenerUltFolioAutoTasas() throws GenericException, IOException;
 	List<AutorizadoresDivisionalesResponseDTO> ObtenerAutorizadoresDivisionales(AutorizadoresBEDTO request)throws GenericException, IOException;
 	String Guardar_Autorizacion(TbAutorizadoresElegidosBEDTO request)throws GenericException, IOException,SQLException;
 	List<AutorizadoresDivisionalesResponseDTO> ObtenerAutorizadorAutomatico()throws GenericException, IOException;

@@ -1,5 +1,7 @@
 package com.citi.euces.solicitudes.entities;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,7 +12,7 @@ import javax.persistence.Table;
 public class Sucursales {
 	@Id
 	@Column(name ="SIRH" )
-	private Long SIRH;
+	private BigInteger SIRH;
 	@Column(name ="DISTRITO" )
 	private String DITRITO;
 	@Column(name ="SUCURSAL" )
@@ -27,7 +29,7 @@ public class Sucursales {
 	 * @param dIVISION
 	 * @param iS_CLOSED
 	 */
-	public Sucursales(Long sIRH, String dITRITO, String sUCURSAL, String dIVISION, Long iS_CLOSED) {
+	public Sucursales(BigInteger sIRH, String dITRITO, String sUCURSAL, String dIVISION, Long iS_CLOSED) {
 		super();
 		SIRH = sIRH;
 		DITRITO = dITRITO;
@@ -38,10 +40,10 @@ public class Sucursales {
 	public Sucursales() {
 		
 	}
-	public Long getSIRH() {
+	public BigInteger getSIRH() {
 		return SIRH;
 	}
-	public void setSIRH(Long sIRH) {
+	public void setSIRH(BigInteger sIRH) {
 		SIRH = sIRH;
 	}
 	public String getDITRITO() {
