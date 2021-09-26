@@ -100,6 +100,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	List<AutoTasasPorEjecutivo> listAutoTasaPor = null;
 	Long id_Tasa;
 	BigInteger id_Tasa_long;
+	BigInteger valida ;
 	double porsentaje  ;
 	double tasa100Porc;
 	
@@ -262,6 +263,13 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		//id_Tasa_long =  (Integer.parseInt(objSDF2.format(fecha))*(10000))+id_Tasa_long;
 		LOGGER.debug( id_Tasa_long.toString());
 		LOGGER.debug(res.toString() );
+		 valida = autoTasaRepo.ValidarID_TASAUTO(f_div);
+		if(valida.toString().equals("0")) {
+			res = res;
+		}else {
+			BigInteger res_po = new BigInteger(valida.add(id_Tasa_long_n).toString()); 
+			res = res_po;
+		}
 		
 		salida = autoTasaRepo.SAVE_AUTOTASAS(res, 
 				//request.getFecha_Solic(), 

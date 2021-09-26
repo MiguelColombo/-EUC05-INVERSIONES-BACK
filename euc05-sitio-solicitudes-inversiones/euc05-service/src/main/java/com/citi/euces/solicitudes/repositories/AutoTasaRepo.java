@@ -27,6 +27,11 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 	@Query(value = " select NVL(MAX(t.ID_TASAUTO),0) AS ID_TASAUTO  from UEC_TB_AUTOTASAS t "
 			+ " where TO_CHAR(t.FECHA_SOLIC, ' YYYY/DD/MM') = TO_CHAR(SYSDATE, ' YYYY/DD/MM')  ",nativeQuery = true )
 	BigInteger ObtenerUltFolioAutoTasas();
+	
+	
+	@Query(value = " select NVL(MAX(t.ID_TASAUTO),0) AS ID_TASAUTO  from UEC_TB_AUTOTASAS t  "
+			+ "  where t.ID_TASAUTO like %:ID_TASAUTO%  ",nativeQuery = true )
+	BigInteger ValidarID_TASAUTO(@Param("ID_TASAUTO") BigInteger ID_TASAUTO);
 
 	@Transactional
 	@Modifying

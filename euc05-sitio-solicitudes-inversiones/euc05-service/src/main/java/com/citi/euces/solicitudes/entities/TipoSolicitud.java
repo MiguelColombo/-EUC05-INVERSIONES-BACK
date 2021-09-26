@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ACE_CAT_EUC")
+@Table(name = "PER_CAT_PARAMETROS")
 public class TipoSolicitud implements Serializable{
 
 	/**
