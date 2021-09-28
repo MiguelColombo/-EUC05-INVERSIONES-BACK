@@ -66,6 +66,8 @@ public class AutoTasasPorEjecutivo {
 	private String certificado_fisico;
 	@Column(name ="certificado_moral") 
 	private String certificado_moral;
+	@Column(name ="ID_CAMPANA") 
+	private String ID_CAMPANA;
 	
 	public AutoTasasPorEjecutivo() {
 		
@@ -277,6 +279,14 @@ public class AutoTasasPorEjecutivo {
 
 	public void setCertificado_moral(String certificado_moral) {
 		this.certificado_moral = certificado_moral;
+	}
+
+	public String getID_CAMPANA() {
+		return ID_CAMPANA;
+	}
+
+	public void setID_CAMPANA(String iD_CAMPANA) {
+		ID_CAMPANA = iD_CAMPANA;
 	}
 	
 

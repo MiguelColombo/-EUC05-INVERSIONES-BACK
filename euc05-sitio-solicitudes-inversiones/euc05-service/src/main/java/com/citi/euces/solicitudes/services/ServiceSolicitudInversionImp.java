@@ -929,7 +929,9 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					porcentaje.getEleg_autorizadores(), 
 					porcentaje.getTas_OBSERVA_WEB(), 
 					porcentaje.getCertificado_fisico(), 
-					porcentaje.getCertificado_moral()));
+					porcentaje.getCertificado_moral(),
+					FECHA_SOLIC,
+					porcentaje.getID_CAMPANA()));
 		}
 	}catch (Exception ex) {
 		System.out.println("ex ->" + ex.getMessage());
