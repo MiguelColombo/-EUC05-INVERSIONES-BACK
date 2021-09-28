@@ -150,6 +150,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		TipoSolicitudRespoceDTO responce = new TipoSolicitudRespoceDTO();
 		responce.setId(t.getEuc());
 		responce.setNombre(t.getNombre());
+		responce.setValor(t.getVALOR());
 		
 		return responce;
 	}

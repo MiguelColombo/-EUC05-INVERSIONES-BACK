@@ -11,6 +11,7 @@ public class TipoSolicitudRespoceDTO implements Serializable{
 
 	private Integer id; 
 	private String nombre;
+	private String valor;
 	
 	
 	public Integer getId() {
@@ -24,6 +25,12 @@ public class TipoSolicitudRespoceDTO implements Serializable{
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public String getValor() {
+		return valor;
+	}
+	public void setValor(String valor) {
+		this.valor = valor;
 	}
 	
   
