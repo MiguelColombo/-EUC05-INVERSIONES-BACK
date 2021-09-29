@@ -626,7 +626,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		try {
 		int salida = 0;
 		BigInteger id_aut = new BigInteger(request.getId_TasaAuto());
-		salida = tbAutorizadoresElegidosRepo.Guardar_Autorizacion(id_aut,request.getAutorizadores());
+		salida = tbAutorizadoresElegidosRepo.Guardar_Autorizacion(id_aut,request.getAutorizadores().replace("-", "|"));
 		if(salida > 0) {
 			mensaje ="Guardado";	
 			
