@@ -22,6 +22,6 @@ public interface ObtenerRegistrosAutoTasasPorEjecutivoRepo extends JpaRepository
             + " where tas.NOMINA like %:nomina% and tas.NUM_CTE like %:num_cte% "
             + " and to_char(tas.FECHA_SOLIC, 'YYYY') = :year order by tas.FECHA_SOLIC desc"  
             ,nativeQuery = true )
-	List<AutoTasasPorEjecutivo> ObtenerRegistrosAutoTasasPorEjecutivo(@Param("nomina") String nomina,@Param("num_cte") Long num_cte,@Param("year") String year);
+	List<AutoTasasPorEjecutivo> ObtenerRegistrosAutoTasasPorEjecutivo(@Param("nomina") String nomina,@Param("num_cte") String num_cte,@Param("year") String year);
 	
 }

@@ -902,7 +902,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		String FECHA_AUTORI ;
 		String FECHA_ESTATUS ;
 		//puesto = (au.getDivision().equals("Gerencia")) ? "Gerencia:":"Divisional:";
-		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo(request.getNomina(), request.getNum_cte(), request.getYear());
+		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo(request.getNomina(), request.getNum_cte().toString(), request.getYear());
 		for(AutoTasasPorEjecutivo porcentaje : listAutoTasaPor) {
 			
 			FECHA_SOLIC = (porcentaje.getTas_FECHA_SOLIC()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_SOLIC());
