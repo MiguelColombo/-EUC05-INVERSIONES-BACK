@@ -10,6 +10,7 @@ public class EjecutivoSucursalResponseDTO {
 	private String SUCURSAL;
 	private String DIVISION;
 	private String DISTRITO;
+	private String NOMBRE;
 	
 	/**
 	 * 
@@ -25,9 +26,10 @@ public class EjecutivoSucursalResponseDTO {
 	 * @param sUCURSAL
 	 * @param dIVISION
 	 * @param dISTRITO
+	 * @param nOMBRE
 	 */
 	public EjecutivoSucursalResponseDTO(String sOIED, Long nOMINA, Long sIRH_SUCURSAL, String sUCURSAL, String dIVISION,
-			String dISTRITO) {
+			String dISTRITO, String nOMBRE) {
 		super();
 		SOIED = sOIED;
 		NOMINA = nOMINA;
@@ -35,6 +37,7 @@ public class EjecutivoSucursalResponseDTO {
 		SUCURSAL = sUCURSAL;
 		DIVISION = dIVISION;
 		DISTRITO = dISTRITO;
+		NOMBRE = nOMBRE;
 	}
 
 	public String getSOIED() {
@@ -84,5 +87,14 @@ public class EjecutivoSucursalResponseDTO {
 	public void setDISTRITO(String dISTRITO) {
 		DISTRITO = dISTRITO;
 	}
-	
+
+	public String getNOMBRE() {
+		return NOMBRE;
+	}
+
+	public void setNOMBRE(String nOMBRE) {
+		NOMBRE = nOMBRE;
+	}
+
+
 }

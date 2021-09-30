@@ -989,12 +989,13 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		listEjecutivoSucursal = ejecutivoSucursalRepo.getEjecutivo(request.getSoeid());
 		LOGGER.debug(listEjecutivoSucursal.size());
 		for(EjecutivoSucursal eje : listEjecutivoSucursal) {
-			ejecutivoSucursalResponseDTO.add(new EjecutivoSucursalResponseDTO(eje.getSOIED(), 
-					eje.getNOMINA(),
-					eje.getSIRH_SUCURSAL(),
-					eje.getSUCURSAL(),
-					eje.getDIVISION(),
-					eje.getDISTRITO()) );
+			ejecutivoSucursalResponseDTO.add(new EjecutivoSucursalResponseDTO(eje.getSOIED(),
+					eje.getNOMINA(), 
+					eje.getSIRH_SUCURSAL(), 
+					eje.getSUCURSAL(), 
+					eje.getDIVISION(), 
+					eje.getDISTRITO(), 
+					eje.getNOMBRE()));
 			LOGGER.debug(eje.getNOMINA());
 		}
 		}catch (Exception ex) {

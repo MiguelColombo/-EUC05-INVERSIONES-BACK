@@ -24,6 +24,8 @@ public class EjecutivoSucursal {
 	private String DIVISION;
 	@Column(name ="DISTRITO")
 	private String DISTRITO;
+	@Column(name ="NOMBRE")
+	private String NOMBRE;
 	
 	/**
 	 * 
@@ -39,9 +41,10 @@ public class EjecutivoSucursal {
 	 * @param sUCURSAL
 	 * @param dIVISION
 	 * @param dISTRITO
+	 * @param nOMBRE
 	 */
 	public EjecutivoSucursal(String sOIED, Long nOMINA, Long sIRH_SUCURSAL, String sUCURSAL, String dIVISION,
-			String dISTRITO) {
+			String dISTRITO, String nOMBRE) {
 		super();
 		SOIED = sOIED;
 		NOMINA = nOMINA;
@@ -49,6 +52,7 @@ public class EjecutivoSucursal {
 		SUCURSAL = sUCURSAL;
 		DIVISION = dIVISION;
 		DISTRITO = dISTRITO;
+		NOMBRE = nOMBRE;
 	}
 
 	public String getSOIED() {
@@ -98,10 +102,23 @@ public class EjecutivoSucursal {
 	public void setDISTRITO(String dISTRITO) {
 		DISTRITO = dISTRITO;
 	}
+
+	public String getNOMBRE() {
+		return NOMBRE;
+	}
+
+	public void setNOMBRE(String nOMBRE) {
+		NOMBRE = nOMBRE;
+	}
+
+	/**
+	 * @param sOIED
+	 * @param nOMINA
+	 * @param sIRH_SUCURSAL
+	 * @param sUCURSAL
+	 * @param dIVISION
+	 * @param dISTRITO
+	 */
 	
-
-
-
-
 	
 }
