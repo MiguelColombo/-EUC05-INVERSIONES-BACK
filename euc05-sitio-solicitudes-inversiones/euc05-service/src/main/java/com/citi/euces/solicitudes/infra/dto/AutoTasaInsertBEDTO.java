@@ -20,7 +20,7 @@ public class AutoTasaInsertBEDTO {
 	private Long tasa_Autori;
 	private String tipo_Autori;
 	private Long cete;
-	private Long porcen_Cete;
+	private String porcen_Cete;
 	private String justificacion;
 	private String cel;
 	private String porta; //folio bancario is_portabilidad
@@ -121,10 +121,10 @@ public class AutoTasaInsertBEDTO {
 	public void setCete(Long cete) {
 		this.cete = cete;
 	}
-	public Long getPorcen_Cete() {
+	public String getPorcen_Cete() {
 		return porcen_Cete;
 	}
-	public void setPorcen_Cete(Long porcen_Cete) {
+	public void setPorcen_Cete(String porcen_Cete) {
 		this.porcen_Cete = porcen_Cete;
 	}
 	public String getJustificacion() {

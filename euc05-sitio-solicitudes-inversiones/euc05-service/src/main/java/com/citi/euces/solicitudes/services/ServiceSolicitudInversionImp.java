@@ -5,17 +5,14 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.citi.euces.solicitudes.entities.AutoCetes;
@@ -23,6 +20,7 @@ import com.citi.euces.solicitudes.entities.AutoTasa;
 import com.citi.euces.solicitudes.entities.AutoTasasPorEjecutivo;
 import com.citi.euces.solicitudes.entities.Autorizadores;
 import com.citi.euces.solicitudes.entities.DiasFestivos;
+import com.citi.euces.solicitudes.entities.EjecutivoSucursal;
 import com.citi.euces.solicitudes.entities.TasaPorsentaje;
 import com.citi.euces.solicitudes.entities.Autorango;
 import com.citi.euces.solicitudes.entities.TbAutorizadoresElegidos;
@@ -32,6 +30,7 @@ import com.citi.euces.solicitudes.entities.Tb_Auto_AutoFacultados;
 import com.citi.euces.solicitudes.entities.Tb_Auto_AutoRegionales;
 import com.citi.euces.solicitudes.entities.TipoSolicitud;
 import com.citi.euces.solicitudes.entities.Sucursales;
+import com.citi.euces.solicitudes.entities.SucursalesConsulta;
 import com.citi.euces.solicitudes.infra.dto.AutoCetesResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaBEDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaInsertBEDTO;
@@ -43,11 +42,13 @@ import com.citi.euces.solicitudes.infra.dto.AutorizadoresDivisionalesResponseDTO
 import com.citi.euces.solicitudes.infra.dto.AutorizadoresResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.DiasFestivosBEDTO;
 import com.citi.euces.solicitudes.infra.dto.DiasFestivosResponseDTO;
+import com.citi.euces.solicitudes.infra.dto.EjecutivoSucursalResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerAutoDivisionalBEDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerAutoDivisionalResposeDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerRegAutoTasaResposeDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO;
 import com.citi.euces.solicitudes.infra.dto.SucursalesBEDTO;
+import com.citi.euces.solicitudes.infra.dto.SucursalesConsultaResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.SucursalesPorSucResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.TasaPorsentajeBEDTO;
 import com.citi.euces.solicitudes.infra.dto.TasaPorsentajeResponceDTO;
@@ -65,7 +66,9 @@ import com.citi.euces.solicitudes.repositories.AutoCetesRepo;
 import com.citi.euces.solicitudes.repositories.AutoTasaRepo;
 import com.citi.euces.solicitudes.repositories.AutorizadoresRepo;
 import com.citi.euces.solicitudes.repositories.DiasFestivosRepo;
+import com.citi.euces.solicitudes.repositories.EjecutivoSucursalRepo;
 import com.citi.euces.solicitudes.repositories.ObtenerRegistrosAutoTasasPorEjecutivoRepo;
+import com.citi.euces.solicitudes.repositories.SucursalesConsultaRepo;
 import com.citi.euces.solicitudes.repositories.SucursalesRepo;
 import com.citi.euces.solicitudes.repositories.TasaPorsentajeRespo;
 import com.citi.euces.solicitudes.repositories.AutorangoRepo;
@@ -76,10 +79,6 @@ import com.citi.euces.solicitudes.repositories.Tb_Auto_AutoFacultadosRepo;
 import com.citi.euces.solicitudes.repositories.Tb_Auto_AutoRegionalesRepo;
 import com.citi.euces.solicitudes.repositories.TipoSolicitudRepo;
 import com.citi.euces.solicitudes.services.api.ServiceSolicitudInversion;
-
-
-
-
 
 @Service 
 public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
@@ -98,6 +97,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	List<Tb_Auto_AutoRegionales> listAutoRegionales = null;
 	List<Tb_Asignaciones> listAsignacion = null;
 	List<AutoTasasPorEjecutivo> listAutoTasaPor = null;
+	List<EjecutivoSucursal> listEjecutivoSucursal = null;
+	List<SucursalesConsulta> listSucursalesConsulta = null;
 	Long id_Tasa;
 	BigInteger id_Tasa_long;
 	BigInteger valida ;
@@ -133,6 +134,10 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	ObtenerRegistrosAutoTasasPorEjecutivoRepo obtenerRegistrosAutoTasasPorEjecutivoRepo;
 	@Autowired
 	DiasFestivosRepo diasFestivosRepo;
+	@Autowired
+	EjecutivoSucursalRepo ejecutivoSucursalRepo;
+	@Autowired
+	SucursalesConsultaRepo sucursalesConsultaRepo;
 
 	@Override
 	public List<TipoSolicitudRespoceDTO> obtenerSolicitudes() throws GenericException, IOException {
@@ -975,6 +980,53 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			System.out.println("ex ->" + ex.getCause());
 		}
 		return folio;
+	}
+	@Override
+	public List<EjecutivoSucursalResponseDTO> getEjecutivo(SucursalesBEDTO request)
+			throws GenericException, IOException {
+		List<EjecutivoSucursalResponseDTO> ejecutivoSucursalResponseDTO = new ArrayList<EjecutivoSucursalResponseDTO>();
+		try {
+		listEjecutivoSucursal = ejecutivoSucursalRepo.getEjecutivo(request.getSoeid());
+		LOGGER.debug(listEjecutivoSucursal.size());
+		for(EjecutivoSucursal eje : listEjecutivoSucursal) {
+			ejecutivoSucursalResponseDTO.add(new EjecutivoSucursalResponseDTO(eje.getSOIED(), 
+					eje.getNOMINA(),
+					eje.getSIRH_SUCURSAL(),
+					eje.getSUCURSAL(),
+					eje.getDIVISION(),
+					eje.getDISTRITO()) );
+			LOGGER.debug(eje.getNOMINA());
+		}
+		}catch (Exception ex) {
+			System.out.println("ex ->" + ex.getMessage());
+			System.out.println("ex ->" + ex.getCause());
+		}
+		return ejecutivoSucursalResponseDTO;
+	}
+	@Override
+	public List<SucursalesConsultaResponseDTO> GetItem(SucursalesBEDTO request) throws GenericException, IOException {		
+		List<SucursalesConsultaResponseDTO> sucursalesConsultaResponseDTO = new ArrayList<SucursalesConsultaResponseDTO>();
+		try {
+		BigInteger sirh = new BigInteger(request.getId());
+		listSucursalesConsulta  =  sucursalesConsultaRepo.GetItem(sirh);
+		for(SucursalesConsulta suc : listSucursalesConsulta) {
+			sucursalesConsultaResponseDTO.add(new SucursalesConsultaResponseDTO(suc.getSIRH(),
+					suc.getSUCURSAL(), 
+					suc.getCODDIV(), 
+					suc.getDIVISION(), 
+					suc.getCODDIST(), 
+					suc.getDISTRITO(), 
+					suc.getEJECUTIVOS(), 
+					suc.getEJECUTIVOS_PRIORITY(), 
+					suc.getIS_CLOSED()));
+			
+		}
+		}catch (Exception ex) {
+			System.out.println("ex ->" + ex.getMessage());
+			System.out.println("ex ->" + ex.getCause());
+		}
+		
+		return sucursalesConsultaResponseDTO;
 	}
 
 

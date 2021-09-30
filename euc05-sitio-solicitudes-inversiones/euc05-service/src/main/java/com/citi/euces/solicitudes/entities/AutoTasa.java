@@ -68,7 +68,7 @@ public class AutoTasa implements Serializable {
     @Column(name ="CETE")
 	private Long CETE;
     @Column(name ="PORCEN_CETE")
-	private Long PORCEN_CETE;
+	private String PORCEN_CETE;
     @Column(name ="OBSERVA_WEB")
 	private String OBSERVA_WEB;
     @Column(name ="JUSTIFICACION")
@@ -147,7 +147,7 @@ public class AutoTasa implements Serializable {
 			Timestamp fECHA_ESTATUS, Long iS_PROCESS, String eSTATUS, Long sUC_SOLIC, String dIVISION,
 			BigInteger nUM_CTE, String nOM_CTE, BigInteger cONTRATO, String nOMINA, String nOMEJEC, Long mONTO,
 			Long pLAZO, Long tASA_AUTORI, String tIPO_AUTORI, String sOEID_AUTORI, String iNIC_AUTORI,
-			Long nUM_AUTORI_UEC, String sOEID_ASIG, String sOEID_PROC, String sOEID_OPE, Long cETE, Long pORCEN_CETE,
+			Long nUM_AUTORI_UEC, String sOEID_ASIG, String sOEID_PROC, String sOEID_OPE, Long cETE, String pORCEN_CETE,
 			String oBSERVA_WEB, String jUSTIFICACION, String cEL, Long t_PER, Timestamp fECHA_SOLIC_CANCEL,
 			String nOMINA_CANCEL, String nOMEJEC_CANCEL, String jUSTIFICACION_CANCEL, String rEINVERSION,
 			Long iS_CUENTA_MAESTRA, String iS_PORTABILIDAD, String eMAIL, String aUTORIZADORES) {
@@ -444,12 +444,12 @@ public class AutoTasa implements Serializable {
 	}
 
 
-	public Long getPORCEN_CETE() {
+	public String getPORCEN_CETE() {
 		return PORCEN_CETE;
 	}
 
 
-	public void setPORCEN_CETE(Long pORCEN_CETE) {
+	public void setPORCEN_CETE(String pORCEN_CETE) {
 		PORCEN_CETE = pORCEN_CETE;
 	}
 

@@ -122,7 +122,7 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 			@Param("TASA_AUTORI") Long TASA_AUTORI,
 			@Param("TIPO_AUTORI") String TIPO_AUTORI,
 			@Param("CETE") Long CETE,
-			@Param("PORCEN_CETE") Long PORCEN_CETE,
+			@Param("PORCEN_CETE") String PORCEN_CETE,
 			@Param("JUSTIFICACION") String JUSTIFICACION,
 			@Param("CEL") String CEL,
 			@Param("IS_PORTABILIDAD") String IS_PORTABILIDAD);
@@ -130,5 +130,7 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 	@Query(value = " SELECT count(a.IS_PORTABILIDAD) AS IS_PORTABILIDAD "
 			+ " FROM UEC_TB_AUTOTASAS a WHERE a.IS_PORTABILIDAD like '%fol%' ", nativeQuery = true)
 	Long existe_folio_bancanet();
+	
+
 	
 }

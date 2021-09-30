@@ -29,7 +29,7 @@ public class ObtenerRegAutoTasaResposeDTO implements Serializable {
 	private String INIC_AUTORI;
 	private Long NUM_AUTORI_UEC;
 	private Long CETE;
-	private Long PORCEN_CETE;
+	private String PORCEN_CETE;
 	private String OBSERVA_WEB;
 	private String JUSTIFICACION;
 	private Long IS_PROCESS;
@@ -75,7 +75,7 @@ public class ObtenerRegAutoTasaResposeDTO implements Serializable {
 			String fECHA_PROCESS, String fECHA_ESTATUS, String eSTATUS, Long sUC_SOLIC, String dIVISION,
 			BigInteger nUM_CTE, String nOM_CTE, BigInteger cONTRATO, String nOMINA, String nOMEJEC, Long mONTO,
 			Long pLAZO, Long tASA_AUTORI, String tIPO_AUTORI, String sOEID_AUTORI, String sOEID_ASIG,
-			String iNIC_AUTORI, Long nUM_AUTORI_UEC, Long cETE, Long pORCEN_CETE, String oBSERVA_WEB,
+			String iNIC_AUTORI, Long nUM_AUTORI_UEC, Long cETE, String pORCEN_CETE, String oBSERVA_WEB,
 			String jUSTIFICACION, Long iS_PROCESS, String fECHA_SOLIC_CANCEL, String nOMINA_CANCEL,
 			String nOMEJEC_CANCEL, String jUSTIFICACION_CANCEL, String autorizadores) {
 		super();
@@ -243,10 +243,10 @@ public class ObtenerRegAutoTasaResposeDTO implements Serializable {
 	public void setCETE(Long cETE) {
 		CETE = cETE;
 	}
-	public Long getPORCEN_CETE() {
+	public String getPORCEN_CETE() {
 		return PORCEN_CETE;
 	}
-	public void setPORCEN_CETE(Long pORCEN_CETE) {
+	public void setPORCEN_CETE(String pORCEN_CETE) {
 		PORCEN_CETE = pORCEN_CETE;
 	}
 	public String getOBSERVA_WEB() {

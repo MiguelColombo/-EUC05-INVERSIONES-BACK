@@ -53,4 +53,6 @@ public interface ServiceSolicitudInversion {
 	List<ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO> ObtenerRegistrosAutoTasasPorEjecutivo(ObtenerRegistrosAutoTasasPorEjecutivoRequest request)throws GenericException, IOException;
 	String UPDATE_SOLIC_CANCEL_CAMPTASAS(AutoTasaUpdateCamTasasRequest request)throws GenericException, IOException;
 	Long ExisteFolioBancanet()throws GenericException, IOException;
+	List<EjecutivoSucursalResponseDTO>getEjecutivo(SucursalesBEDTO request)throws GenericException, IOException;
+	List<SucursalesConsultaResponseDTO>GetItem(SucursalesBEDTO request)throws GenericException, IOException;
 }

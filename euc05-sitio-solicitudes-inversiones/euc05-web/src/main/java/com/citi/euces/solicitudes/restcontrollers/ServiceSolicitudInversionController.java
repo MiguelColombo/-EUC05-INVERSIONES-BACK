@@ -47,11 +47,13 @@ import com.citi.euces.solicitudes.models.CalcularSoeidAsignadoResponse;
 import com.citi.euces.solicitudes.models.ConfirmacionResponce;
 import com.citi.euces.solicitudes.models.ConfirmacionResponce;
 import com.citi.euces.solicitudes.models.DiasFestivosResponse;
+import com.citi.euces.solicitudes.models.EjecutivoSucursalResponse;
 import com.citi.euces.solicitudes.models.FolioAutoTasaResponse;
 import com.citi.euces.solicitudes.models.ObtenerAutoDivisionalRespose;
 import com.citi.euces.solicitudes.models.ObtenerRegAutoTasaRespose;
 import com.citi.euces.solicitudes.models.ObtenerRegistrosAutoTasasPorEjecutivoRespose;
 import com.citi.euces.solicitudes.models.SolicitudResponse;
+import com.citi.euces.solicitudes.models.SucursalesConsultaResponse;
 import com.citi.euces.solicitudes.models.SucursalesPorSucResponse;
 import com.citi.euces.solicitudes.models.TasaPorsentajeResponce;
 import com.citi.euces.solicitudes.services.ServiceSolicitudInversionImp;
@@ -696,6 +698,56 @@ public class ServiceSolicitudInversionController  {
 			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		}
 	}
+	
+	@ResponseStatus(code = HttpStatus.OK)
+	@PostMapping(path ="/GetEjecutivo", produces = "application/json")//btnSave_Click put
+	public ResponseEntity<?> getEjecutivo(@RequestBody final SucursalesBEDTO request) {
+		 try{
+			 EjecutivoSucursalResponse response  = new EjecutivoSucursalResponse(serviceSolicitudInversionImp.getEjecutivo(request), "200");
+			if(response.getEjecutivoSucursalResponseDTO() == null || response.getEjecutivoSucursalResponseDTO().size() == 0) {
+				throw new GenericException("No se puede procesar la solicitud","500");
+			}else {			
+				return new ResponseEntity<EjecutivoSucursalResponse>(response, HttpStatus.OK);
+			}
+			}catch (GenericException ex) {
+				ErrorGeneric error = new ErrorGeneric();
+				error.setCode(ex.getCodeError());
+				error.setMensaje(ex.getMessage());
+				error.setError("Parametros Incorrecto o Parametros no existen".toString());
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			} catch (Exception e) {
+				ErrorGeneric error = new ErrorGeneric();
+				error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				error.setMensaje(e.getMessage());
+				error.setError(e);
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
+			}
+	    }
+	
+	@ResponseStatus(code = HttpStatus.OK)
+	@PostMapping(path ="/GetItem", produces = "application/json")//btnSave_Click put
+	public ResponseEntity<?> GetItem(@RequestBody final SucursalesBEDTO request) {
+		 try{
+			 SucursalesConsultaResponse response  = new SucursalesConsultaResponse(serviceSolicitudInversionImp.GetItem(request), "200");
+			if(response.getSucursalesConsultaResponse() == null || response.getSucursalesConsultaResponse().size() == 0) {
+				throw new GenericException("No se puede procesar la solicitud","500");
+			}else {			
+				return new ResponseEntity<SucursalesConsultaResponse>(response, HttpStatus.OK);
+			}
+			}catch (GenericException ex) {
+				ErrorGeneric error = new ErrorGeneric();
+				error.setCode(ex.getCodeError());
+				error.setMensaje(ex.getMessage());
+				error.setError("Parametros Incorrecto o Parametros no existen".toString());
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			} catch (Exception e) {
+				ErrorGeneric error = new ErrorGeneric();
+				error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				error.setMensaje(e.getMessage());
+				error.setError(e);
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
+			}
+	    }
 	
 }
 

@@ -19,7 +19,7 @@ public interface ObtenerRegistrosAutoTasasPorEjecutivoRepo extends JpaRepository
 			+ " left join UEC_TB_CERTIFICADOS_MORALES certimorales on certimorales.num_cte = tas.NUM_CTE "
             + " left join UEC_TB_AUTORIZADORES_ELEGIDOS eleg on tas.ID_TASAUTO = eleg.id_TasaAuto " 
 		//	+ " where 1" 
-            + " where tas.NOMINA like %:nomina% and tas.NUM_CTE = :num_cte"
+            + " where tas.NOMINA like %:nomina% and tas.NUM_CTE like %:num_cte% "
             + " and to_char(tas.FECHA_SOLIC, 'YYYY') = :year order by tas.FECHA_SOLIC desc"  
             ,nativeQuery = true )
 	List<AutoTasasPorEjecutivo> ObtenerRegistrosAutoTasasPorEjecutivo(@Param("nomina") String nomina,@Param("num_cte") Long num_cte,@Param("year") String year);

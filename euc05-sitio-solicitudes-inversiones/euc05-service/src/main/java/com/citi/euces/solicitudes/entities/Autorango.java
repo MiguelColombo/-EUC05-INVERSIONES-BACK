@@ -23,7 +23,7 @@ public class Autorango implements Serializable {
 	@Column(name ="RANGOMAX" )
 	private Long RangoMax;
 	@Column(name ="MILL_DOSMILLQUIN" )
-	private Long MILL_DOSMILLQUIN; //double
+	private double MILL_DOSMILLQUIN; //double
 	@Column(name ="FECHA" )
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date FECHA;
@@ -49,7 +49,7 @@ public class Autorango implements Serializable {
 	 * @param fECHA
 	 * @param fECHAFIN
 	 */
-	public Autorango(Long id_Rango, Long rangoMin, Long rangoMax, Long mILL_DOSMILLQUIN, Date fECHA,
+	public Autorango(Long id_Rango, Long rangoMin, Long rangoMax, double mILL_DOSMILLQUIN, Date fECHA,
 			Date fECHAFIN) {
 		super();
 		this.id_Rango = id_Rango;
@@ -77,10 +77,10 @@ public class Autorango implements Serializable {
 	public void setRangoMax(Long rangoMax) {
 		RangoMax = rangoMax;
 	}
-	public Long getMILL_DOSMILLQUIN() {
+	public double getMILL_DOSMILLQUIN() {
 		return MILL_DOSMILLQUIN;
 	}
-	public void setMILL_DOSMILLQUIN(Long mILL_DOSMILLQUIN) {
+	public void setMILL_DOSMILLQUIN(double mILL_DOSMILLQUIN) {
 		MILL_DOSMILLQUIN = mILL_DOSMILLQUIN;
 	}
 	public Date getFECHA() {

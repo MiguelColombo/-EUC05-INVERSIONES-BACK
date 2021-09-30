@@ -12,7 +12,7 @@ public class AutorangoResponseDTO implements Serializable {
 	private Long id_Rango;
 	private Long RangoMin;
 	private Long RangoMax;
-	private Long MILL_DOSMILLQUIN; //double
+	private double MILL_DOSMILLQUIN; //double
 	private String FECHA;
 	private String FECHAFIN;
 	/**
@@ -42,10 +42,10 @@ public class AutorangoResponseDTO implements Serializable {
 	public void setRangoMax(Long rangoMax) {
 		RangoMax = rangoMax;
 	}
-	public Long getMILL_DOSMILLQUIN() {
+	public double getMILL_DOSMILLQUIN() {
 		return MILL_DOSMILLQUIN;
 	}
-	public void setMILL_DOSMILLQUIN(Long mILL_DOSMILLQUIN) {
+	public void setMILL_DOSMILLQUIN(double mILL_DOSMILLQUIN) {
 		MILL_DOSMILLQUIN = mILL_DOSMILLQUIN;
 	}
 	public String getFECHA() {
