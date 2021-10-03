@@ -23,6 +23,7 @@ import com.citi.euces.solicitudes.infra.dto.AutoTasaInsertBEDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaUpdateVOBOBEDTO;
 import com.citi.euces.solicitudes.infra.dto.AutorizadoresBEDTO;
 import com.citi.euces.solicitudes.infra.dto.DiasFestivosBEDTO;
+import com.citi.euces.solicitudes.infra.dto.EnviarPHPBEDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerAutoDivisionalBEDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerAutoDivisionalResposeDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO;
@@ -48,6 +49,7 @@ import com.citi.euces.solicitudes.models.ConfirmacionResponce;
 import com.citi.euces.solicitudes.models.ConfirmacionResponce;
 import com.citi.euces.solicitudes.models.DiasFestivosResponse;
 import com.citi.euces.solicitudes.models.EjecutivoSucursalResponse;
+import com.citi.euces.solicitudes.models.EnviarPHPResponse;
 import com.citi.euces.solicitudes.models.FolioAutoTasaResponse;
 import com.citi.euces.solicitudes.models.ObtenerAutoDivisionalRespose;
 import com.citi.euces.solicitudes.models.ObtenerRegAutoTasaRespose;
@@ -749,8 +751,29 @@ public class ServiceSolicitudInversionController  {
 			}
 	    }
 	
+	
+	@ResponseStatus(code = HttpStatus.OK)
+	@PostMapping(path ="/EnviarPHPBEDTO", produces = "application/json")//btnSave_Click put
+	public ResponseEntity<?> EnviarPHPBEDTO(@RequestBody final EnviarPHPBEDTO request) {
+		 try{
+			 EnviarPHPResponse response  = new EnviarPHPResponse(serviceSolicitudInversionImp.EnviarPHPBEDTO(request), "200");
+			if(response.getBody().isEmpty()) {
+				throw new GenericException("No se puede procesar la solicitud","500");
+			}else {			
+				return new ResponseEntity<EnviarPHPResponse>(response, HttpStatus.OK);
+			}
+			}catch (GenericException ex) {
+				ErrorGeneric error = new ErrorGeneric();
+				error.setCode(ex.getCodeError());
+				error.setMensaje(ex.getMessage());
+				error.setError("Parametros Incorrecto o Parametros no existen".toString());
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			} catch (Exception e) {
+				ErrorGeneric error = new ErrorGeneric();
+				error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				error.setMensaje(e.getMessage());
+				error.setError(e);
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
+			}
+	    }	
 }
-
-
-
-//

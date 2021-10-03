@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "UEC_CAT_SUC2021")
+@Table(name = "UEC_CAT_SUC2021") //PER_CAT_SUCURSALES || UEC_CAT_SUC2021
 public class Sucursales {
 	@Id
 	@Column(name ="SIRH" )
