@@ -11,7 +11,7 @@ import com.citi.euces.solicitudes.entities.SucursalesConsulta;
 
 public interface SucursalesConsultaRepo extends JpaRepository<SucursalesConsulta, String> {
 	
-	@Query(value = " select * from UEC_CAT_SUC2021 a where a.SIRH = :NUM_CTE order by a.SIRH ",nativeQuery = true )
+	@Query(value = " select * from PER_CAT_SUCURSALES a where a.SIRH_SUCURSAL_ID = :NUM_CTE order by a.SIRH_SUCURSAL_ID ",nativeQuery = true )
 	List<SucursalesConsulta> GetItem(@Param("NUM_CTE") BigInteger NUM_CTE);
 
 }

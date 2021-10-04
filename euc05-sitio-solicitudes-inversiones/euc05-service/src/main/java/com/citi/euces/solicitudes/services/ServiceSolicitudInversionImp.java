@@ -1035,18 +1035,23 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			throws GenericException, IOException {
 		String body = null;
 		try {
+			String folioPortabilidad = "";
+			if(request.getTipo_Autori().equals("PORTAESPNOM") && !request.getFolioBantanet().isEmpty()) {
+				folioPortabilidad = "         <tr> <td style='text-align:left;color:#FFFFFF';font-size=8pt'>Folio Bancanet de Portabilidad:</td></tr> " +
+                        "         <tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size=8pt'><b>" + request.getFolioBantanet() + "</b></td></tr>";
+			}
 			
-		body = "<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Transitional//EN\\\" \\\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\\\">"
-				+ "<html xmlns =\\\"http://www.w3.org/1999/xhtml\\\">"
-				+ "<head><meta http - equiv =\\\"Content-Type\\\" content=\\\"text/html; charset=\"UTF-8\"/>"
+		body = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
+				+ "<html xmlns =\"http://www.w3.org/1999/xhtml\">"
+				+ "<head><meta http - equiv =\"Content-Type\" content=\"text/html; charset="+"UTF-8"+"/>"
 				+ "<title> Form Confirmation </title> </head>"
 				+ "</head>"
 				+ "<body>"
 				+ "<b style = 'font-family: Verdana, Arial, Helvetica, sans-serif; '> Aviso. </b><br /><br />"
 				+ "<table width = '50%' style='border:solid 2px #1A5B97; background:#1A5B97; font-family: Verdana, Arial, Helvetica, sans-serif'> "	
-		        + "<tr> <td style='font-size:20;font-weight:bold;color:#FFFFFF' align = 'center'>Estimado(a):  nombre_autorizador + \" <br /></td></tr>"
-		        + "<tr> <td style='text-align:right;color:#FFFFFF'; font-size = 8pt'>Fecha:<b>"+ request.getFecha_Solic()+"	</b> <br/><br/></td> </tr> "
-		        + "<tr> <td style='text-align:left;font-size: 10px;font-weight:bold;color:#FFFFFF';> Se ha generado una solicitud de tasa: ESPECIAL"+  request.getTipo_Autori()+" con la siguiente información:<br/><br/></td></tr>"
+		        + "<tr> <td style='font-size:20;font-weight:bold;color:#FFFFFF' align = 'center'>Estimado(a):"+request.getNombre_Autori() + " <br /></td></tr>"
+		        + "<tr> <td style='text-align:right;color:#FFFFFF'; font-size = 8pt'>Fecha:<b>"+request.getFecha_Solic()+"</b> <br/><br/></td> </tr> "
+		        + "<tr> <td style='text-align:left;font-size: 10px;font-weight:bold;color:#FFFFFF';> Se ha generado una solicitud de tasa: ESPECIAL,"+  request.getTipo_Autori()+" con la siguiente información:<br/><br/></td></tr>"
 		        + "<tr> <td style='text-align:left;color:#FFFFFF';font-size = 8pt'>1.-Núm.y Suc.Operadora: </td></tr>"
 		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt'><b> "+request.getSuc_Solic() + "</b></td></tr>"
 		        + "<tr> <td style='text-align:left;color:#FFFFFF';font-size = 8pt'>2.-Nombre de Cliente:</td></tr> "
@@ -1063,7 +1068,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt'><b> "+request.getTasa_Autori() +"</b> %</td></tr>"
 		        + "<tr> <td style='text-align:left;color:#FFFFFF';font-size=8pt'>Justificación de solicitud:</td></tr> "
 		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt'><b> "+request.getJustificacion() +"</b></td></tr>"
-		        + "                          folioPortabilidad +"
+		        + ""+folioPortabilidad +""
 		        + "<tr> <td> <br/> </td></tr>"
 		        + "<tr> <td style='text-align:left;color:#FFFFFF'; font-size=8pt'>Nombre del solicitante:</td></tr> "
 		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt' ><b> "+request.getNomejec() +"</b> </td> </tr>"
@@ -1071,8 +1076,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		        + "<tr> <td style='text-align:left;color:#FFFFFF'; font-size = 8pt'> Para Confirmar o Rechazar La solicitud, haga Clic en los siguientes botónes:<br/><br/></td> </tr>"
 		        + "<tr> <td style='background-color:#E3F6CE;text-align:left;font-size:10px;font-weight:bold;color:#5E610B'></td> </tr>"
 		        + "<tr> <td align='center' style='text-align:center;font-size:8pt'>"
-		        + "    <a href='http://10.224.80.191:91/TasasAuto/VoBoTasaAuto.aspx?SOEID= soeidEncrypt + \"&TASA= idtasaEncrypt + \"&ESTATUS= strAceptada + \"' style='background-color:#7CC3C6; font-size:18px; font-weight:300; font-family:Verdana, Helvetica,sans-serif; color:#ffffff; text-decoration:none'> -Autorizar -</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"
-		        + "    <a href='http://10.224.80.191:91/TasasAuto/VoBoTasaAuto.aspx?SOEID= soeidEncrypt + \"&TASA= idtasaEncrypt + \"&ESTATUS= strRechadaza + \"' style='background-color:#EC8153; font-size:18px; font-weight:300; font-family:Verdana, Helvetica, sans-serif; color:#ffffff; text-decoration:none'> -Rechazar -</a>"
+		        + "    <a href='http://10.224.80.191:91/TasasAuto/VoBoTasaAuto.aspx?SOEID="+request.getSoeid()+"&TASA="+request.getId_AutoTasa()+"&ESTATUS= ACEPTADA' style='background-color:#7CC3C6; font-size:18px; font-weight:300; font-family:Verdana, Helvetica,sans-serif; color:#ffffff; text-decoration:none'> -Autorizar -</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"
+		        + "    <a href='http://10.224.80.191:91/TasasAuto/VoBoTasaAuto.aspx?SOEID="+request.getSoeid()+"&TASA="+request.getId_AutoTasa()+"&ESTATUS= RECHAZADA' style='background-color:#EC8153; font-size:18px; font-weight:300; font-family:Verdana, Helvetica, sans-serif; color:#ffffff; text-decoration:none'> -Rechazar -</a>"
 		        + "</td> </tr>"
 		        + "<tr> <td style='background-color:#F2F2F2;text-align:center;font-size:6px;font-weight:bold;color:#5377A9'> Gracias por su atención. (Unidad Especializada de Comercialización.) </td></tr> "
 		        + " </table> "

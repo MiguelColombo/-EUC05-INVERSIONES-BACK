@@ -8,18 +8,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "UEC_CAT_SUC2021") //PER_CAT_SUCURSALES || UEC_CAT_SUC2021
+@Table(name = "PER_CAT_SUCURSALES") //PER_CAT_SUCURSALES || UEC_CAT_SUC2021
 public class Sucursales {
 	@Id
-	@Column(name ="SIRH" )
+	@Column(name ="SIRH_SUCURSAL_ID" )
 	private BigInteger SIRH;
-	@Column(name ="DISTRITO" )
+	@Column(name ="DISTRITO_NOMBRE" )
 	private String DITRITO;
-	@Column(name ="SUCURSAL" )
+	@Column(name ="NOMBRE_SUCURSAL" )
 	private String SUCURSAL;
-	@Column(name ="DIVISION" )
+	@Column(name ="DIVISION_NOMBRE" )
 	private String DIVISION;
-	@Column(name ="IS_CLOSED" )
+	@Column(name ="IS_CLOSE" )
 	private Long IS_CLOSED;
 	
 	/**

@@ -14,6 +14,9 @@ public class EnviarPHPBEDTO {
 	private String nomejec;
 	private String soeid;
 	private String tipo_Autori;
+	private String nombre_Autori;
+	private String id_AutoTasa;
+	private String folioBantanet;
 	/**
 	 * 
 	 */
@@ -91,6 +94,24 @@ public class EnviarPHPBEDTO {
 	}
 	public void setTipo_Autori(String tipo_Autori) {
 		this.tipo_Autori = tipo_Autori;
+	}
+	public String getNombre_Autori() {
+		return nombre_Autori;
+	}
+	public void setNombre_Autori(String nombre_Autori) {
+		this.nombre_Autori = nombre_Autori;
+	}
+	public String getId_AutoTasa() {
+		return id_AutoTasa;
+	}
+	public void setId_AutoTasa(String id_AutoTasa) {
+		this.id_AutoTasa = id_AutoTasa;
+	}
+	public String getFolioBantanet() {
+		return folioBantanet;
+	}
+	public void setFolioBantanet(String folioBantanet) {
+		this.folioBantanet = folioBantanet;
 	}
 	
 	

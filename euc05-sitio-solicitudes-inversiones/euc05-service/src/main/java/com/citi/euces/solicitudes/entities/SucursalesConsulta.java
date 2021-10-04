@@ -8,26 +8,26 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "UEC_CAT_SUC2021") //PER_CAT_SUCURSALES || UEC_CAT_SUC2021
+@Table(name = "PER_CAT_SUCURSALES") //PER_CAT_SUCURSALES || UEC_CAT_SUC2021
 public class SucursalesConsulta {
 	@Id
-	@Column(name ="SIRH" , nullable=false)
+	@Column(name ="SIRH_SUCURSAL_ID" )
 	private BigInteger SIRH;
-	@Column(name ="SUCURSAL", nullable=false )
+	@Column(name ="NOMBRE_SUCURSAL")
 	private String SUCURSAL;
-	@Column(name ="CODDIV", nullable=false )
+	@Column(name ="DIVISION_ID")
 	private BigInteger CODDIV;
-	@Column(name ="DIVISION" , nullable=false)
+	@Column(name ="DIVISION_NOMBRE" )
 	private String DIVISION;
-	@Column(name ="CODDIST" , nullable=false)
+	@Column(name ="DISTRITO_ID" )
 	private BigInteger CODDIST;
-	@Column(name ="DISTRITO", nullable=false )
+	@Column(name ="DISTRITO_NOMBRE")
 	private String DISTRITO;
-	@Column(name ="EJECUTIVOS" , nullable=false)
+	@Column(name ="EJECUTIVO_TOTAL")
 	private Long EJECUTIVOS;
-	@Column(name ="EJECUTIVOS_PRIORITY" , nullable=false)
+	@Column(name ="EJECUTIVO_PRIORITY")
 	private Long EJECUTIVOS_PRIORITY;
-	@Column(name ="IS_CLOSED" , nullable=false)
+	@Column(name ="IS_CLOSE" )
 	private Long IS_CLOSED;
 	/**
 	 * @param sIRH

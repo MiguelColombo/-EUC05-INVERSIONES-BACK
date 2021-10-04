@@ -18,11 +18,11 @@ public class EjecutivoSucursal {
 	private Long NOMINA;
 	@Column(name ="SIRH_SUCURSAL")
 	private Long SIRH_SUCURSAL;
-	@Column(name ="SUCURSAL" )
+	@Column(name ="NOMBRE_SUCURSAL" )
 	private String SUCURSAL;
-	@Column(name ="DIVISION" )
+	@Column(name ="DIVISION_NOMBRE" )
 	private String DIVISION;
-	@Column(name ="DISTRITO")
+	@Column(name ="DISTRITO_NOMBRE")
 	private String DISTRITO;
 	@Column(name ="NOMBRE")
 	private String NOMBRE;
