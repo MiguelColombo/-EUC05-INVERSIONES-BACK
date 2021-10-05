@@ -394,12 +394,12 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 				if(objSDF2.format(actual).toString().equals(objSDF2.format(dia.getFECHA()))) {
 					if(dia.getDESCRIPCION().equals("Semana Santa")) {
 						c.setTime(actual);
-						aumento = (objSDF.format(actual).toString().equals("jue")) ? aumento+2:aumento+1;
+						aumento = (objSDF.format(actual).toString().equals("jue") || objSDF.format(actual).toString().equals("Thu") ) ? aumento+2:aumento+1;
 			        	//aumento = aumento+1;
 			            c.add(Calendar.DATE, aumento);
 			            actual = c.getTime();
 			            validacion =1;
-			            if(objSDF.format(actual).toString().equals("sáb")) {
+			            if(objSDF.format(actual).toString().equals("sáb") || objSDF.format(actual).toString().equals("Sat")) {
 			            	c.setTime(actual);
 			            	aumento = aumento+ 2;
 			                c.add(Calendar.DATE, 2);
@@ -416,7 +416,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			            c.add(Calendar.DATE, aumento);
 			            actual = c.getTime();
 			            validacion =1;
-			            if(objSDF.format(actual).toString().equals("sáb")) {
+			            if(objSDF.format(actual).toString().equals("sáb") || objSDF.format(actual).toString().equals("Sat")) {
 			            	c.setTime(actual);
 			            	aumento = aumento+ 2;
 			                c.add(Calendar.DATE, 2);
@@ -432,14 +432,14 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 				}
 			}
 			if(validacion == 0) {
-				if(objSDF.format(actual).toString().equals("sáb")) {
+				if(objSDF.format(actual).toString().equals("sáb") || objSDF.format(actual).toString().equals("Sat")) {
 					c.setTime(actual);
 					aumento = 2;
 					c.add(Calendar.DATE, aumento);
 					actual = c.getTime();
 					plazo = request.getPlazo().intValue() +aumento;
 					diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo),objSDF2.format(actual)));
-				}else if (objSDF.format(actual).toString().equals("dom")) {
+				}else if (objSDF.format(actual).toString().equals("dom") || objSDF.format(actual).toString().equals("Sun")) {
 					c.setTime(actual);
 					aumento = 1;
 					c.add(Calendar.DATE, aumento);
@@ -1050,7 +1050,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 				+ "<b style = 'font-family: Verdana, Arial, Helvetica, sans-serif; '> Aviso. </b><br /><br />"
 				+ "<table width = '50%' style='border:solid 2px #1A5B97; background:#1A5B97; font-family: Verdana, Arial, Helvetica, sans-serif'> "	
 		        + "<tr> <td style='font-size:20;font-weight:bold;color:#FFFFFF' align = 'center'>Estimado(a):"+request.getNombre_Autori() + " <br /></td></tr>"
-		        + "<tr> <td style='text-align:right;color:#FFFFFF'; font-size = 8pt'>Fecha:<b>"+request.getFecha_Solic()+"</b> <br/><br/></td> </tr> "
+		        + "<tr> <td style='text-align:right;color:#FFFFFF'; font-size = 8pt'>Fecha:<b>"+ request.getFecha_Solic()+"</b> <br/><br/></td> </tr> "
 		        + "<tr> <td style='text-align:left;font-size: 10px;font-weight:bold;color:#FFFFFF';> Se ha generado una solicitud de tasa: ESPECIAL,"+  request.getTipo_Autori()+" con la siguiente información:<br/><br/></td></tr>"
 		        + "<tr> <td style='text-align:left;color:#FFFFFF';font-size = 8pt'>1.-Núm.y Suc.Operadora: </td></tr>"
 		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt'><b> "+request.getSuc_Solic() + "</b></td></tr>"
