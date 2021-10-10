@@ -15,6 +15,8 @@ public interface ObtenerRegistrosAutoTasasPorEjecutivoRepo extends JpaRepository
             + " tas.TASA_AUTORI, tas.TIPO_AUTORI, tas.SOEID_AUTORI, tas.SOEID_ASIG, tas.SOEID_OPE,tas.INIC_AUTORI, tas.CETE,tas.PORCEN_CETE, "
             + " eleg.autorizadores,   tas.OBSERVA_WEB,   certifisicos.folio as certificado_fisico, certimorales.folio as certificado_moral , tas.ID_CAMPANA   "
 			+ " FROM UEC_TB_AUTOTASAS tas  inner join PER_CAT_SUCURSALES sucu on tas.SUC_SOLIC = sucu.SIRH_SUCURSAL_ID "
+            + " inner join PER_CAT_OFERTA ofe on ofe.OFERTA_ID =tas.TIPO_AUTORI "
+            + " inner join PER_CAT_CAMPANIAS cam on cam.CAMPANIAS_ID = tas.ID_CAMPANA "
 			+ " left join UEC_TB_CERTIFICADOS_FISICOS certifisicos on certifisicos.num_cte = tas.NUM_CTE "
 			+ " left join UEC_TB_CERTIFICADOS_MORALES certimorales on certimorales.num_cte = tas.NUM_CTE "
             + " left join UEC_TB_AUTORIZADORES_ELEGIDOS eleg on tas.ID_TASAUTO = eleg.id_TasaAuto " 

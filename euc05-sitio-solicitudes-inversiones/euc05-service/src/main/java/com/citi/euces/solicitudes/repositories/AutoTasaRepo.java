@@ -25,8 +25,8 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 	List<AutoTasa> ObtenerRegCampTasa(@Param("ID_TASAUTO") BigInteger ID_TASAUTO);
 	
 	@Query(value = " select NVL(MAX(t.ID_TASAUTO),0) AS ID_TASAUTO  from UEC_TB_AUTOTASAS t "
-			+ " where TO_CHAR(t.FECHA_SOLIC, ' YYYY/DD/MM') = TO_CHAR(SYSDATE, ' YYYY/DD/MM')  ",nativeQuery = true )
-	BigInteger ObtenerUltFolioAutoTasas();
+			+ " where TO_CHAR(t.FECHA_SOLIC, 'YYYY/DD/MM') = TO_CHAR(:FECHA)  ",nativeQuery = true )
+	BigInteger ObtenerUltFolioAutoTasas(@Param("FECHA")String FECHA);
 	
 	
 	@Query(value = " select NVL(MAX(t.ID_TASAUTO),0) AS ID_TASAUTO  from UEC_TB_AUTOTASAS t  "

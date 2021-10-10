@@ -3,6 +3,7 @@ package com.citi.euces.solicitudes.services;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.log4j.LogManager;
@@ -245,7 +246,15 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		try {
 		int salida = 0;
 		Timestamp timestamp = Timestamp.valueOf(request.getFecha_Solic());
-		id_Tasa_long = autoTasaRepo.ObtenerUltFolioAutoTasas();
+		
+		//
+		SimpleDateFormat objSDF5 = new SimpleDateFormat("yyyy/dd/MM");
+		Date  fechaAct=  new Date();
+		objSDF5.format(fechaAct);
+		Calendar cs = Calendar.getInstance(TimeZone.getTimeZone("America/Mexico_City"));
+		cs.setTime(fechaAct);
+		//
+		id_Tasa_long = autoTasaRepo.ObtenerUltFolioAutoTasas(objSDF5.format(cs.getTime()));
 		LOGGER.debug( id_Tasa_long.toString());
 		//String id = id_Tasa.toString();
 		
@@ -312,58 +321,6 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		}
 		return mensaje;
 		
-/*			for(AutoTasa autasa : listAutoTasa) {
-*					if(objSDF2.format(fecha).toString().equals(autasa.getFECHA_SOLIC())) { //falta sacr el maximo		
-*						if(autasa.getID_TASAUTO().intValue() > 0) {
-*						//	id_Tasa = 0;
-*						}else {
-*						//	id_Tasa = autasa.getID_TASAUTO().intValue();
-*						}		
-*					}
-*			}*/
-		
-	//	for(TasaPorsentaje por : listPorsentaje) {
-		//	if(por.getCampana().equals("PORTAESPNOM")) {
-			//	porsentaje = Double.parseDouble(por.getPorcentaje());
-		//	}
-	//}
-    //    id_Tasa = (id_Tasa == 0) ? 1: (id_Tasa +1);//ver el substring
-     //   request.setID_TASAUTO((Integer.parseInt(objSDF2.format(fecha))*10000)+id_Tasa); //solicitud.ID_TASAUTO
-      //  request.setFECHA_SOLIC(objSDF.format(fecha));
-     //   request.setESTATUS("SOLICITADA");//preguntar si es varchar po int  SOLICITADA
-	//	respoce.setSUC_SOLIC(2); // solicitud.SUC_SOLIC = int.Parse(inputNumSuc.Text.Split('-')[0].Trim()); usuario
-	//	respoce.setDIVISION("algo");//usuario
-	//	respoce.setNUM_CTE(34);//usuario
-	//	respoce.setNOM_CTE("Miguel");//usuario
-	//	respoce.setSOEID_ASIG("");//calcular usuario de ObtenerAutorizadoresDivisionales
-	//	respoce.setCONTRATO(234);//usuario
-	//	respoce.setNOMINA("Nomina");//usuario
-	//	respoce.setNOMEJEC("Oscar");//usuario
-	//	respoce.setMONTO(12.45);//usuario
-	//	respoce.setPLAZO(10);//ingresa el usuario
-		//request.setCampana("PORTAESPNOM");
-     //   request.setTASA_AUTORI(porsentaje);//calcular a tabla tb_tasa_porcentaje
-	//	respoce.setTIPO_AUTORI("Tasas Autorizaciones Divisionale");//usuario
-    //    for(AutoCetes ce :listCetes) {
-     //   	if(request.getPLAZO().intValue() == ce.getId_Plazo().intValue()) {  		
-      //  		tasa100Porc = ce.getCete();      		
-       // 	}	
-	//	}
-   //     request.setCETE(tasa100Porc);//tasa
-    //    request.setPORCEN_CETE((porsentaje*100)/tasa100Porc);
-	//	respoce.setJUSTIFICACION("");//usuario
-    //    request.setCEL("");//preguntar
-     //   request.setPORTA("");
-	/*    AutoTasa  autotasa  = new AutoTasa(((Integer.parseInt(objSDF2.format(fecha))*10000)+id_Tasa),objSDF.format(fecha), "SOLICITADA", request.getSUC_SOLIC(), 
-	    		                             request.getDIVISION(), request.getNUM_CTE(), request.getNOM_CTE(),request.getSOEID_ASIG(),  request.getCONTRATO(),
-	    		                             request.getNOMINA(), request.getNOMEJEC(), Double.parseDouble(request.getMONTO()), request.getPLAZO(), porsentaje, 
-	    		                             request.getTIPO_AUTORI(), tasa100Porc, (porsentaje*100)/tasa100Porc, request.getJUSTIFICACION(),request.getCEL(),
-	    		                             request.getPORTA(),"","");
-
-	    listAutoTasa = new ArrayList<AutoTasa>();
-		listAutoTasa.add(autotasa);*/
-	
-	
 	}
 
 
@@ -496,7 +453,14 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	@Override
 	public BigInteger ObtenerUltFolioAutoTasas() throws GenericException, IOException{//si
 		try {
-			id_Tasa_long = autoTasaRepo.ObtenerUltFolioAutoTasas();
+			//
+			SimpleDateFormat objSDF5 = new SimpleDateFormat("yyyy/dd/MM");
+			Date  fechaAct=  new Date();
+			objSDF5.format(fechaAct);
+			Calendar cs = Calendar.getInstance(TimeZone.getTimeZone("America/Mexico_City"));
+			cs.setTime(fechaAct);
+			//
+			id_Tasa_long = autoTasaRepo.ObtenerUltFolioAutoTasas(objSDF5.format(cs.getTime()));
 		}catch (Exception ex) {
 			System.out.println("ex ->" + ex.getMessage());
 			System.out.println("ex ->" + ex.getCause());
