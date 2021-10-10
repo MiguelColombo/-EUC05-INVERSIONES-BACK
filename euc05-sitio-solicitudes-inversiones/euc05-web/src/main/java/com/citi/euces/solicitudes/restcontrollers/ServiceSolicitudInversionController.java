@@ -753,10 +753,10 @@ public class ServiceSolicitudInversionController  {
 	
 	
 	@ResponseStatus(code = HttpStatus.OK)
-	@PostMapping(path ="/EnviarPHPBEDTO", produces = "application/json")//btnSave_Click put
-	public ResponseEntity<?> EnviarPHPBEDTO(@RequestBody final EnviarPHPBEDTO request) {
+	@PostMapping(path ="/EnviarPHP", produces = "application/json")//btnSave_Click put
+	public ResponseEntity<?> EnviarPHP(@RequestBody final EnviarPHPBEDTO request) {
 		 try{
-			 EnviarPHPResponse response  = new EnviarPHPResponse(serviceSolicitudInversionImp.EnviarPHPBEDTO(request), "200");
+			 EnviarPHPResponse response  = new EnviarPHPResponse(serviceSolicitudInversionImp.EnviarPHP(request), "200");
 			if(response.getBody().isEmpty()) {
 				throw new GenericException("No se puede procesar la solicitud","500");
 			}else {			

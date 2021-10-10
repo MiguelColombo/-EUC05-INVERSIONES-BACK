@@ -55,5 +55,5 @@ public interface ServiceSolicitudInversion {
 	Long ExisteFolioBancanet()throws GenericException, IOException;
 	List<EjecutivoSucursalResponseDTO>getEjecutivo(SucursalesBEDTO request)throws GenericException, IOException;
 	List<SucursalesConsultaResponseDTO>GetItem(SucursalesBEDTO request)throws GenericException, IOException;
-	String EnviarPHPBEDTO(EnviarPHPBEDTO request)throws GenericException, IOException;
+	String EnviarPHP(EnviarPHPBEDTO request)throws GenericException, IOException;
 }

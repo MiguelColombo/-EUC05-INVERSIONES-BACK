@@ -1031,7 +1031,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		return sucursalesConsultaResponseDTO;
 	}
 	@Override
-	public String EnviarPHPBEDTO(EnviarPHPBEDTO request)
+	public String EnviarPHP(EnviarPHPBEDTO request)
 			throws GenericException, IOException {
 		String body = null;
 		try {
