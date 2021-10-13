@@ -33,6 +33,7 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	private String tas_Tipo_Campana;
 	private Long OFERTA_SIGUIENTE_PASO;
 	private String OFERTA_PDF_ESPECIAL_ID;
+	private String NOMEJEC;
 	/**
 	 * @param tas_ID_TASAUTO
 	 * @param tas_ESTATUS
@@ -71,7 +72,7 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 			String tas_SOEID_OPE, String tas_INIC_AUTORI, Long tas_CETE, Long tas_PORCEN_CETE,
 			String eleg_autorizadores, String tas_OBSERVA_WEB, String certificado_fisico, String certificado_moral,
 			String fecha_Lieracion, String tas_Tipo_Campana, Long OFERTA_SIGUIENTE_PASO,
-	        String OFERTA_PDF_ESPECIAL_ID) {
+	        String OFERTA_PDF_ESPECIAL_ID, String NOMEJEC) {
 		super();
 		this.tas_ID_TASAUTO = tas_ID_TASAUTO;
 		this.tas_ESTATUS = tas_ESTATUS;
@@ -103,6 +104,7 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 		this.tas_Tipo_Campana = tas_Tipo_Campana;
 		this.OFERTA_SIGUIENTE_PASO = OFERTA_SIGUIENTE_PASO;
 		this.OFERTA_PDF_ESPECIAL_ID = OFERTA_PDF_ESPECIAL_ID;
+		this.NOMEJEC = NOMEJEC;
 		
 		
 	}
@@ -291,6 +293,12 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	}
 	public void setOFERTA_PDF_ESPECIAL_ID(String oFERTA_PDF_ESPECIAL_ID) {
 		OFERTA_PDF_ESPECIAL_ID = oFERTA_PDF_ESPECIAL_ID;
+	}
+	public String getNOMEJEC() {
+		return NOMEJEC;
+	}
+	public void setNOMEJEC(String nOMEJEC) {
+		NOMEJEC = nOMEJEC;
 	}
 	
 	

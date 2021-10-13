@@ -27,6 +27,8 @@ import com.citi.euces.solicitudes.infra.dto.EnviarPHPBEDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerAutoDivisionalBEDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerAutoDivisionalResposeDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO;
+import com.citi.euces.solicitudes.infra.dto.OfertaBEDTO;
+import com.citi.euces.solicitudes.infra.dto.PlantillaPdfDTO;
 import com.citi.euces.solicitudes.infra.dto.SucursalesBEDTO;
 import com.citi.euces.solicitudes.infra.dto.TasaPorsentajeBEDTO;
 import com.citi.euces.solicitudes.infra.dto.TasaPorsentajeResponceDTO;
@@ -54,6 +56,8 @@ import com.citi.euces.solicitudes.models.FolioAutoTasaResponse;
 import com.citi.euces.solicitudes.models.ObtenerAutoDivisionalRespose;
 import com.citi.euces.solicitudes.models.ObtenerRegAutoTasaRespose;
 import com.citi.euces.solicitudes.models.ObtenerRegistrosAutoTasasPorEjecutivoRespose;
+import com.citi.euces.solicitudes.models.OfertaResponse;
+import com.citi.euces.solicitudes.models.SoImprimeRespon;
 import com.citi.euces.solicitudes.models.SolicitudResponse;
 import com.citi.euces.solicitudes.models.SucursalesConsultaResponse;
 import com.citi.euces.solicitudes.models.SucursalesPorSucResponse;
@@ -91,7 +95,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -115,7 +119,7 @@ public class ServiceSolicitudInversionController  {
 		error.setCode(ex.getCodeError());
 		error.setMensaje(ex.getMessage());
 		error.setError("Parametros Incorrecto o Parametros no existen".toString());
-		return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 	} catch (Exception e) {
 		ErrorGeneric error = new ErrorGeneric();
 		error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -140,7 +144,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -166,7 +170,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -191,7 +195,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -220,7 +224,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -252,7 +256,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -278,7 +282,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -306,14 +310,14 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametro no encontrado".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println("etro 2");
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode("500");
 			error.setMensaje("No se puede procesar la solicitud");
 			error.setError(e);
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		}	
     }
 	
@@ -332,7 +336,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -357,7 +361,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -384,14 +388,14 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametro no encontrado".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println("etro 2");
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode("500");
 			error.setMensaje("No se puede procesar la solicitud");
 			error.setError(e);
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 			
 		}
 	}
@@ -414,14 +418,14 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametro no encontrado".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println("etro 2");
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode("500");
 			error.setMensaje("No se puede procesar la solicitud");
 			error.setError(e);
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 			
 		}
 	}
@@ -441,7 +445,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -471,7 +475,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -499,7 +503,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -530,7 +534,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -555,7 +559,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -583,14 +587,14 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametro no encontrado".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println("etro 2");
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode("500");
 			error.setMensaje("No se puede procesar la solicitud");
 			error.setError(e);
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 			
 		}	
 	}
@@ -626,7 +630,7 @@ public class ServiceSolicitudInversionController  {
 		error.setCode(ex.getCodeError());
 		error.setMensaje(ex.getMessage());
 		error.setError("Parametros Incorrecto o Parametros no existen".toString());
-		return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 	} catch (Exception e) {
 		ErrorGeneric error = new ErrorGeneric();
 		error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -664,14 +668,14 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametro no encontrado".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println("etro 2");
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode("500");
 			error.setMensaje("No se puede procesar la solicitud");
 			error.setError(e);
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 			
 		}	
 		
@@ -691,7 +695,7 @@ public class ServiceSolicitudInversionController  {
 			error.setCode(ex.getCodeError());
 			error.setMensaje(ex.getMessage());
 			error.setError("Parametros Incorrecto o Parametros no existen".toString());
-			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		} catch (Exception e) {
 			ErrorGeneric error = new ErrorGeneric();
 			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -716,7 +720,7 @@ public class ServiceSolicitudInversionController  {
 				error.setCode(ex.getCodeError());
 				error.setMensaje(ex.getMessage());
 				error.setError("Parametros Incorrecto o Parametros no existen".toString());
-				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 			} catch (Exception e) {
 				ErrorGeneric error = new ErrorGeneric();
 				error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -741,7 +745,7 @@ public class ServiceSolicitudInversionController  {
 				error.setCode(ex.getCodeError());
 				error.setMensaje(ex.getMessage());
 				error.setError("Parametros Incorrecto o Parametros no existen".toString());
-				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 			} catch (Exception e) {
 				ErrorGeneric error = new ErrorGeneric();
 				error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -767,7 +771,7 @@ public class ServiceSolicitudInversionController  {
 				error.setCode(ex.getCodeError());
 				error.setMensaje(ex.getMessage());
 				error.setError("Parametros Incorrecto o Parametros no existen".toString());
-				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 			} catch (Exception e) {
 				ErrorGeneric error = new ErrorGeneric();
 				error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
@@ -776,4 +780,52 @@ public class ServiceSolicitudInversionController  {
 				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 			}
 	    }	
+	
+	
+	@ResponseStatus(code = HttpStatus.OK)
+	@PostMapping(path ="/ObtenerOferta", produces = "application/json")//btnSave_Click put
+	public ResponseEntity<?> ObtenerOferta(@RequestBody final OfertaBEDTO request) {
+		 try{
+			 OfertaResponse response  = new OfertaResponse(serviceSolicitudInversionImp.ObtenerOferta(request), "200");
+			 if(response.getOfertaResponseDTO() == null || response.getOfertaResponseDTO().size() == 0) {
+				throw new GenericException("No se puede procesar la solicitud","500");
+			}else {			
+				return new ResponseEntity<OfertaResponse>(response, HttpStatus.OK);
+			}
+			}catch (GenericException ex) {
+				ErrorGeneric error = new ErrorGeneric();
+				error.setCode(ex.getCodeError());
+				error.setMensaje(ex.getMessage());
+				error.setError("Parametros Incorrecto o Parametros no existen".toString());
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
+			} catch (Exception e) {
+				ErrorGeneric error = new ErrorGeneric();
+				error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				error.setMensaje(e.getMessage());
+				error.setError(e);
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
+			}
+	    }	
+	
+	@ResponseStatus(code = HttpStatus.OK)
+	@PostMapping(path = "/pdfEspecial")
+	public ResponseEntity<?> pdfEspecial(@RequestBody final PlantillaPdfDTO request) {
+		try {
+			System.out.println("35 linea codigo request->" + request);
+			SoImprimeRespon response = new SoImprimeRespon(serviceSolicitudInversionImp.pdfEspecial(request), "200");
+			return new ResponseEntity<SoImprimeRespon>(response, HttpStatus.OK);
+		}catch (GenericException ex) {
+			ErrorGeneric error = new ErrorGeneric();
+			error.setCode(ex.getCodeError());
+			error.setMensaje(ex.getMessage());
+			error.setError("Parametros Incorrecto o Parametros no existen".toString());
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
+		} catch (Exception e) {
+			ErrorGeneric error = new ErrorGeneric();
+			error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+			error.setMensaje(e.getMessage());
+			error.setError(e);
+			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
+		}
+	}
 }

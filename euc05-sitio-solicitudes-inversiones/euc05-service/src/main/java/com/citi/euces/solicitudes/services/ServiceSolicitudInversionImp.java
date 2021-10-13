@@ -10,18 +10,42 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.apache.commons.io.FileUtils;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import com.citi.euces.solicitudes.infra.dto.InfoPdfEstandar;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.util.Base64;
+import org.springframework.http.HttpStatus;
 import com.citi.euces.solicitudes.entities.AutoCetes;
 import com.citi.euces.solicitudes.entities.AutoTasa;
 import com.citi.euces.solicitudes.entities.AutoTasasPorEjecutivo;
 import com.citi.euces.solicitudes.entities.Autorizadores;
 import com.citi.euces.solicitudes.entities.DiasFestivos;
 import com.citi.euces.solicitudes.entities.EjecutivoSucursal;
+import com.citi.euces.solicitudes.entities.Oferta;
 import com.citi.euces.solicitudes.entities.TasaPorsentaje;
 import com.citi.euces.solicitudes.entities.Autorango;
 import com.citi.euces.solicitudes.entities.TbAutorizadoresElegidos;
@@ -41,6 +65,9 @@ import com.citi.euces.solicitudes.infra.dto.AutorangoResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.AutorizadoresBEDTO;
 import com.citi.euces.solicitudes.infra.dto.AutorizadoresDivisionalesResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.AutorizadoresResponseDTO;
+import com.citi.euces.solicitudes.infra.dto.CatFolioDTO;
+import com.citi.euces.solicitudes.infra.dto.CatPDFEspecial;
+import com.citi.euces.solicitudes.infra.dto.ConfigPdfDTO;
 import com.citi.euces.solicitudes.infra.dto.DiasFestivosBEDTO;
 import com.citi.euces.solicitudes.infra.dto.DiasFestivosResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.EjecutivoSucursalResponseDTO;
@@ -48,6 +75,9 @@ import com.citi.euces.solicitudes.infra.dto.ObtenerAutoDivisionalBEDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerAutoDivisionalResposeDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerRegAutoTasaResposeDTO;
 import com.citi.euces.solicitudes.infra.dto.ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO;
+import com.citi.euces.solicitudes.infra.dto.OfertaBEDTO;
+import com.citi.euces.solicitudes.infra.dto.OfertaResponseDTO;
+import com.citi.euces.solicitudes.infra.dto.PlantillaPdfDTO;
 import com.citi.euces.solicitudes.infra.dto.SucursalesBEDTO;
 import com.citi.euces.solicitudes.infra.dto.SucursalesConsultaResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.SucursalesPorSucResponseDTO;
@@ -64,15 +94,20 @@ import com.citi.euces.solicitudes.infra.dto.TbAutorizadoresElegidosRResponse;
 import com.citi.euces.solicitudes.infra.dto.Tb_AsignacionesResponse;
 import com.citi.euces.solicitudes.infra.dto.EnviarPHPBEDTO;
 import com.citi.euces.solicitudes.infra.dto.EnviarPHPDTO;
+import com.citi.euces.solicitudes.infra.dto.ImpresionResponse;
+import com.citi.euces.solicitudes.infra.dto.MarcaAguaEvent;
 import com.citi.euces.solicitudes.infra.exceptions.GenericException;
 import com.citi.euces.solicitudes.infra.utils.BodyMail;
 import com.citi.euces.solicitudes.infra.utils.EncryptMail;
+import com.citi.euces.solicitudes.infra.utils.FormatUtils;
 import com.citi.euces.solicitudes.repositories.AutoCetesRepo;
 import com.citi.euces.solicitudes.repositories.AutoTasaRepo;
 import com.citi.euces.solicitudes.repositories.AutorizadoresRepo;
 import com.citi.euces.solicitudes.repositories.DiasFestivosRepo;
 import com.citi.euces.solicitudes.repositories.EjecutivoSucursalRepo;
+import com.citi.euces.solicitudes.repositories.ImprimirPDFsRepository;
 import com.citi.euces.solicitudes.repositories.ObtenerRegistrosAutoTasasPorEjecutivoRepo;
+import com.citi.euces.solicitudes.repositories.OfertaRepo;
 import com.citi.euces.solicitudes.repositories.SucursalesConsultaRepo;
 import com.citi.euces.solicitudes.repositories.SucursalesRepo;
 import com.citi.euces.solicitudes.repositories.TasaPorsentajeRespo;
@@ -91,6 +126,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 
 	List<Autorizadores> lstAut = null;
 	List<DiasFestivos> lstdias = null;
+	List<DiasFestivosResponseDTO> diasFestivosResponse = new ArrayList<DiasFestivosResponseDTO>();
 	List<Autorango>   lstRango = null;
 	List<TasaPorsentaje> listPorsentaje = null;
 	List<Sucursales> listSucursal = null;
@@ -104,6 +140,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	List<AutoTasasPorEjecutivo> listAutoTasaPor = null;
 	List<EjecutivoSucursal> listEjecutivoSucursal = null;
 	List<SucursalesConsulta> listSucursalesConsulta = null;
+	List<Oferta> listOferta = null;
 	Long id_Tasa;
 	BigInteger id_Tasa_long;
 	BigInteger valida ;
@@ -143,6 +180,10 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	EjecutivoSucursalRepo ejecutivoSucursalRepo;
 	@Autowired
 	SucursalesConsultaRepo sucursalesConsultaRepo;
+	@Autowired
+	OfertaRepo ofertaRepo;  
+	@Autowired
+	ImprimirPDFsRepository imprimirPDFsRepository;
 
 	@Override
 	public List<TipoSolicitudRespoceDTO> obtenerSolicitudes() throws GenericException, IOException {
@@ -911,7 +952,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					FECHA_SOLIC,
 					porcentaje.getID_CAMPANA(),
 					porcentaje.getOFERTA_SIGUIENTE_PASO(),
-					porcentaje.getOFERTA_PDF_ESPECIAL_ID()));
+					porcentaje.getOFERTA_PDF_ESPECIAL_ID(),
+					porcentaje.getNOMEJEC()));
 		}
 	}catch (Exception ex) {
 		System.out.println("ex ->" + ex.getMessage());
@@ -1072,5 +1114,639 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		}
 		
 		return enviarPHPDTO;
+	}
+	@Override
+	public List<OfertaResponseDTO> ObtenerOferta(OfertaBEDTO request) throws GenericException, IOException {
+		List<OfertaResponseDTO> ofertaResponseDTO= new ArrayList<OfertaResponseDTO>();
+		try {
+			listOferta = ofertaRepo.ObtenerOferta(request.getId_Oferta());
+			for(Oferta ofe : listOferta) {
+				ofertaResponseDTO.add(new OfertaResponseDTO(ofe.getOFERTA_ID(),
+						ofe.getOFERTA_BAU(),
+						ofe.getOFERTA_CAMPANIA_ID(), 
+						ofe.getOFERTA_CLIENTE_TIPO_PERSONA(), 
+						ofe.getOFERTA_DIAS_CLIENTE(),
+						ofe.getOFERTA_DIGITAL(), 
+						ofe.getOFERTA_DINERO_NUEVO_MAX(), 
+						ofe.getOFERTA_DINERO_NUEVO_MIN(), 
+						ofe.getOFERTA_ECM(),
+						ofe.getOFERTA_GUIA_INFORMATIVA_ID(), 
+						ofe.getOFERTA_INFORMATIVA_FONDOS(), 
+						ofe.getOFERTA_MONTO_DESDE(), 
+						ofe.getOFERTA_MONTO_HASTA(),
+						ofe.getOFERTA_NOMBRE_LARGO(),
+						ofe.getOFERTA_NTD(), 
+						ofe.getOFERTA_NTM(), 
+						ofe.getOFERTA_NTP(), 
+						ofe.getOFERTA_PARTICIPACION_UNICA(), 
+						ofe.getOFERTA_PDF_ESPECIAL_ID(),
+						ofe.getOFERTA_PLAZO_MAXIMO(),
+						ofe.getOFERTA_PLAZO_MINIMO(), 
+						ofe.getOFERTA_PRIMERA_BUSQUEDA(), 
+						ofe.getOFERTA_SECCION(),
+						ofe.getOFERTA_SEGMENTO(), 
+						ofe.getOFERTA_SEGUNDA_BUSQUEDA(), 
+						ofe.getOFERTA_SIGUIENTE_PASO(),
+						ofe.getOFERTA_TASA_ID(), 
+						ofe.getOFERTA_TIPO_DIRIGIDA()));
+				
+			}
+			
+		}catch (Exception ex) {
+			System.out.println("ex ->" + ex.getMessage());
+			System.out.println("ex ->" + ex.getCause());
+		}
+		
+		// TODO Auto-generated method stub listOferta  ofertaRepo
+		return ofertaResponseDTO;
+	}
+	@Override
+	public ImpresionResponse pdfEspecial(PlantillaPdfDTO request) throws GenericException, IOException {
+		ImpresionResponse arc = new ImpresionResponse();
+		String folio = "";
+		List<ConfigPdfDTO> confPdf = new ArrayList<ConfigPdfDTO>();
+		List<CatPDFEspecial> tipoPdf = new ArrayList<CatPDFEspecial>();
+		List<CatFolioDTO> folioEspecial = new ArrayList<CatFolioDTO>();
+
+		tipoPdf = imprimirPDFsRepository.getPlantillaPdf(request.getPdfEspecial());
+
+		if (tipoPdf.isEmpty() || tipoPdf == null || tipoPdf.size() == 0) {
+			throw new GenericException("La tabla de PdfEspecial no encontro la plantilla o imagen.",
+					HttpStatus.NOT_FOUND.toString());
+		}
+
+		System.out.println("580 linea codigo tipoPdf->" + tipoPdf);
+		confPdf = imprimirPDFsRepository.getConfigPdf(tipoPdf.get(0).getIdPdfEspecial());
+
+		if (confPdf.isEmpty() || confPdf == null || confPdf.size() == 0) {
+			throw new GenericException("La tabla de configuracion de pdf no encontro datos en base de datos.",
+					HttpStatus.NOT_FOUND.toString());
+		}
+
+		System.out.println("580 linea codigo confPdf->" + confPdf);
+		if (confPdf.get(0).getPdfTipo() == 1) {
+			folioEspecial = imprimirPDFsRepository.getFolioEsp(confPdf.get(0).getFolioId());
+			if (folioEspecial.isEmpty() || folioEspecial == null || folioEspecial.size() == 0) {
+				throw new GenericException("No se puede acceder a al PDF debido a que no existen folios para asignar.",
+						HttpStatus.NOT_FOUND.toString());
+			}
+
+			System.out.println("580 linea codigo folioEspecial->" + folioEspecial);
+			folio = folioEspecial.get(0).getFolioValor();
+
+			System.out.println("580 linea codigo xxxxxxxxxxxxx folio->" + folio);
+			arc = pdfFoleado(request, folio, tipoPdf);
+
+			System.out.println("580 linea codigo arc->" + arc);
+			imprimirPDFsRepository.actualizaCatFolio(folioEspecial.get(0).getFolioId(), request.getNum_cli());
+
+			System.out.println("580 linea codigo folio->" + folio);
+		} else if (confPdf.get(0).getPdfTipo() == 0) {
+			arc = pdfNoFoleado(request, tipoPdf);
+		}
+		return arc;
+	}
+	public ImpresionResponse pdfFoleado(PlantillaPdfDTO request, String folio, List<CatPDFEspecial> tipoPdf)
+			throws GenericException, IOException {
+		ImpresionResponse arc = new ImpresionResponse();
+		Document documento = new Document();
+		FileOutputStream archivo;
+		InputStream ima1, ima2;
+		Blob blob1, blob2;
+		Path file1, file2;
+		URL liga1;
+		try {
+
+//			file2 = getImagen(8);
+			file2 = tipoPdf.get(0).getArchivo();
+//			System.out.println("54 linea codigo file1->" + file1);
+			Path testFile = Files.createTempFile("PDFestandarFoleado", ".pdf");
+			archivo = new FileOutputStream(testFile.toFile());
+			PdfWriter.getInstance(documento, archivo);
+			System.out.println("58 linea codigo request->" + request);
+			documento.open();
+//			System.out.println("60 linea codigo file1->" + file1);
+//			System.out.println("60 linea codigo file1->" + file1.toString());
+
+			Image imagenGen2 = Image.getInstance(file2.toFile().getAbsolutePath());
+			System.out.println("62 linea codigo imagenGen2->" + imagenGen2);
+			imagenGen2.setAbsolutePosition(0f, 0f);
+			imagenGen2.scaleAbsolute(595f, 840f);
+			documento.add(imagenGen2);
+
+//			Image imagenGen1 = Image.getInstance(file1.toString());
+//			imagenGen1.setAbsolutePosition(0f, 780f);
+//			imagenGen1.scaleAbsolute(595f, 66f);
+//			imagenGen1.setAlignment(Chunk.ALIGN_CENTER);
+//			documento.add(imagenGen1);
+
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(Chunk.NEWLINE);
+			Font ff = new Font();
+			ff.setStyle(Font.BOLD);
+			Paragraph p7 = new Paragraph();
+			p7.setFont(ff);
+			p7.setAlignment(Element.ALIGN_RIGHT);
+			p7.add("  " + fechaActual(new Date()));
+			Paragraph p8 = new Paragraph();
+			p8.setFont(ff);
+			p8.add(request.getNombreCliente());
+			Paragraph p9 = new Paragraph();
+			p9.setFont(ff);
+			p9.add(folio);
+			documento.add(Chunk.NEWLINE);
+			documento.add(new Paragraph(p7));
+			documento.add(Chunk.NEWLINE);
+
+			documento.add(new Paragraph("                      " + request.getNombreCliente()));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(new Paragraph("          \n"));
+			documento.add(Chunk.NEWLINE);
+			documento.add(Chunk.NEWLINE);
+
+			documento.add(Chunk.NEWLINE);
+			documento.add(new Paragraph("                      " + folio));
+//			List<PlantillaPdfDTO> avisoPdf = imprimirPDFsRepository.getAvisoPdf();
+
+			documento.close();
+			String ecoder = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(testFile.toFile()));
+
+			testFile.toFile().delete();
+			file2.toFile().delete();
+			arc.setTipo_pdf_especial("pdfEspecial Foleado");
+			arc.setArchivo(ecoder);
+			arc.setCode("200");
+		} catch (Exception ex) {
+			throw new GenericException("Error al guardar datos Respuesta pdfEspecial Foleado:: " + ex.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR.toString());
+		}
+		return arc;
+	}
+	public String fechaActual(Date date) {
+//		Date date = new Date();
+		String fechaComplete = "";
+
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("America/Mexico_City"));
+		TimeZone timeZone = cal.getTimeZone();
+		System.out.println("Time zone ID: " + timeZone.getID());
+		cal.setTime(date);
+		int day = cal.get(Calendar.DAY_OF_MONTH);
+
+		String dia = day + "";
+		String mes = FormatUtils.formatMesLetra(date);
+		String anio = FormatUtils.formatAnio(date);
+		fechaComplete = dia + " de " + mes + " de " + anio;
+		return fechaComplete;
+	}
+	
+	public ImpresionResponse pdfNoFoleado(PlantillaPdfDTO request, List<CatPDFEspecial> tipoPdf)
+			throws GenericException, IOException {
+		ImpresionResponse arc = new ImpresionResponse();
+		Document documento = new Document();
+		MarcaAguaEvent marcEvent = new MarcaAguaEvent();
+		FileOutputStream archivo;
+		InputStream ima1, ima2;
+		Blob blob1, blob2;
+		Path file1, file2, file3;
+		URL liga1;
+		try {
+//			blob1 = getImagen(6);
+//			blob2 = getImagen(7);
+//			ima1 = blob1.getBinaryStream();
+//			ima2 = blob2.getBinaryStream();
+
+//			int blobLength = (int) blob2.length();
+//			byte[] blobasbytes = blob2.getBytes(1, blobLength);
+//			ImageIcon icon = new ImageIcon((byte[]) blobasbytes);
+			file1 = getImagen("header");// imagen heeader
+			file2 = getImagen("marcaAgua");// imagen gota de agua
+//			file3 = getImagen(8); //imagen para foleado
+//			file3 = getImagen(9); // imagen para no foleado dentro del texto
+			file3 = tipoPdf.get(0).getArchivo();
+			
+			Image imagenGen2 = Image.getInstance(file2.toFile().getAbsolutePath());
+			System.out.println("62 linea codigo imagenGen2->" + imagenGen2);
+			imagenGen2.setAbsolutePosition(0f, 0f);
+			imagenGen2.scaleAbsolute(600f, 785f);
+			imagenGen2.setTransparency(new int[] { 0x00, 0x30 });
+			marcEvent.setImagen(imagenGen2);
+			
+			
+			System.out.println("54 linea codigo file1->" + file1);
+			Path testFile = Files.createTempFile("PDFestandar", ".pdf");
+			archivo = new FileOutputStream(testFile.toFile());
+//			PdfWriter.getInstance(documento, archivo);
+			
+			
+			//generar los eventos con el pdf
+	        PdfWriter writer = PdfWriter.getInstance(documento, archivo);
+	        // indicamos que objecto manejara los eventos al escribir el Pdf
+	        writer.setPageEvent(marcEvent);
+	        
+	        
+	        
+	        
+	        
+	        
+			System.out.println("58 linea codigo request->" + request);
+			documento.open();
+			System.out.println("60 linea codigo file1->" + file1);
+			System.out.println("60 linea codigo file1->" + file1.toString());
+
+//			Image imagenGen2 = Image.getInstance(file2.toFile().getAbsolutePath());
+//			System.out.println("62 linea codigo imagenGen2->" + imagenGen2);
+//			imagenGen2.setAbsolutePosition(0f, 0f);
+//			imagenGen2.scaleAbsolute(600f, 785f);
+//			imagenGen2.setTransparency(new int[] { 0x00, 0x10 });
+//			marcEvent.setImagen(imagenGen2);
+//			documento.add(imagenGen2);
+
+			Image imagenGen1 = Image.getInstance(file1.toFile().getAbsolutePath());
+			imagenGen1.setAbsolutePosition(0f, 780f);
+			imagenGen1.scaleAbsolute(595f, 66f);
+			imagenGen1.setAlignment(Chunk.ALIGN_CENTER);
+			documento.add(imagenGen1);
+
+			Image imagenGen3 = Image.getInstance(file3.toFile().getAbsolutePath());
+//			imagenGen3.setAbsolutePosition(0f, 780f);
+			imagenGen3.scaleAbsolute(500f, 540f);
+			imagenGen3.setAlignment(Chunk.ALIGN_CENTER);
+
+			documento.add(new Paragraph("          \n"));
+			documento.add(Chunk.NEWLINE);
+
+			documento.add(Chunk.NEWLINE);
+			System.out.println("64 linea codigo request->" + request);
+//			documento.add(new Paragraph("Monto para inversión: " + request.getMontoCliente()));
+			System.out.println("66 linea codigo documento->" + documento.toString());
+
+			Font tit = new Font();
+			tit.setStyle(Font.BOLD);
+			tit.setSize(14);
+			Paragraph titulo = new Paragraph();
+			titulo.setFont(tit);
+			titulo.add("Monto para inversión: $" + request.getMontoCliente() + "\n"
+					+ "Productos Banco Garantizados por IPAB");
+			titulo.setAlignment(1);
+			documento.add(titulo);
+
+			int numColumns = 4;
+			int numRows = request.getListaPdfEstan().size();
+
+			// We create the table (Creamos la tabla).
+			PdfPTable table = new PdfPTable(numColumns);
+			// Ahora llenamos la tabla del PDF
+			PdfPCell columnHeader1, columnHeader2, columnHeader3, columnHeader4;
+			// Fill table rows (rellenamos las filas de la tabla).
+			Font fuente = new Font();
+			fuente.setColor(BaseColor.WHITE);
+			fuente.setStyle(Font.BOLD);
+			tit.setSize(10);
+			columnHeader1 = new PdfPCell(new Phrase("Productos", fuente));
+			columnHeader1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			columnHeader1.setBackgroundColor(new BaseColor(58, 0, 204));
+			table.addCell(columnHeader1);
+			columnHeader2 = new PdfPCell(new Phrase("Tasa Bruta", fuente));
+			columnHeader2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			columnHeader2.setBackgroundColor(new BaseColor(58, 0, 204));
+			table.addCell(columnHeader2);
+			columnHeader3 = new PdfPCell(new Phrase("Plazo", fuente));
+			columnHeader3.setHorizontalAlignment(Element.ALIGN_CENTER);
+			columnHeader3.setBackgroundColor(new BaseColor(58, 0, 204));
+			table.addCell(columnHeader3);
+			columnHeader4 = new PdfPCell(new Phrase("Rendimiento Bruto", fuente));
+			columnHeader4.setHorizontalAlignment(Element.ALIGN_CENTER);
+			columnHeader4.setBackgroundColor(new BaseColor(58, 0, 204));
+			table.addCell(columnHeader4);
+			table.setSpacingBefore(10f);
+//			table.setSpacingAfter(10f);
+			Font fuen = new Font();
+			fuen.setStyle(Font.BOLD);
+
+			if (numRows > 0) {
+				Font fnt = new Font();
+				fnt.setSize(10);
+				fnt.setStyle(Font.BOLD);
+				for (InfoPdfEstandar path : request.getListaPdfEstan()) {
+					columnHeader1 = new PdfPCell(new Phrase(path.getNombreOferta(), fnt));
+					columnHeader1.setHorizontalAlignment(Element.ALIGN_CENTER);
+					columnHeader1.setBackgroundColor(new BaseColor(192, 192, 192));
+					table.addCell(columnHeader1);
+					columnHeader2 = new PdfPCell(new Phrase(path.getTasaOfer() + "%", fnt));
+					columnHeader2.setHorizontalAlignment(Element.ALIGN_CENTER);
+					columnHeader2.setBackgroundColor(new BaseColor(192, 192, 192));
+					table.addCell(columnHeader2);
+					columnHeader3 = new PdfPCell(new Phrase(path.getPlazoOfer() + " dias", fnt));
+					columnHeader3.setHorizontalAlignment(Element.ALIGN_CENTER);
+					columnHeader3.setBackgroundColor(new BaseColor(192, 192, 192));
+					table.addCell(columnHeader3);
+					columnHeader4 = new PdfPCell(new Phrase("$" + path.getRendimientoBruto(), fnt));
+					columnHeader4.setHorizontalAlignment(Element.ALIGN_CENTER);
+					columnHeader4.setBackgroundColor(new BaseColor(192, 192, 192));
+					table.addCell(columnHeader4);
+				}
+			}
+			documento.add(table);
+//			parte de abajo de la tabla
+			Font f = new Font();
+//			f.setFamily(FontFamily.COURIER.name());
+			f.setStyle(Font.BOLD);
+			f.setSize(7);
+			Paragraph p3 = new Paragraph();
+			p3.setFont(f);
+			p3.add("Productos garantizados por el IPAB hasta por 400,000 Unidades de Inversión (UDIs) por persona y por banco");
+			p3.setAlignment(1);
+			documento.add(p3);
+
+			documento.add(Chunk.NEWLINE);
+			Paragraph p4 = new Paragraph();
+			p4.add("Importante: Las condiciones presentadas en esta propuesta son válidas únicamente al día "
+					+ fechaActual(new Date()));
+			documento.add(p4);
+
+			documento.add(Chunk.NEWLINE);
+
+			documento.add(imagenGen3);
+//			documento.add(imagenGen2);
+			documento.add(new Paragraph("          \n"));
+			if (numRows > 0) {
+				for (int i = 0; i < request.getListaPdfEstan().size(); i++) {
+					InfoPdfEstandar path = request.getListaPdfEstan().get(i);
+					diasFestivosResponse = ObtenerDiasFeriados(path.getPlazoOfer());
+					documento.add(new Paragraph(path.getNombreOferta(), fuen));
+					documento.add(new Paragraph(
+							"GAT Nominal " + path.getGatNominalOfer() + "%  GAT Real " + path.getGatRealOfer() + "%",
+							fuen));
+					documento.add(new Paragraph("Antes de impuestos, desde $" + path.getMontoOfer() + " a "
+							+ path.getPlazoOfer() + " días, calculado el " + fechaActual(new Date()) + ","
+							+ " y vigente al " + fechaActual(new Date())
+							+ ". La GAT Real es el rendimiento que obtendría después de descontar la inflación estimada. "
+							+ "La tasa de rendimiento se aplicará conforme a las disposiciones fiscales vigentes al vencimiento. "
+							+ "La tasa de interés anual es fija. Consulte requisitos de contratación y condiciones en www.citibanamex.com.  \r\n"
+							+ "Producto ofrecido por Banco Nacional de México, S.A. integrante del Grupo Financiero Banamex y garantizado por el IPAB hasta "
+							+ "400 mil UDIs por persona, por banco. www.gob.mx/ipab.\r\n"));
+					documento.add(Chunk.NEWLINE);
+				}
+			}
+
+//tabla info complementarioa
+			int numColumnsInfo = 2;
+			int numRowsInfo = 4;
+
+//			documento.add(Chunk.NEWLINE);
+			// We create the table (Creamos la tabla).
+			PdfPTable tableInfo = new PdfPTable(numColumnsInfo);
+			// Ahora llenamos la tabla del PDF
+			tableInfo.setHorizontalAlignment(Element.ALIGN_LEFT);
+			PdfPCell columnHeader1Info = new PdfPCell(new Paragraph(""));
+			columnHeader1Info.setColspan(2);
+			Font ff = new Font();
+			ff.setStyle(Font.BOLD);
+			Paragraph p5 = new Paragraph();
+			p5.setFont(ff);
+			p5.add("Fuiste Atendido por: ");
+			Paragraph p6 = new Paragraph();
+			p6.setFont(ff);
+			p6.add("Sucursal: ");
+			Paragraph p7 = new Paragraph();
+			p7.setFont(ff);
+			p7.add("Fecha: ");
+			columnHeader1Info = new PdfPCell(new Paragraph(p5));
+			columnHeader1Info.setHorizontalAlignment(Element.ALIGN_LEFT);
+			columnHeader1Info.setBorder(Rectangle.NO_BORDER);
+			tableInfo.addCell(columnHeader1Info);
+			columnHeader1Info = new PdfPCell(new Phrase(request.getNombreEjec()));
+			columnHeader1Info.setHorizontalAlignment(Element.ALIGN_LEFT);
+			columnHeader1Info.setBorder(Rectangle.NO_BORDER);
+			tableInfo.addCell(columnHeader1Info);
+			columnHeader1Info = new PdfPCell(new Paragraph(p6));
+			columnHeader1Info.setHorizontalAlignment(Element.ALIGN_LEFT);
+			columnHeader1Info.setBorder(Rectangle.NO_BORDER);
+			tableInfo.addCell(columnHeader1Info);
+			columnHeader1Info = new PdfPCell(new Phrase(request.getSirh().toString()));
+			columnHeader1Info.setHorizontalAlignment(Element.ALIGN_LEFT);
+			columnHeader1Info.setBorder(Rectangle.NO_BORDER);
+			tableInfo.addCell(columnHeader1Info);
+			columnHeader1Info = new PdfPCell(new Phrase(""));
+			columnHeader1Info.setHorizontalAlignment(Element.ALIGN_LEFT);
+			columnHeader1Info.setBorder(Rectangle.NO_BORDER);
+			tableInfo.addCell(columnHeader1Info);
+			columnHeader1Info = new PdfPCell(new Phrase(request.getSucursal()));
+			columnHeader1Info.setHorizontalAlignment(Element.ALIGN_LEFT);
+			columnHeader1Info.setBorder(Rectangle.NO_BORDER);
+			tableInfo.addCell(columnHeader1Info);
+			columnHeader1Info = new PdfPCell(new Paragraph(p7));
+			columnHeader1Info.setHorizontalAlignment(Element.ALIGN_LEFT);
+			columnHeader1Info.setBorder(Rectangle.NO_BORDER);
+			tableInfo.addCell(columnHeader1Info);
+			columnHeader1Info = new PdfPCell(new Phrase(fechaActual(new Date())));
+			columnHeader1Info.setHorizontalAlignment(Element.ALIGN_LEFT);
+			columnHeader1Info.setBorder(Rectangle.NO_BORDER);
+			tableInfo.addCell(columnHeader1Info);
+
+			documento.add(tableInfo);
+
+			List<PlantillaPdfDTO> avisoPdf = imprimirPDFsRepository.getAvisoPdf();
+
+			if (avisoPdf.isEmpty() || avisoPdf == null || avisoPdf.size() == 0) {
+				throw new GenericException("La tabla de avisoPdf está vacía.", HttpStatus.NOT_FOUND.toString());
+			}
+
+			int numColumnsAviso = 1;
+			int numRowsAviso = avisoPdf.size();
+			String validaVacio = quitaSpacios(avisoPdf.get(0).getParametroAviso());
+			System.out.println("289 linea codigo avisoPdf.get(0).getParametroAviso() ->" + avisoPdf.get(0).getParametroAviso() + "mre");
+			documento.add(Chunk.NEWLINE);
+			if (avisoPdf.get(0).getParametroAviso() == null || avisoPdf.get(0).getParametroAviso().equals("") || validaVacio.equals("")) {
+				System.out.println("289 linea codigo request->" + request);
+			} else {
+				// We create the table (Creamos la tabla).
+				System.out.println("289 linea codigo request->" + request);
+				PdfPTable tableAviso = new PdfPTable(numColumnsAviso);
+				// Ahora llenamos la tabla del PDF
+				PdfPCell columnHeader1Aviso;
+				// Fill table rows (rellenamos las filas de la tabla).
+				Font fuenteAviso = new Font();
+				fuenteAviso.setColor(BaseColor.WHITE);
+				fuenteAviso.setSize(16);
+				columnHeader1Aviso = new PdfPCell(new Phrase("AVISO IMPORTANTE", fuenteAviso));
+				columnHeader1Aviso.setHorizontalAlignment(Element.ALIGN_CENTER);
+				columnHeader1Aviso.setBackgroundColor(new BaseColor(58, 0, 204));
+				tableAviso.addCell(columnHeader1Aviso);
+
+				System.out.println("289 linea codigo request->" + request);
+				if (numRowsAviso > 0) {
+					for (PlantillaPdfDTO path : avisoPdf) {
+						columnHeader1 = new PdfPCell(new Phrase(path.getParametroAviso()));
+						columnHeader1.setHorizontalAlignment(Element.ALIGN_CENTER);
+						columnHeader1.setBackgroundColor(new BaseColor(192, 192, 192));
+						tableAviso.addCell(columnHeader1);
+					}
+				}
+				System.out.println("289 linea codigo avisoPdf->" + avisoPdf);
+
+				documento.add(tableAviso);
+			}
+			System.out.println("289 linea codigo documento->" + documento);
+			documento.close();
+			System.out.println("289 linea codigo documento->" + documento);
+			writer.close();
+			System.out.println("289 linea codigo documento->" + documento);
+			String ecoder = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(testFile.toFile()));
+
+			System.out.println("289 linea codigo ecoder->" + ecoder);
+			testFile.toFile().delete();
+			file1.toFile().delete();
+			file2.toFile().delete();
+			file3.toFile().delete();
+			arc.setTipo_pdf_especial("pdfEspecial no Foleado");
+			arc.setArchivo(ecoder);
+			arc.setCode("200");
+		} catch (Exception ex) {
+			throw new GenericException("Error al generar el pdfEspecial no Foleado:: " + ex.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR.toString());
+		}
+		return arc;
+	}
+	
+	public Path getImagen(String tipo) throws GenericException, IOException, ParseException {
+
+		List<CatPDFEspecial> tipoPdf = new ArrayList<CatPDFEspecial>();
+
+		tipoPdf = imprimirPDFsRepository.getPlantillaPdf(tipo);
+
+		if (tipoPdf.isEmpty() || tipoPdf == null || tipoPdf.size() == 0) {
+			throw new GenericException("La tabla de PdfEspecial no encontro la plantilla o imagen.",
+					HttpStatus.NOT_FOUND.toString());
+		}
+		return tipoPdf.get(0).getArchivo();
+	}
+	public List<DiasFestivosResponseDTO> ObtenerDiasFeriados(int request) throws GenericException, IOException {
+		List<DiasFestivos> lstdias = new ArrayList<DiasFestivos>();
+		List<DiasFestivosResponseDTO> diasFestivosResponse = new ArrayList<DiasFestivosResponseDTO>();
+
+		Date actual = new Date();
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat objSDF = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat objSDF2 = new SimpleDateFormat("dd/MM/yyyy");
+		int aumento = 0;
+		int plazo = 0;
+		int validacion = 0;
+		lstdias = diasFestivosRepo.obtenerListaFechas();
+		try {
+
+			c.setTime(actual);
+			c.add(Calendar.DATE, request);
+			actual = c.getTime();
+			objSDF.applyLocalizedPattern("E");
+			for (DiasFestivos dia : lstdias) {
+				objSDF.applyLocalizedPattern("E");
+				// diasFestivosResponse.add(new
+				// DiasFestivosResponseDTO(plazo,"1"+objSDF2.format(actual)));
+				if (objSDF2.format(actual).toString().equals(objSDF2.format(dia.getFECHA()))) {
+					if (dia.getDESCRIPCION().equals("Semana Santa")) {
+						c.setTime(actual);
+						aumento = (objSDF.format(actual).toString().equals("jue")) ? aumento + 2 : aumento + 1;
+						// aumento = aumento+1;
+						c.add(Calendar.DATE, aumento);
+						actual = c.getTime();
+						validacion = 1;
+						if (objSDF.format(actual).toString().equals("sáb")) {
+							c.setTime(actual);
+							aumento = aumento + 2;
+							c.add(Calendar.DATE, 2);
+							actual = c.getTime();
+							plazo = request + aumento;
+							diasFestivosResponse
+									.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
+						} else {
+							plazo = request + aumento;
+							diasFestivosResponse
+									.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
+						}
+					} else {
+						c.setTime(actual);
+						aumento = aumento + 1;
+						c.add(Calendar.DATE, aumento);
+						actual = c.getTime();
+						validacion = 1;
+						if (objSDF.format(actual).toString().equals("sáb")) {
+							c.setTime(actual);
+							aumento = aumento + 2;
+							c.add(Calendar.DATE, 2);
+							actual = c.getTime();
+							plazo = request + aumento;
+							diasFestivosResponse
+									.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
+						} else {
+							plazo = request + aumento;
+							diasFestivosResponse
+									.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
+						}
+					}
+
+				}
+			}
+			if (validacion == 0) {
+				if (objSDF.format(actual).toString().equals("sáb")) {
+					c.setTime(actual);
+					aumento = 2;
+					c.add(Calendar.DATE, aumento);
+					actual = c.getTime();
+					plazo = request + aumento;
+					diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
+				} else if (objSDF.format(actual).toString().equals("dom")) {
+					c.setTime(actual);
+					aumento = 1;
+					c.add(Calendar.DATE, aumento);
+					actual = c.getTime();
+					plazo = request + aumento;
+					diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
+				} else {
+					diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(request), fechaActual(actual)));
+
+				}
+			}
+
+		} catch (Exception ex) {
+			System.out.println("ex ->" + ex.getMessage());
+			System.out.println("ex ->" + ex.getCause());
+		}
+		return diasFestivosResponse;
+	}
+	
+	public String quitaSpacios(String args) {
+		String result = "";
+		System.out.println("911 line codigo args ->" + args + "dotos");
+		if ( args != null) {
+			result = args.replaceAll("\\s+", "");
+			System.out.println("911 line codigo result ->" + result + "dotos");
+		}
+		return result;
 	}
 }

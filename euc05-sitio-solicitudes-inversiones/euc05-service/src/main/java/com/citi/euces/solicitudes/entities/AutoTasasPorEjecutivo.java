@@ -72,7 +72,8 @@ public class AutoTasasPorEjecutivo {
 	private Long OFERTA_SIGUIENTE_PASO;
 	@Column(name ="OFERTA_PDF_ESPECIAL_ID")
 	private String OFERTA_PDF_ESPECIAL_ID;
-	
+	@Column(name ="NOMEJEC")
+	private String NOMEJEC;
 	
 	public AutoTasasPorEjecutivo() {
 		
@@ -308,6 +309,14 @@ public class AutoTasasPorEjecutivo {
 
 	public void setOFERTA_PDF_ESPECIAL_ID(String oFERTA_PDF_ESPECIAL_ID) {
 		OFERTA_PDF_ESPECIAL_ID = oFERTA_PDF_ESPECIAL_ID;
+	}
+
+	public String getNOMEJEC() {
+		return NOMEJEC;
+	}
+
+	public void setNOMEJEC(String nOMEJEC) {
+		NOMEJEC = nOMEJEC;
 	}
 	
 
