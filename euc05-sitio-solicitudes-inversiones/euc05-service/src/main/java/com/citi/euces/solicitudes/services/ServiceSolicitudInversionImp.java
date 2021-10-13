@@ -63,7 +63,10 @@ import com.citi.euces.solicitudes.infra.dto.ObtenerRegistrosAutoTasasPorEjecutiv
 import com.citi.euces.solicitudes.infra.dto.TbAutorizadoresElegidosRResponse;
 import com.citi.euces.solicitudes.infra.dto.Tb_AsignacionesResponse;
 import com.citi.euces.solicitudes.infra.dto.EnviarPHPBEDTO;
+import com.citi.euces.solicitudes.infra.dto.EnviarPHPDTO;
 import com.citi.euces.solicitudes.infra.exceptions.GenericException;
+import com.citi.euces.solicitudes.infra.utils.BodyMail;
+import com.citi.euces.solicitudes.infra.utils.EncryptMail;
 import com.citi.euces.solicitudes.repositories.AutoCetesRepo;
 import com.citi.euces.solicitudes.repositories.AutoTasaRepo;
 import com.citi.euces.solicitudes.repositories.AutorizadoresRepo;
@@ -525,12 +528,16 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 
 
 	@Override
-	public List<SucursalesPorSucResponseDTO> ObtenerSucursalesPorSuc() throws GenericException, IOException { //si
+	public List<SucursalesPorSucResponseDTO> ObtenerSucursalesPorSuc(SucursalesBEDTO request) throws GenericException, IOException { //si
 		List<SucursalesPorSucResponseDTO> listSucursalesPorSucResponse = new  ArrayList<SucursalesPorSucResponseDTO>();
-        try{
-        	listSucursal = sucursalesRepo.ObtenerSucursalesPorSuc();
-    		
+	  	BigInteger idS = new BigInteger(request.getId());
+    	LOGGER.debug(idS);
+    	listSucursal = sucursalesRepo.ObtenerSucursalesPorSuc(idS);
+		try{
+      
+        	LOGGER.debug(listSucursal.size() );
     		for(Sucursales suc : listSucursal) {
+    			LOGGER.debug(suc.getSIRH()+" - "+ suc.getSUCURSAL()+" - "+ suc.getDIVISION()+suc.getSIRH()+suc.getDITRITO()+suc.getIS_CLOSED());
     				listSucursalesPorSucResponse.add(new SucursalesPorSucResponseDTO(suc.getSIRH()+" - "+ suc.getSUCURSAL()+" - "+ suc.getDIVISION(),suc.getSIRH(),suc.getDITRITO(),suc.getIS_CLOSED()));
     		}
 		}catch (Exception ex) {
@@ -902,7 +909,9 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					porcentaje.getCertificado_fisico(), 
 					porcentaje.getCertificado_moral(),
 					FECHA_SOLIC,
-					porcentaje.getID_CAMPANA()));
+					porcentaje.getID_CAMPANA(),
+					porcentaje.getOFERTA_SIGUIENTE_PASO(),
+					porcentaje.getOFERTA_PDF_ESPECIAL_ID()));
 		}
 	}catch (Exception ex) {
 		System.out.println("ex ->" + ex.getMessage());
@@ -995,64 +1004,73 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		return sucursalesConsultaResponseDTO;
 	}
 	@Override
-	public String EnviarPHP(EnviarPHPBEDTO request)
+	public List<EnviarPHPDTO> EnviarPHP(EnviarPHPBEDTO request)
 			throws GenericException, IOException {
-		String body = null;
+		
+		List<EnviarPHPDTO> enviarPHPDTO= new ArrayList<EnviarPHPDTO>();
 		try {
-			String folioPortabilidad = "";
-			if(request.getTipo_Autori().equals("PORTAESPNOM") && !request.getFolioBantanet().isEmpty()) {
-				folioPortabilidad = "         <tr> <td style='text-align:left;color:#FFFFFF';font-size=8pt'>Folio Bancanet de Portabilidad:</td></tr> " +
-                        "         <tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size=8pt'><b>" + request.getFolioBantanet() + "</b></td></tr>";
-			}
+			String body = null;
+			String param = null;
+			EncryptMail encript = new EncryptMail();
+			BodyMail detailMail = new BodyMail();
+			String cadenaIds = null;
+			String title = null;
+			String strAceptada = encript.Encrypt("ACEPTADA");
+			String strRechadaza = encript.Encrypt("RECHAZADA");
+			String buzon_enc = "";
+			String title_enc = "";
+			String body_enc = "";
+			String soeid_enc = "";
 			
-		body = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
-				+ "<html xmlns =\"http://www.w3.org/1999/xhtml\">"
-				+ "<head><meta http - equiv =\"Content-Type\" content=\"text/html; charset="+"UTF-8"+"/>"
-				+ "<title> Form Confirmation </title> </head>"
-				+ "</head>"
-				+ "<body>"
-				+ "<b style = 'font-family: Verdana, Arial, Helvetica, sans-serif; '> Aviso. </b><br /><br />"
-				+ "<table width = '50%' style='border:solid 2px #1A5B97; background:#1A5B97; font-family: Verdana, Arial, Helvetica, sans-serif'> "	
-		        + "<tr> <td style='font-size:20;font-weight:bold;color:#FFFFFF' align = 'center'>Estimado(a):"+request.getNombre_Autori() + " <br /></td></tr>"
-		        + "<tr> <td style='text-align:right;color:#FFFFFF'; font-size = 8pt'>Fecha:<b>"+ request.getFecha_Solic()+"</b> <br/><br/></td> </tr> "
-		        + "<tr> <td style='text-align:left;font-size: 10px;font-weight:bold;color:#FFFFFF';> Se ha generado una solicitud de tasa: ESPECIAL,"+  request.getTipo_Autori()+" con la siguiente información:<br/><br/></td></tr>"
-		        + "<tr> <td style='text-align:left;color:#FFFFFF';font-size = 8pt'>1.-Núm.y Suc.Operadora: </td></tr>"
-		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt'><b> "+request.getSuc_Solic() + "</b></td></tr>"
-		        + "<tr> <td style='text-align:left;color:#FFFFFF';font-size = 8pt'>2.-Nombre de Cliente:</td></tr> "
-		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt'><b> "+request.getNom_Cte()+"</b> </td> </tr>"
-		        + "<tr> <td style='text-align:left;color:#FFFFFF'; font-size = 8pt'>3.-Número de Cliente:</td></tr> "
-		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt'><b> "+request.getNum_Cte() +"</b> </td></tr>"
-		        + "<tr> <td style='text-align:left;color:#FFFFFF'; font-size = 8pt'>4.-Número de Contrato:</td></tr>"
-		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt' ><b>"+request.getContrato() +"</b> </td> </tr>"
-		        + "<tr> <td style='text-align:left;color:#FFFFFF'; font-size = 8pt'>5.-Monto:</td></tr> "
-		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt'><b>"+request.getMonto()+ "</b> </td> </tr>"
-		        + "<tr> <td style='text-align:left;color:#FFFFFF'; font-size = 8pt'>6.-Plazo:</td></tr> "
-		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt'><b> "+request.getPlazo() +"</b> </td></tr>"
-		        + "<tr> <td style='text-align:left;color:#FFFFFF'; font-size = 8pt'>7.-Tasa Bruta Solic:</td> </tr>         "
-		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt'><b> "+request.getTasa_Autori() +"</b> %</td></tr>"
-		        + "<tr> <td style='text-align:left;color:#FFFFFF';font-size=8pt'>Justificación de solicitud:</td></tr> "
-		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt'><b> "+request.getJustificacion() +"</b></td></tr>"
-		        + ""+folioPortabilidad +""
-		        + "<tr> <td> <br/> </td></tr>"
-		        + "<tr> <td style='text-align:left;color:#FFFFFF'; font-size=8pt'>Nombre del solicitante:</td></tr> "
-		        + "<tr> <td style='background-color:#FFFFFF;text-align:center;color:#1F497D;font-size:8pt' ><b> "+request.getNomejec() +"</b> </td> </tr>"
-		        + "<tr> <td><br /></td></tr> "
-		        + "<tr> <td style='text-align:left;color:#FFFFFF'; font-size = 8pt'> Para Confirmar o Rechazar La solicitud, haga Clic en los siguientes botónes:<br/><br/></td> </tr>"
-		        + "<tr> <td style='background-color:#E3F6CE;text-align:left;font-size:10px;font-weight:bold;color:#5E610B'></td> </tr>"
-		        + "<tr> <td align='center' style='text-align:center;font-size:8pt'>"
-		        + "    <a href='http://10.224.80.191:91/TasasAuto/VoBoTasaAuto.aspx?SOEID="+request.getSoeid()+"&TASA="+request.getId_AutoTasa()+"&ESTATUS= ACEPTADA' style='background-color:#7CC3C6; font-size:18px; font-weight:300; font-family:Verdana, Helvetica,sans-serif; color:#ffffff; text-decoration:none'> -Autorizar -</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"
-		        + "    <a href='http://10.224.80.191:91/TasasAuto/VoBoTasaAuto.aspx?SOEID="+request.getSoeid()+"&TASA="+request.getId_AutoTasa()+"&ESTATUS= RECHAZADA' style='background-color:#EC8153; font-size:18px; font-weight:300; font-family:Verdana, Helvetica, sans-serif; color:#ffffff; text-decoration:none'> -Rechazar -</a>"
-		        + "</td> </tr>"
-		        + "<tr> <td style='background-color:#F2F2F2;text-align:center;font-size:6px;font-weight:bold;color:#5377A9'> Gracias por su atención. (Unidad Especializada de Comercialización.) </td></tr> "
-		        + " </table> "
-		        + "</body>"
-		        + "</html>";
+			BigInteger id = new BigInteger(request.getSuc_Solic().toString());
+        	listSucursal = sucursalesRepo.ObtenerSucursalesPorSuc(id);
+    		String sucursal = null;
+    		for(Sucursales suc : listSucursal) {
+    			sucursal = suc.getSIRH()+" - "+ suc.getSUCURSAL()+" - "+ suc.getDIVISION();
+    			LOGGER.debug( sucursal);
+    		}
+    		/*BigInteger id_tasa = new BigInteger(request.getId_AutoTasa());
+    		listAutoTasa = autoTasaRepo.ObtenerRegCampTasa(id_tasa );
+    			String MensajeHorror) = "";
+    		for(AutoTasa autTasa : listAutoTasa) {
+    			if(!autTasa.getCONTRATO().toString().equals(request.getContrato()) || !autTasa.getNUM_CTE().toString().equals(request.getNum_Cte().toString())
+    					|| !autTasa.getTIPO_AUTORI().equals(request.getTipo_Autori()) )
+    			{
+    				 TieneError = true;
+    			}else {
+    				 TieneError = false;
+    			}
+    		}  		
+    		if (request.getTasa_Autori().toString().length() > 5)
+            {
+                TieneError = true;
+                MensajeHorror = "Error de Solicitud, Tasa Autorizada: " + request.getTasa_Autori();//sacar
+            }*/
+    		
+    		title += detailMail.GetTitleSolicitud() + "|";
+            cadenaIds += request.getSoeid() + "|";
+            if(!request.getSoeid().equals("VN86003")) {
+                body += detailMail.BodySolicitudAutorizadorUEC(request,sucursal,strAceptada,strRechadaza);
+                
+        		buzon_enc = encript.AESEncryption(detailMail.GetBuzon(), detailMail.GetKey());
+                title_enc = encript.AESEncryption(title, detailMail.GetKey());
+                body_enc = encript.AESEncryption(body, detailMail.GetKey());
+                soeid_enc = encript.AESEncryption(cadenaIds, detailMail.GetKey());
+                param = "'" + buzon_enc + "','" + title_enc + "','" + body_enc + "','" + soeid_enc + "','" + request.getNomina() + "'";
+                enviarPHPDTO.add(new EnviarPHPDTO( body,  param));
+            }else {
+                body = "No se Envio";
+                param = "No se Envio";
+                enviarPHPDTO.add(new EnviarPHPDTO( body,  param));
+            }
+           
+			
 
 		}catch (Exception ex) {
 			System.out.println("ex ->" + ex.getMessage());
 			System.out.println("ex ->" + ex.getCause());
 		}
 		
-		return body;
+		return enviarPHPDTO;
 	}
 }

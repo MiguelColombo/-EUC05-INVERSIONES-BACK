@@ -6,7 +6,7 @@ public class EnviarPHPBEDTO {
 	private Long suc_Solic;
 	private String  nom_Cte;
 	private Long num_Cte;
-	private Long contrato;
+	private String contrato;
 	private Long  monto;
 	private Long plazo;
 	private Long tasa_Autori;
@@ -17,6 +17,7 @@ public class EnviarPHPBEDTO {
 	private String nombre_Autori;
 	private String id_AutoTasa;
 	private String folioBantanet;
+	private String nomina;
 	/**
 	 * 
 	 */
@@ -47,10 +48,10 @@ public class EnviarPHPBEDTO {
 	public void setNum_Cte(Long num_Cte) {
 		this.num_Cte = num_Cte;
 	}
-	public Long getContrato() {
+	public String getContrato() {
 		return contrato;
 	}
-	public void setContrato(Long contrato) {
+	public void setContrato(String contrato) {
 		this.contrato = contrato;
 	}
 	public Long getMonto() {
@@ -112,6 +113,12 @@ public class EnviarPHPBEDTO {
 	}
 	public void setFolioBantanet(String folioBantanet) {
 		this.folioBantanet = folioBantanet;
+	}
+	public String getNomina() {
+		return nomina;
+	}
+	public void setNomina(String nomina) {
+		this.nomina = nomina;
 	}
 	
 	

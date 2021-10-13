@@ -68,6 +68,11 @@ public class AutoTasasPorEjecutivo {
 	private String certificado_moral;
 	@Column(name ="ID_CAMPANA") 
 	private String ID_CAMPANA;
+	@Column(name ="OFERTA_SIGUIENTE_PASO")
+	private Long OFERTA_SIGUIENTE_PASO;
+	@Column(name ="OFERTA_PDF_ESPECIAL_ID")
+	private String OFERTA_PDF_ESPECIAL_ID;
+	
 	
 	public AutoTasasPorEjecutivo() {
 		
@@ -287,6 +292,22 @@ public class AutoTasasPorEjecutivo {
 
 	public void setID_CAMPANA(String iD_CAMPANA) {
 		ID_CAMPANA = iD_CAMPANA;
+	}
+
+	public Long getOFERTA_SIGUIENTE_PASO() {
+		return OFERTA_SIGUIENTE_PASO;
+	}
+
+	public void setOFERTA_SIGUIENTE_PASO(Long oFERTA_SIGUIENTE_PASO) {
+		OFERTA_SIGUIENTE_PASO = oFERTA_SIGUIENTE_PASO;
+	}
+
+	public String getOFERTA_PDF_ESPECIAL_ID() {
+		return OFERTA_PDF_ESPECIAL_ID;
+	}
+
+	public void setOFERTA_PDF_ESPECIAL_ID(String oFERTA_PDF_ESPECIAL_ID) {
+		OFERTA_PDF_ESPECIAL_ID = oFERTA_PDF_ESPECIAL_ID;
 	}
 	
 

@@ -1,23 +1,27 @@
 package com.citi.euces.solicitudes.models;
 
+import java.util.List;
+
+import com.citi.euces.solicitudes.infra.dto.EnviarPHPDTO;
+
 public class EnviarPHPResponse {
 	
-	private String body;
+	private  List<EnviarPHPDTO> enviarPHPDTO;
 	private String code;
 	/**
-	 * @param body
+	 * @param enviarPHPDTO
 	 * @param code
 	 */
-	public EnviarPHPResponse(String body, String code) {
+	public EnviarPHPResponse(List<EnviarPHPDTO> enviarPHPDTO, String code) {
 		super();
-		this.body = body;
+		this.enviarPHPDTO = enviarPHPDTO;
 		this.code = code;
 	}
-	public String getBody() {
-		return body;
+	public List<EnviarPHPDTO> getEnviarPHPDTO() {
+		return enviarPHPDTO;
 	}
-	public void setBody(String body) {
-		this.body = body;
+	public void setEnviarPHPDTO(List<EnviarPHPDTO> enviarPHPDTO) {
+		this.enviarPHPDTO = enviarPHPDTO;
 	}
 	public String getCode() {
 		return code;

@@ -1,7 +1,6 @@
 package com.citi.euces.solicitudes.infra.dto;
 
 
-
 public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 
 	private Long tas_ID_TASAUTO;
@@ -31,7 +30,9 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	private String certificado_fisico;
 	private String certificado_moral;
 	private String fecha_Lieracion;
-	private String tas_Tipo_Campana  ;
+	private String tas_Tipo_Campana;
+	private Long OFERTA_SIGUIENTE_PASO;
+	private String OFERTA_PDF_ESPECIAL_ID;
 	/**
 	 * @param tas_ID_TASAUTO
 	 * @param tas_ESTATUS
@@ -69,7 +70,8 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 			Long tas_TASA_AUTORI, String tas_TipoOferta, String tas_SOEID_AUTORI, String tas_SOEID_ASIG,
 			String tas_SOEID_OPE, String tas_INIC_AUTORI, Long tas_CETE, Long tas_PORCEN_CETE,
 			String eleg_autorizadores, String tas_OBSERVA_WEB, String certificado_fisico, String certificado_moral,
-			String fecha_Lieracion, String tas_Tipo_Campana) {
+			String fecha_Lieracion, String tas_Tipo_Campana, Long OFERTA_SIGUIENTE_PASO,
+	        String OFERTA_PDF_ESPECIAL_ID) {
 		super();
 		this.tas_ID_TASAUTO = tas_ID_TASAUTO;
 		this.tas_ESTATUS = tas_ESTATUS;
@@ -99,6 +101,10 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 		this.certificado_moral = certificado_moral;
 		this.fecha_Lieracion = fecha_Lieracion;
 		this.tas_Tipo_Campana = tas_Tipo_Campana;
+		this.OFERTA_SIGUIENTE_PASO = OFERTA_SIGUIENTE_PASO;
+		this.OFERTA_PDF_ESPECIAL_ID = OFERTA_PDF_ESPECIAL_ID;
+		
+		
 	}
 	/**
 	 * 
@@ -273,6 +279,18 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	}
 	public void setTas_Tipo_Campana(String tas_Tipo_Campana) {
 		this.tas_Tipo_Campana = tas_Tipo_Campana;
+	}
+	public Long getOFERTA_SIGUIENTE_PASO() {
+		return OFERTA_SIGUIENTE_PASO;
+	}
+	public void setOFERTA_SIGUIENTE_PASO(Long oFERTA_SIGUIENTE_PASO) {
+		OFERTA_SIGUIENTE_PASO = oFERTA_SIGUIENTE_PASO;
+	}
+	public String getOFERTA_PDF_ESPECIAL_ID() {
+		return OFERTA_PDF_ESPECIAL_ID;
+	}
+	public void setOFERTA_PDF_ESPECIAL_ID(String oFERTA_PDF_ESPECIAL_ID) {
+		OFERTA_PDF_ESPECIAL_ID = oFERTA_PDF_ESPECIAL_ID;
 	}
 	
 	

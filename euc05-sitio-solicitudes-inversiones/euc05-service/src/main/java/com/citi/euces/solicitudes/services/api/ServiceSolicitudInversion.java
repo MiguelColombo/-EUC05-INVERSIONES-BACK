@@ -36,7 +36,7 @@ public interface ServiceSolicitudInversion {
 	List<DiasFestivosResponseDTO> ObtenerDiasFeriados(DiasFestivosBEDTO request) throws GenericException, IOException;
 	List<AutorangoResponseDTO> ObtenerAutoRangos() throws GenericException, IOException;
 	List<AutoCetesResponseDTO> ObtenerAutoCetes() throws GenericException, IOException;
-	List<SucursalesPorSucResponseDTO> ObtenerSucursalesPorSuc() throws GenericException, IOException;
+	List<SucursalesPorSucResponseDTO> ObtenerSucursalesPorSuc(SucursalesBEDTO request) throws GenericException, IOException;
 	List<TasaPorsentajeResponceDTO> ObtenerListaPlazos(TasaPorsentajeBEDTO request) throws GenericException, IOException;
 	List<AutoTasaResponseDTO> ObtenerRegCampTasa(AutoTasaBEDTO request) throws GenericException, IOException;
 	BigInteger ObtenerUltFolioAutoTasas() throws GenericException, IOException;
@@ -55,5 +55,5 @@ public interface ServiceSolicitudInversion {
 	Long ExisteFolioBancanet()throws GenericException, IOException;
 	List<EjecutivoSucursalResponseDTO>getEjecutivo(SucursalesBEDTO request)throws GenericException, IOException;
 	List<SucursalesConsultaResponseDTO>GetItem(SucursalesBEDTO request)throws GenericException, IOException;
-	String EnviarPHP(EnviarPHPBEDTO request)throws GenericException, IOException;
+	List<EnviarPHPDTO> EnviarPHP(EnviarPHPBEDTO request)throws GenericException, IOException;
 }

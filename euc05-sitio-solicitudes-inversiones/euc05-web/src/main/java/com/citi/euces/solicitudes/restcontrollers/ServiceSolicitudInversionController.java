@@ -101,10 +101,10 @@ public class ServiceSolicitudInversionController  {
 		}
 	}
 	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping(path = "/ObtenerSucursalesPorSuc", produces = "application/json") //CrearFuncionesJavaScript 
-	public ResponseEntity<?> ObtenerSucursalesPorSuc(){
+	@PostMapping(path = "/ObtenerSucursalesPorSuc", produces = "application/json") //CrearFuncionesJavaScript 
+	public ResponseEntity<?> ObtenerSucursalesPorSuc(@RequestBody final SucursalesBEDTO request){
 	try {
-		SucursalesPorSucResponse response  = new SucursalesPorSucResponse(serviceSolicitudInversionImp.ObtenerSucursalesPorSuc(), "200");
+		SucursalesPorSucResponse response  = new SucursalesPorSucResponse(serviceSolicitudInversionImp.ObtenerSucursalesPorSuc(request), "200");
 		if(response.getSucursalesPorSuc() == null || response.getSucursalesPorSuc().size() == 0) {
 			throw new GenericException("No se puede procesar la solicitud","500");
 		}else {			
@@ -757,7 +757,7 @@ public class ServiceSolicitudInversionController  {
 	public ResponseEntity<?> EnviarPHP(@RequestBody final EnviarPHPBEDTO request) {
 		 try{
 			 EnviarPHPResponse response  = new EnviarPHPResponse(serviceSolicitudInversionImp.EnviarPHP(request), "200");
-			if(response.getBody().isEmpty()) {
+			 if(response.getEnviarPHPDTO() == null || response.getEnviarPHPDTO().size() == 0) {
 				throw new GenericException("No se puede procesar la solicitud","500");
 			}else {			
 				return new ResponseEntity<EnviarPHPResponse>(response, HttpStatus.OK);
