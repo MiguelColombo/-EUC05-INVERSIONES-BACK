@@ -84,14 +84,10 @@ import com.citi.euces.solicitudes.infra.dto.SucursalesPorSucResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.TasaPorsentajeBEDTO;
 import com.citi.euces.solicitudes.infra.dto.TasaPorsentajeResponceDTO;
 import com.citi.euces.solicitudes.infra.dto.TbAutorizadoresElegidosBEDTO;
-import com.citi.euces.solicitudes.infra.dto.TbAutorizadoresElegidosResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.TipoSolicitudRespoceDTO;
-import com.citi.euces.solicitudes.infra.dto.AutoTasaResponses;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaUpdateCamTasasRequest;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaUpdateRequest;
 import com.citi.euces.solicitudes.infra.dto.ObtenerRegistrosAutoTasasPorEjecutivoRequest;
-import com.citi.euces.solicitudes.infra.dto.TbAutorizadoresElegidosRResponse;
-import com.citi.euces.solicitudes.infra.dto.Tb_AsignacionesResponse;
 import com.citi.euces.solicitudes.infra.dto.EnviarPHPBEDTO;
 import com.citi.euces.solicitudes.infra.dto.EnviarPHPDTO;
 import com.citi.euces.solicitudes.infra.dto.ImpresionResponse;
@@ -1051,14 +1047,16 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		
 		List<EnviarPHPDTO> enviarPHPDTO= new ArrayList<EnviarPHPDTO>();
 		try {
-			String body = null;
+			String body = "";
 			String param = null;
-			EncryptMail encript = new EncryptMail();
+			//EncryptMail encript = new EncryptMail();
 			BodyMail detailMail = new BodyMail();
 			String cadenaIds = null;
 			String title = null;
-			String strAceptada = encript.Encrypt("ACEPTADA");
-			String strRechadaza = encript.Encrypt("RECHAZADA");
+			//String strAceptada = encript.Encrypt("ACEPTADA");
+			//String strRechadaza = encript.Encrypt("RECHAZADA");
+			String strAceptada = "ACEPTADA";
+			String strRechadaza = "RECHAZADA";
 			String buzon_enc = "";
 			String title_enc = "";
 			String body_enc = "";
@@ -1094,16 +1092,26 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
             if(!request.getSoeid().equals("VN86003")) {
                 body += detailMail.BodySolicitudAutorizadorUEC(request,sucursal,strAceptada,strRechadaza);
                 
-        		buzon_enc = encript.AESEncryption(detailMail.GetBuzon(), detailMail.GetKey());
+        		buzon_enc = detailMail.GetBuzon()+","+ detailMail.GetKey();
+                title_enc = title+","+detailMail.GetKey();
+                body_enc = body+","+ detailMail.GetKey();
+                soeid_enc = cadenaIds+","+  detailMail.GetKey();
+        		/*buzon_enc = encript.AESEncryption(detailMail.GetBuzon(), detailMail.GetKey());
                 title_enc = encript.AESEncryption(title, detailMail.GetKey());
                 body_enc = encript.AESEncryption(body, detailMail.GetKey());
-                soeid_enc = encript.AESEncryption(cadenaIds, detailMail.GetKey());
+                soeid_enc = encript.AESEncryption(cadenaIds, detailMail.GetKey());*/
                 param = "'" + buzon_enc + "','" + title_enc + "','" + body_enc + "','" + soeid_enc + "','" + request.getNomina() + "'";
-                enviarPHPDTO.add(new EnviarPHPDTO( body,  param));
+                enviarPHPDTO.add(new EnviarPHPDTO( cadenaIds,title,body, detailMail.GetBuzon()));
             }else {
-                body = "No se Envio";
-                param = "No se Envio";
-                enviarPHPDTO.add(new EnviarPHPDTO( body,  param));
+            	if(!body.contains(request.getNombre_Autori())) {
+            		body += detailMail.BodySolicitud(request,sucursal,strAceptada,strRechadaza);
+               //     param = "'" + buzon_enc + "','" + title_enc + "','" + body_enc + "','" + soeid_enc + "','" + request.getNomina() + "'";
+                    enviarPHPDTO.add(new EnviarPHPDTO( cadenaIds,title,body, detailMail.GetBuzon()));
+            	}else {
+            		body = "No se Envio";
+                    enviarPHPDTO.add(new EnviarPHPDTO( cadenaIds,title,body, detailMail.GetBuzon()));
+            	}
+                
             }
            
 			
@@ -1198,7 +1206,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			arc = pdfFoleado(request, folio, tipoPdf);
 
 			System.out.println("580 linea codigo arc->" + arc);
-			imprimirPDFsRepository.actualizaCatFolio(folioEspecial.get(0).getFolioId(), request.getNum_cli());
+			imprimirPDFsRepository.actualizaCatFolio(folioEspecial.get(0).getFolioValor(), request.getNum_cli());
 
 			System.out.println("580 linea codigo folio->" + folio);
 		} else if (confPdf.get(0).getPdfTipo() == 0) {

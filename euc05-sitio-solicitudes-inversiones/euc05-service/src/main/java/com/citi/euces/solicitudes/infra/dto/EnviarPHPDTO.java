@@ -2,16 +2,23 @@ package com.citi.euces.solicitudes.infra.dto;
 
 public class EnviarPHPDTO {
 	
-	private String Body;
-	private String Param;
+	private String soeidEnc;
+	private String informeEnc;
+	private String titleEnc;
+	private String acountEnc;
 	/**
-	 * @param body
-	 * @param param
+	 * @param soeidEnc
+	 * @param informeEnc
+	 * @param titleEnc
+	 * @param acountEnc
 	 */
-	public EnviarPHPDTO(String body, String param) {
+	
+	public EnviarPHPDTO(String soeidEnc, String informeEnc, String titleEnc, String acountEnc) {
 		super();
-		Body = body;
-		Param = param;
+		this.soeidEnc = soeidEnc;
+		this.informeEnc = informeEnc;
+		this.titleEnc = titleEnc;
+		this.acountEnc = acountEnc;
 	}
 	/**
 	 * 
@@ -19,18 +26,31 @@ public class EnviarPHPDTO {
 	public EnviarPHPDTO() {
 		super();
 	}
-	public String getBody() {
-		return Body;
+	public String getSoeidEnc() {
+		return soeidEnc;
 	}
-	public void setBody(String body) {
-		Body = body;
+	public void setSoeidEnc(String soeidEnc) {
+		this.soeidEnc = soeidEnc;
 	}
-	public String getParam() {
-		return Param;
+	public String getInformeEnc() {
+		return informeEnc;
 	}
-	public void setParam(String param) {
-		Param = param;
+	public void setInformeEnc(String informeEnc) {
+		this.informeEnc = informeEnc;
 	}
+	public String getTitleEnc() {
+		return titleEnc;
+	}
+	public void setTitleEnc(String titleEnc) {
+		this.titleEnc = titleEnc;
+	}
+	public String getAcountEnc() {
+		return acountEnc;
+	}
+	public void setAcountEnc(String acountEnc) {
+		this.acountEnc = acountEnc;
+	}
+	
 	
 	
 

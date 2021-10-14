@@ -2,7 +2,6 @@ package com.citi.euces.solicitudes.infra.dto;
 
 public class CatFolioDTO {
 
-	private Integer folioId;
 	private String folioValor;
 	private String folioEspecialOfertaId;
 	private Long folioIdCliente;
@@ -21,27 +20,13 @@ public class CatFolioDTO {
 	 * @param folioIdCliente
 	 * @param folioEstatus
 	 */
-	public CatFolioDTO(Integer folioId, String folioValor, String folioEspecialOfertaId, Long folioIdCliente,
+	public CatFolioDTO(String folioValor, String folioEspecialOfertaId, Long folioIdCliente,
 			Integer folioEstatus) {
 		super();
-		this.folioId = folioId;
 		this.folioValor = folioValor;
 		this.folioEspecialOfertaId = folioEspecialOfertaId;
 		this.folioIdCliente = folioIdCliente;
 		this.folioEstatus = folioEstatus;
-	}
-
-	/**
-	 * @return the folioId
-	 */
-	public Integer getFolioId() {
-		return folioId;
-	}
-	/**
-	 * @param folioId the folioId to set
-	 */
-	public void setFolioId(Integer folioId) {
-		this.folioId = folioId;
 	}
 	
 	/**
@@ -100,9 +85,7 @@ public class CatFolioDTO {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("CatFolioDTO [folioId=");
-		builder.append(folioId);
-		builder.append(", folioValor=");
+		builder.append("CatFolioDTO [folioValor=");
 		builder.append(folioValor);
 		builder.append(", folioEspecialOfertaId=");
 		builder.append(folioEspecialOfertaId);
