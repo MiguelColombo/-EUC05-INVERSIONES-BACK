@@ -1098,13 +1098,14 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     	    		title += detailMail.GetTitleSolicitud() + "|";
     	            cadenaIds += item.SOEID + "|";
     	            
-    	            if(!item.SOEID.equals("VN86003")) {
+    	            if(item.SOEID.equals("VN86003")) {
     	            	try{
+    	            		System.out.println("entro 1103");
     	            		body += detailMail.BodySolicitudAutorizadorUEC(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
     	            				solicitud.getTIPO_AUTORI(), solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
     	            				solicitud.getNOM_CTE(), solicitud.getNUM_CTE(), solicitud.getCONTRATO(),
     	            				solicitud.getMONTO().toString() + "", solicitud.getPLAZO(), solicitud.getTASA_AUTORI() + "",
-    	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.Nombre, item.SOEID)
+    	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, MensajeHorror, item.SOEID)
     							+ "|";
     	            	} catch (Exception e) {
     						throw new GenericException("Error al obtener BodySolicitudAutorizadorUEC:: ",
@@ -1130,8 +1131,9 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     		for (AutoAutorizadorBEDTO item : listadoAutorizadores) {
     			title += detailMail.GetTitleSolicitud() + "|";
 	            cadenaIds += item.SOEID + "|";
-	            if(!item.SOEID.equals("VN86003")) {
+	            if(item.SOEID.equals("VN86003")) {
 	            	try{
+	            		System.out.println("entro 1136");
 	            		body += detailMail.BodySolicitudAutorizadorUEC(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
 	            				solicitud.getTIPO_AUTORI(), solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
 	            				solicitud.getNOM_CTE(), solicitud.getNUM_CTE(), solicitud.getCONTRATO(),
@@ -1145,6 +1147,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
                 }else {
                 	if (!body.contains(item.Nombre)) {
                 		try {
+                			System.out.println("entro 1150");
     						body += detailMail.BodySolicitud(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
     								solicitud.getTIPO_AUTORI(), solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
     								solicitud.getNOM_CTE(), solicitud.getNUM_CTE(), solicitud.getCONTRATO(),
