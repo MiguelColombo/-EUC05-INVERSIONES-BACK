@@ -131,6 +131,8 @@ public interface AutoTasaRepo extends JpaRepository<AutoTasa, Integer>{
 			+ " FROM UEC_TB_AUTOTASAS a WHERE a.IS_PORTABILIDAD like '%fol%' ", nativeQuery = true)
 	Long existe_folio_bancanet();
 	
+	@Query("SELECT f FROM AutoTasa f where f.ID_TASAUTO = :ID_TASAUTO")
+	AutoTasa buscarId(@Param("ID_TASAUTO") BigInteger ID_TASAUTO);
 
 	
 }

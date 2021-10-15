@@ -56,6 +56,7 @@ import com.citi.euces.solicitudes.entities.Tb_Auto_AutoRegionales;
 import com.citi.euces.solicitudes.entities.TipoSolicitud;
 import com.citi.euces.solicitudes.entities.Sucursales;
 import com.citi.euces.solicitudes.entities.SucursalesConsulta;
+import com.citi.euces.solicitudes.infra.dto.AutoAutorizadorBEDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoCetesResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaBEDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaInsertBEDTO;
@@ -1047,75 +1048,127 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		
 		List<EnviarPHPDTO> enviarPHPDTO= new ArrayList<EnviarPHPDTO>();
 		try {
-			String body = "";
-			String param = null;
-			//EncryptMail encript = new EncryptMail();
-			BodyMail detailMail = new BodyMail();
-			String cadenaIds = null;
-			String title = null;
-			//String strAceptada = encript.Encrypt("ACEPTADA");
-			//String strRechadaza = encript.Encrypt("RECHAZADA");
-			String strAceptada = "ACEPTADA";
-			String strRechadaza = "RECHAZADA";
-			String buzon_enc = "";
-			String title_enc = "";
-			String body_enc = "";
-			String soeid_enc = "";
+			List<AutoAutorizadorBEDTO> listadoAutorizadores = request.getListadoAutorizadores();
+			BigInteger folio = new BigInteger(request.getFolio());
+			AutoTasa solicitud = autoTasaRepo.buscarId(folio);
+			System.out.println("288 solicitud->" + solicitud);
 			
-			BigInteger id = new BigInteger(request.getSuc_Solic().toString());
+			if (solicitud == null) {
+	            throw new GenericException(
+	                    "No se encontro informacion en SolicitudesTarifasEspeciales con folio  :: " + folio,
+	                    HttpStatus.NOT_FOUND.toString());
+	        }
+			
+			String[] linkAutorizas = request.getLinkAutoriza().split(",");
+	        String[] linkRechazas = request.getLinkRechaza().split(",");
+			BodyMail detailMail = new BodyMail();
+			String body = "";
+			int i = 0;
+			String cadenaIds = "";
+			String title = "";
+			String strAceptada = "StrAceptada";
+			String strRechadaza = "StrRechadaza";
+			boolean TieneError = false;
+			System.out.println("288 TieneError->" + TieneError);
+			BigInteger id = new BigInteger(solicitud.getSUC_SOLIC().toString());
         	listSucursal = sucursalesRepo.ObtenerSucursalesPorSuc(id);
     		String sucursal = null;
+    		
     		for(Sucursales suc : listSucursal) {
-    			sucursal = suc.getSIRH()+" - "+ suc.getSUCURSAL()+" - "+ suc.getDIVISION();
+    			sucursal = suc.getSUCURSAL();
     			LOGGER.debug( sucursal);
     		}
-    		/*BigInteger id_tasa = new BigInteger(request.getId_AutoTasa());
-    		listAutoTasa = autoTasaRepo.ObtenerRegCampTasa(id_tasa );
-    			String MensajeHorror) = "";
-    		for(AutoTasa autTasa : listAutoTasa) {
-    			if(!autTasa.getCONTRATO().toString().equals(request.getContrato()) || !autTasa.getNUM_CTE().toString().equals(request.getNum_Cte().toString())
-    					|| !autTasa.getTIPO_AUTORI().equals(request.getTipo_Autori()) )
-    			{
-    				 TieneError = true;
-    			}else {
-    				 TieneError = false;
-    			}
-    		}  		
-    		if (request.getTasa_Autori().toString().length() > 5)
-            {
-                TieneError = true;
-                MensajeHorror = "Error de Solicitud, Tasa Autorizada: " + request.getTasa_Autori();//sacar
-            }*/
     		
-    		title += detailMail.GetTitleSolicitud() + "|";
-            cadenaIds += request.getSoeid() + "|";
-            if(!request.getSoeid().equals("VN86003")) {
-                body += detailMail.BodySolicitudAutorizadorUEC(request,sucursal,strAceptada,strRechadaza);
-                
-        		buzon_enc = detailMail.GetBuzon()+","+ detailMail.GetKey();
-                title_enc = title+","+detailMail.GetKey();
-                body_enc = body+","+ detailMail.GetKey();
-                soeid_enc = cadenaIds+","+  detailMail.GetKey();
-        		/*buzon_enc = encript.AESEncryption(detailMail.GetBuzon(), detailMail.GetKey());
-                title_enc = encript.AESEncryption(title, detailMail.GetKey());
-                body_enc = encript.AESEncryption(body, detailMail.GetKey());
-                soeid_enc = encript.AESEncryption(cadenaIds, detailMail.GetKey());*/
-                param = "'" + buzon_enc + "','" + title_enc + "','" + body_enc + "','" + soeid_enc + "','" + request.getNomina() + "'";
-                enviarPHPDTO.add(new EnviarPHPDTO( cadenaIds,title,body, detailMail.GetBuzon()));
-            }else {
-            	if(!body.contains(request.getNombre_Autori())) {
-            		body += detailMail.BodySolicitud(request,sucursal,strAceptada,strRechadaza);
-               //     param = "'" + buzon_enc + "','" + title_enc + "','" + body_enc + "','" + soeid_enc + "','" + request.getNomina() + "'";
-                    enviarPHPDTO.add(new EnviarPHPDTO( cadenaIds,title,body, detailMail.GetBuzon()));
-            	}else {
-            		body = "No se Envio";
-                    enviarPHPDTO.add(new EnviarPHPDTO( cadenaIds,title,body, detailMail.GetBuzon()));
-            	}
-                
+    		String MensajeHorror = "Error de Solicitud";
+    		if(solicitud.getCONTRATO() == null || solicitud.getNUM_CTE() == null || solicitud.getTIPO_AUTORI() == null ){
+    			TieneError = true;
+    		}else {
+    			TieneError = false;
+    		}  	
+    		
+    		String tasa = solicitud.getTIPO_AUTORI() + "";
+    		if (tasa.length() > 5){
+                TieneError = true;
+                MensajeHorror = "Error de Solicitud, Tasa Autorizada: " + tasa;
             }
-           
-			
+    		System.out.println("288 tasa y MensajeHorror -> " + tasa + "  " + MensajeHorror);
+    		
+    		if (TieneError) {
+    			for (AutoAutorizadorBEDTO item : listadoAutorizadores) {
+    	    		title += detailMail.GetTitleSolicitud() + "|";
+    	            cadenaIds += item.SOEID + "|";
+    	            
+    	            if(!item.SOEID.equals("VN86003")) {
+    	            	try{
+    	            		body += detailMail.BodySolicitudAutorizadorUEC(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
+    	            				solicitud.getTIPO_AUTORI(), solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
+    	            				solicitud.getNOM_CTE(), solicitud.getNUM_CTE(), solicitud.getCONTRATO(),
+    	            				solicitud.getMONTO().toString() + "", solicitud.getPLAZO(), solicitud.getTASA_AUTORI() + "",
+    	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.Nombre, item.SOEID)
+    							+ "|";
+    	            	} catch (Exception e) {
+    						throw new GenericException("Error al obtener BodySolicitudAutorizadorUEC:: ",
+    								HttpStatus.INTERNAL_SERVER_ERROR.toString());
+    					}
+                    }
+    			}
+                
+    			System.out.println("288 body->" + body);
+                if (i > 0)
+                {
+        			title = title.substring(0, title.length() - 1);
+        			body = body.substring(0, body.length() - 1);
+        			cadenaIds = cadenaIds.substring(0, cadenaIds.length() - 1);
+                }
+                
+                System.out.println("288 title y cadenaIds->" + title + "     " + cadenaIds);
+                enviarPHPDTO.add(new EnviarPHPDTO(cadenaIds,title,body, detailMail.GetBuzon()));
+    		}
 
+    		int x = 0;
+    		System.out.println("288 listadoAutorizadores->" + listadoAutorizadores);
+    		for (AutoAutorizadorBEDTO item : listadoAutorizadores) {
+    			title += detailMail.GetTitleSolicitud() + "|";
+	            cadenaIds += item.SOEID + "|";
+	            if(!item.SOEID.equals("VN86003")) {
+	            	try{
+	            		body += detailMail.BodySolicitudAutorizadorUEC(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
+	            				solicitud.getTIPO_AUTORI(), solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
+	            				solicitud.getNOM_CTE(), solicitud.getNUM_CTE(), solicitud.getCONTRATO(),
+	            				solicitud.getMONTO().toString() + "", solicitud.getPLAZO(), solicitud.getTASA_AUTORI() + "",
+	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.Nombre, item.SOEID)
+							+ "|";
+	            	} catch (Exception e) {
+						throw new GenericException("Error al obtener BodySolicitudAutorizadorUEC:: ",
+								HttpStatus.INTERNAL_SERVER_ERROR.toString());
+					}
+                }else {
+                	if (!body.contains(item.Nombre)) {
+                		try {
+    						body += detailMail.BodySolicitud(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
+    								solicitud.getTIPO_AUTORI(), solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
+    								solicitud.getNOM_CTE(), solicitud.getNUM_CTE(), solicitud.getCONTRATO(),
+    								solicitud.getMONTO().toString() + "", solicitud.getPLAZO(), solicitud.getTASA_AUTORI() + "",
+    								solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.Nombre,
+    								item.SOEID, request.getUrlRedirect(), linkAutorizas[x], linkRechazas[x]) + "|";
+    					} catch (Exception e) {
+    						throw new GenericException("Error al obtener BodySolicitud:: ",
+    								HttpStatus.INTERNAL_SERVER_ERROR.toString());
+    					}
+                	}
+                	
+                }
+	            x++;
+    		}
+    		System.out.println("288 body->" + body);
+
+    		if (i > 0) {
+    			title = title.substring(0, title.length() - 1);
+    			body = body.substring(0, body.length() - 1);
+    			cadenaIds = cadenaIds.substring(0, cadenaIds.length() - 1);
+    		}
+    		System.out.println("288 title y cadenaIds->" + title + "     " + cadenaIds);
+    		enviarPHPDTO.add(new EnviarPHPDTO(cadenaIds,title,body, detailMail.GetBuzon()));
 		}catch (Exception ex) {
 			System.out.println("ex ->" + ex.getMessage());
 			System.out.println("ex ->" + ex.getCause());
