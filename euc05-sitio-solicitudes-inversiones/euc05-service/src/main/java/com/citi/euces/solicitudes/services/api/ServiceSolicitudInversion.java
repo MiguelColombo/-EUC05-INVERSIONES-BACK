@@ -58,5 +58,7 @@ public interface ServiceSolicitudInversion {
 	List<EnviarPHPDTO> EnviarPHP(EnviarPHPBEDTO request)throws GenericException, IOException;
 	List<OfertaResponseDTO> ObtenerOferta(OfertaBEDTO request)throws GenericException, IOException;
 	ImpresionResponse pdfEspecial(PlantillaPdfDTO request)throws GenericException, IOException;
+	BigInteger CrearIdAutotsa()throws GenericException, IOException;
+	
 	
 }

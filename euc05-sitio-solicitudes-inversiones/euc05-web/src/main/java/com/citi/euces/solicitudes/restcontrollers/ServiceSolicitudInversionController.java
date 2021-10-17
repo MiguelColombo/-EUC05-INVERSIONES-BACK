@@ -828,4 +828,30 @@ public class ServiceSolicitudInversionController  {
 			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		}
 	}
+	
+	@ResponseStatus(code = HttpStatus.OK)
+	@GetMapping(path ="/CrearIdAutotsa", produces = "application/json")//btnSave_Click put
+	public ResponseEntity<?> CrearIdAutotsa() {
+		 try{
+			 FolioAutoTasaResponse response  = new FolioAutoTasaResponse(serviceSolicitudInversionImp.CrearIdAutotsa(), "200");
+			 if(response.getFolio().toString() == null || response.getFolio().toString().equals("0")) {
+				throw new GenericException("No se puede procesar la solicitud","500");
+			}else {			
+				return new ResponseEntity<FolioAutoTasaResponse>(response, HttpStatus.OK);
+			}
+			}catch (GenericException ex) {
+				ErrorGeneric error = new ErrorGeneric();
+				error.setCode(ex.getCodeError());
+				error.setMensaje(ex.getMessage());
+				error.setError("Parametros Incorrecto o Parametros no existen".toString());
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
+			} catch (Exception e) {
+				ErrorGeneric error = new ErrorGeneric();
+				error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				error.setMensaje(e.getMessage());
+				error.setError(e);
+				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
+			}
+	    }	
+	
 }

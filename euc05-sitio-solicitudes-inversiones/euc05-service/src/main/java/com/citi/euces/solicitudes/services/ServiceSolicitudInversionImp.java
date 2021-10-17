@@ -287,48 +287,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		try {
 		int salida = 0;
 		Timestamp timestamp = Timestamp.valueOf(request.getFecha_Solic());
-		
-		//
-		SimpleDateFormat objSDF5 = new SimpleDateFormat("yyyy/dd/MM");
-		Date  fechaAct=  new Date();
-		objSDF5.format(fechaAct);
-		Calendar cs = Calendar.getInstance(TimeZone.getTimeZone("America/Mexico_City"));
-		cs.setTime(fechaAct);
-		//
-		id_Tasa_long = autoTasaRepo.ObtenerUltFolioAutoTasas(objSDF5.format(cs.getTime()));
-		LOGGER.debug( id_Tasa_long.toString());
-		//String id = id_Tasa.toString();
-		
-		//id_Tasa =   (id_Tasa == 0) ? 1: (long) (Integer.parseInt(id.substring(6))+1);
-		//id_Tasa_long =   (id_Tasa_long.toString().equals("0")) ? id_Tasa_long_n: id_tasa_op;
-		if(id_Tasa_long.toString().equals("0")) {
-			id_Tasa_long = id_Tasa_long_n;
-		}else {
-			String id = id_Tasa_long.toString();
-			BigInteger id_Tasa =new BigInteger(id.substring(6).toString());
-			BigInteger id_tasa_op = new BigInteger(id_Tasa.add(id_Tasa_long_n).toString());
-			id_Tasa_long= id_tasa_op;
-			LOGGER.debug( id_Tasa_long.toString());
-		}
-		
-		
-		
-		Long fecha_act = (long) Integer.parseInt(objSDF2.format(fecha));
-		BigInteger f_div =new BigInteger(fecha_act.toString()); 
-		BigInteger f_div2 =new BigInteger("100000");  
-		BigInteger res =new BigInteger(f_div.multiply(f_div2).add(id_Tasa_long).toString());
-		//id_Tasa_long =  (Integer.parseInt(objSDF2.format(fecha))*(10000))+id_Tasa_long;
-		LOGGER.debug( id_Tasa_long.toString());
-		LOGGER.debug(res.toString() );
-		 valida = autoTasaRepo.ValidarID_TASAUTO(f_div);
-		if(valida.toString().equals("0")) {
-			res = res;
-		}else {
-			BigInteger res_po = new BigInteger(valida.add(id_Tasa_long_n).toString()); 
-			res = res_po;
-		}
-		
-		salida = autoTasaRepo.SAVE_AUTOTASAS(res, 
+		BigInteger id_AutoTasa =new BigInteger(request.getId_TasAuto().toString());
+		salida = autoTasaRepo.SAVE_AUTOTASAS(id_AutoTasa, 
 				//request.getFecha_Solic(), 
 				timestamp,
 				request.getEstatus(), 
@@ -350,7 +310,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 				request.getCel(), 
 				request.getPorta());
 		if(salida > 0) {
-			mensaje ="Guardado | id : "+ res;	
+			mensaje ="Guardado | id : "+ id_AutoTasa;	
 			
 		}else {
 			mensaje = "Error";	
@@ -1812,5 +1772,55 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			System.out.println("911 line codigo result ->" + result + "dotos");
 		}
 		return result;
+	}
+	@Override
+	public BigInteger CrearIdAutotsa() throws GenericException, IOException {
+		  String mensaje = null ;
+	         SimpleDateFormat objSDF2 = new SimpleDateFormat("ddMMyy");
+	         Date  fecha=  new Date();
+	         BigInteger id_Tasa_long_n =new BigInteger("1"); 
+	         BigInteger folio; 
+			try {
+			
+			//
+			SimpleDateFormat objSDF5 = new SimpleDateFormat("yyyy/dd/MM");
+			Date  fechaAct=  new Date();
+			objSDF5.format(fechaAct);
+			Calendar cs = Calendar.getInstance(TimeZone.getTimeZone("America/Mexico_City"));
+			cs.setTime(fechaAct);
+			//
+			id_Tasa_long = autoTasaRepo.ObtenerUltFolioAutoTasas(objSDF5.format(cs.getTime()));
+			LOGGER.debug( id_Tasa_long.toString());
+			if(id_Tasa_long.toString().equals("0")) {
+				id_Tasa_long = id_Tasa_long_n;
+			}else {
+				String id = id_Tasa_long.toString();
+				BigInteger id_Tasa =new BigInteger(id.substring(6).toString());
+				BigInteger id_tasa_op = new BigInteger(id_Tasa.add(id_Tasa_long_n).toString());
+				id_Tasa_long= id_tasa_op;
+				LOGGER.debug( id_Tasa_long.toString());
+			}
+			Long fecha_act = (long) Integer.parseInt(objSDF2.format(fecha));
+			BigInteger f_div =new BigInteger(fecha_act.toString()); 
+			BigInteger f_div2 =new BigInteger("100000");  
+			BigInteger res =new BigInteger(f_div.multiply(f_div2).add(id_Tasa_long).toString());
+			//id_Tasa_long =  (Integer.parseInt(objSDF2.format(fecha))*(10000))+id_Tasa_long;
+			LOGGER.debug( id_Tasa_long.toString());
+			LOGGER.debug(res.toString() );
+			 valida = autoTasaRepo.ValidarID_TASAUTO(f_div);
+			if(valida.toString().equals("0")) {
+				res = res;
+			}else {
+				BigInteger res_po = new BigInteger(valida.add(id_Tasa_long_n).toString()); 
+				res = res_po;
+			}
+			
+			folio = res;
+
+			}catch (Exception ex) {
+				throw new GenericException("Error",
+						HttpStatus.INTERNAL_SERVER_ERROR.toString());
+			}
+			return folio;
 	}
 }
