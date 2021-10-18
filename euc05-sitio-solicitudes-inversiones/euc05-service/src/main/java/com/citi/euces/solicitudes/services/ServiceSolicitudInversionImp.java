@@ -867,10 +867,12 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			ObtenerRegistrosAutoTasasPorEjecutivoRequest request) {
 		List<ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO> PorsentajeResponce = new ArrayList<ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO>();
 		try {
-		SimpleDateFormat objSDF2 = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat objSDF2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		String FECHA_SOLIC ;
 		String FECHA_AUTORI ;
 		String FECHA_ESTATUS ;
+		Long datetime = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(datetime);
 		//puesto = (au.getDivision().equals("Gerencia")) ? "Gerencia:":"Divisional:";
 		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo(request.getNomina(), request.getNum_cte(), request.getYear());
 		for(AutoTasasPorEjecutivo porcentaje : listAutoTasaPor) {
@@ -878,6 +880,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			FECHA_SOLIC = (porcentaje.getTas_FECHA_SOLIC()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_SOLIC());
 			FECHA_AUTORI = (porcentaje.getTas_FECHA_AUTORI()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_AUTORI());
 			FECHA_ESTATUS = (porcentaje.getTas_FECHA_ESTATUS() == null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_ESTATUS());
+
 			System.out.println("ext ->" + FECHA_ESTATUS);
 			PorsentajeResponce.add(new ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO(
 					porcentaje.getTas_ID_TASAUTO(),
@@ -910,7 +913,10 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					porcentaje.getID_CAMPANA(),
 					porcentaje.getOFERTA_SIGUIENTE_PASO(),
 					porcentaje.getOFERTA_PDF_ESPECIAL_ID(),
-					porcentaje.getNOMEJEC()));
+					porcentaje.getNOMEJEC(),
+					porcentaje.getGATNOMINAOFER(),
+					porcentaje.getGATREALOFER(),
+					porcentaje.getRENDIMIENTOBRUTO()));
 		}
 	}catch (Exception ex) {
 		System.out.println("ex ->" + ex.getMessage());

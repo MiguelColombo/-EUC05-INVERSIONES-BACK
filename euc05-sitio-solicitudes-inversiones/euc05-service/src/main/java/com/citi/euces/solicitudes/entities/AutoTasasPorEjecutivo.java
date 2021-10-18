@@ -19,9 +19,7 @@ public class AutoTasasPorEjecutivo {
 	@Column(name ="NUM_AUTORI_UEC")
 	private Long  tas_NUM_AUTORI_UEC;
 	@Column(name ="FECHA_SOLIC")
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date tas_FECHA_SOLIC;
+	private Timestamp tas_FECHA_SOLIC;
 	@Column(name ="FECHA_AUTORI")
 	private Timestamp tas_FECHA_AUTORI;
 	@Column(name ="FECHA_ESTATUS")
@@ -43,7 +41,7 @@ public class AutoTasasPorEjecutivo {
 	@Column(name ="PLAZO")
 	private Long tas_PLAZO;
 	@Column(name ="TASA_AUTORI")
-	private Long tas_TASA_AUTORI;
+	private String tas_TASA_AUTORI;
 	@Column(name ="TIPO_AUTORI")
 	private String tas_TIPO_AUTORI;
 	@Column(name ="SOEID_AUTORI")
@@ -74,6 +72,12 @@ public class AutoTasasPorEjecutivo {
 	private String OFERTA_PDF_ESPECIAL_ID;
 	@Column(name ="NOMEJEC")
 	private String NOMEJEC;
+	@Column(name ="GATNOMINAOFER")
+	private String GATNOMINAOFER;
+	@Column(name ="GATREALOFER")
+	private String GATREALOFER;
+	@Column(name ="RENDIMIENTOBRUTO")
+	private String RENDIMIENTOBRUTO;
 	
 	public AutoTasasPorEjecutivo() {
 		
@@ -103,11 +107,11 @@ public class AutoTasasPorEjecutivo {
 		this.tas_NUM_AUTORI_UEC = tas_NUM_AUTORI_UEC;
 	}
 
-	public Date getTas_FECHA_SOLIC() {
+	public Timestamp getTas_FECHA_SOLIC() {
 		return tas_FECHA_SOLIC;
 	}
 
-	public void setTas_FECHA_SOLIC(Date tas_FECHA_SOLIC) {
+	public void setTas_FECHA_SOLIC(Timestamp tas_FECHA_SOLIC) {
 		this.tas_FECHA_SOLIC = tas_FECHA_SOLIC;
 	}
 
@@ -191,11 +195,11 @@ public class AutoTasasPorEjecutivo {
 		this.tas_PLAZO = tas_PLAZO;
 	}
 
-	public Long getTas_TASA_AUTORI() {
+	public String getTas_TASA_AUTORI() {
 		return tas_TASA_AUTORI;
 	}
 
-	public void setTas_TASA_AUTORI(Long tas_TASA_AUTORI) {
+	public void setTas_TASA_AUTORI(String tas_TASA_AUTORI) {
 		this.tas_TASA_AUTORI = tas_TASA_AUTORI;
 	}
 
@@ -317,6 +321,30 @@ public class AutoTasasPorEjecutivo {
 
 	public void setNOMEJEC(String nOMEJEC) {
 		NOMEJEC = nOMEJEC;
+	}
+
+	public String getGATNOMINAOFER() {
+		return GATNOMINAOFER;
+	}
+
+	public void setGATNOMINAOFER(String gATNOMINAOFER) {
+		GATNOMINAOFER = gATNOMINAOFER;
+	}
+
+	public String getGATREALOFER() {
+		return GATREALOFER;
+	}
+
+	public void setGATREALOFER(String gATREALOFER) {
+		GATREALOFER = gATREALOFER;
+	}
+
+	public String getRENDIMIENTOBRUTO() {
+		return RENDIMIENTOBRUTO;
+	}
+
+	public void setRENDIMIENTOBRUTO(String rENDIMIENTOBRUTO) {
+		RENDIMIENTOBRUTO = rENDIMIENTOBRUTO;
 	}
 	
 

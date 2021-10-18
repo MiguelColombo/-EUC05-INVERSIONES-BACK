@@ -1,5 +1,6 @@
 package com.citi.euces.solicitudes.infra.dto;
 
+import java.sql.Timestamp;
 
 public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 
@@ -17,7 +18,7 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	private String tas_NOMINA;
 	private Long tas_MONTO;
 	private Long tas_PLAZO;
-	private Long tas_TASA_AUTORI;
+	private String tas_TASA_AUTORI;
 	private String tas_TipoOferta;
 	private String tas_SOEID_AUTORI; 
 	private String tas_SOEID_ASIG;
@@ -29,11 +30,15 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	private String tas_OBSERVA_WEB;
 	private String certificado_fisico;
 	private String certificado_moral;
-	private String fecha_Lieracion;
+	private String fecha_Liberacion;
 	private String tas_Tipo_Campana;
 	private Long OFERTA_SIGUIENTE_PASO;
 	private String OFERTA_PDF_ESPECIAL_ID;
 	private String NOMEJEC;
+	private String GATNOMINAOFER;
+	private String GATREALOFER;
+	private String RENDIMIENTOBRUTO;
+	
 	/**
 	 * @param tas_ID_TASAUTO
 	 * @param tas_ESTATUS
@@ -68,11 +73,11 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	public ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO(Long tas_ID_TASAUTO, String tas_ESTATUS,  Long tas_Folio,
 			String tas_FECHA_SOLIC, String tas_FECHA_AUTORI, String tas_FECHA_ESTATUS, Long tas_SUC_SOLIC, String suc,
 			Long tas_NUM_CTE, String tas_NOM_CTE, Long tas_CONTRATO, String tas_NOMINA, Long tas_MONTO, Long tas_PLAZO,
-			Long tas_TASA_AUTORI, String tas_TipoOferta, String tas_SOEID_AUTORI, String tas_SOEID_ASIG,
+			String tas_TASA_AUTORI, String tas_TipoOferta, String tas_SOEID_AUTORI, String tas_SOEID_ASIG,
 			String tas_SOEID_OPE, String tas_INIC_AUTORI, Long tas_CETE, Long tas_PORCEN_CETE,
 			String eleg_autorizadores, String tas_OBSERVA_WEB, String certificado_fisico, String certificado_moral,
-			String fecha_Lieracion, String tas_Tipo_Campana, Long OFERTA_SIGUIENTE_PASO,
-	        String OFERTA_PDF_ESPECIAL_ID, String NOMEJEC) {
+			String fecha_Liberacion, String tas_Tipo_Campana, Long OFERTA_SIGUIENTE_PASO,
+	        String OFERTA_PDF_ESPECIAL_ID, String NOMEJEC, String GATNOMINAOFER,String GATREALOFER,String RENDIMIENTOBRUTO ) {
 		super();
 		this.tas_ID_TASAUTO = tas_ID_TASAUTO;
 		this.tas_ESTATUS = tas_ESTATUS;
@@ -100,11 +105,14 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 		this.tas_OBSERVA_WEB = tas_OBSERVA_WEB;
 		this.certificado_fisico = certificado_fisico;
 		this.certificado_moral = certificado_moral;
-		this.fecha_Lieracion = fecha_Lieracion;
+		this.fecha_Liberacion = fecha_Liberacion;
 		this.tas_Tipo_Campana = tas_Tipo_Campana;
 		this.OFERTA_SIGUIENTE_PASO = OFERTA_SIGUIENTE_PASO;
 		this.OFERTA_PDF_ESPECIAL_ID = OFERTA_PDF_ESPECIAL_ID;
 		this.NOMEJEC = NOMEJEC;
+		this.GATNOMINAOFER = GATNOMINAOFER;
+		this.GATREALOFER = GATREALOFER;
+		this.RENDIMIENTOBRUTO =  RENDIMIENTOBRUTO;
 		
 		
 	}
@@ -198,10 +206,10 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	public void setTas_PLAZO(Long tas_PLAZO) {
 		this.tas_PLAZO = tas_PLAZO;
 	}
-	public Long getTas_TASA_AUTORI() {
+	public String getTas_TASA_AUTORI() {
 		return tas_TASA_AUTORI;
 	}
-	public void setTas_TASA_AUTORI(Long tas_TASA_AUTORI) {
+	public void setTas_TASA_AUTORI(String tas_TASA_AUTORI) {
 		this.tas_TASA_AUTORI = tas_TASA_AUTORI;
 	}
 	public String getTas_TipoOferta() {
@@ -270,11 +278,11 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	public void setCertificado_moral(String certificado_moral) {
 		this.certificado_moral = certificado_moral;
 	}
-	public String getFecha_Lieracion() {
-		return fecha_Lieracion;
+	public String getFecha_Liberacion() {
+		return fecha_Liberacion;
 	}
 	public void setFecha_Lieracion(String fecha_Lieracion) {
-		this.fecha_Lieracion = fecha_Lieracion;
+		this.fecha_Liberacion = fecha_Lieracion;
 	}
 	public String getTas_Tipo_Campana() {
 		return tas_Tipo_Campana;
@@ -299,6 +307,24 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	}
 	public void setNOMEJEC(String nOMEJEC) {
 		NOMEJEC = nOMEJEC;
+	}
+	public String getGATNOMINAOFER() {
+		return GATNOMINAOFER;
+	}
+	public void setGATNOMINAOFER(String gATNOMINAOFER) {
+		GATNOMINAOFER = gATNOMINAOFER;
+	}
+	public String getGATREALOFER() {
+		return GATREALOFER;
+	}
+	public void setGATREALOFER(String gATREALOFER) {
+		GATREALOFER = gATREALOFER;
+	}
+	public String getRENDIMIENTOBRUTO() {
+		return RENDIMIENTOBRUTO;
+	}
+	public void setRENDIMIENTOBRUTO(String rENDIMIENTOBRUTO) {
+		RENDIMIENTOBRUTO = rENDIMIENTOBRUTO;
 	}
 	
 	
