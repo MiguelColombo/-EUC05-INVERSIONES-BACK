@@ -48,6 +48,7 @@ import com.citi.euces.solicitudes.models.AutorizadoresDivisionalesResponse;
 import com.citi.euces.solicitudes.models.AutorizadoresResponse;
 import com.citi.euces.solicitudes.models.CalcularSoeidAsignadoResponse;
 import com.citi.euces.solicitudes.models.ConfirmacionResponce;
+import com.citi.euces.solicitudes.models.ConfirmacionSolicitarResponce;
 import com.citi.euces.solicitudes.models.ConfirmacionResponce;
 import com.citi.euces.solicitudes.models.DiasFestivosResponse;
 import com.citi.euces.solicitudes.models.EjecutivoSucursalResponse;
@@ -379,8 +380,8 @@ public class ServiceSolicitudInversionController  {
 			if(mensaje == null || mensaje.isEmpty()) {
 				throw new GenericException("No se puede procesar la solicitud","500");	
 			}else {
-				ConfirmacionResponce response = new ConfirmacionResponce(mensaje, "200");
-				return new ResponseEntity<ConfirmacionResponce>(response,HttpStatus.OK);
+				ConfirmacionSolicitarResponce response = new ConfirmacionSolicitarResponce(mensaje, "200",true);
+				return new ResponseEntity<ConfirmacionSolicitarResponce>(response,HttpStatus.OK);
 			}
 		} catch (GenericException ex) {
 			System.out.println("etro");
