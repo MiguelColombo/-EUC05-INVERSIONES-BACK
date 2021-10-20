@@ -31,6 +31,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
@@ -1197,6 +1198,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		List<ConfigPdfDTO> confPdf = new ArrayList<ConfigPdfDTO>();
 		List<CatPDFEspecial> tipoPdf = new ArrayList<CatPDFEspecial>();
 		List<CatFolioDTO> folioEspecial = new ArrayList<CatFolioDTO>();
+		List<CatFolioDTO> folioEspecialExiste = new ArrayList<CatFolioDTO>();
 
 		tipoPdf = imprimirPDFsRepository.getPlantillaPdf(request.getPdfEspecial());
 
@@ -1215,22 +1217,37 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 
 		System.out.println("580 linea codigo confPdf->" + confPdf);
 		if (confPdf.get(0).getPdfTipo() == 1) {
-			folioEspecial = imprimirPDFsRepository.getFolioEsp(confPdf.get(0).getFolioId());
-			if (folioEspecial.isEmpty() || folioEspecial == null || folioEspecial.size() == 0) {
-				throw new GenericException("No se puede acceder a al PDF debido a que no existen folios para asignar.",
-						HttpStatus.NOT_FOUND.toString());
+
+			folioEspecialExiste = imprimirPDFsRepository.getFolioEspUtilizado(confPdf.get(0).getFolioId(),
+					request.getNum_cli());
+			if (folioEspecialExiste.isEmpty() || folioEspecialExiste == null || folioEspecialExiste.size() == 0) {
+
+				folioEspecial = imprimirPDFsRepository.getFolioEsp(confPdf.get(0).getFolioId());
+				if (folioEspecial.isEmpty() || folioEspecial == null || folioEspecial.size() == 0) {
+					throw new GenericException(
+							"No se puede acceder a al PDF debido a que no existen folios para asignar.",
+							HttpStatus.NOT_FOUND.toString());
+				}
+
+				System.out.println("580 linea codigo folioEspecial->" + folioEspecial);
+				folio = folioEspecial.get(0).getFolioValor();
+
+				System.out.println("580 linea codigo xxxxxxxxxxxxx folio->" + folio);
+				arc = pdfFoleado(request, folio, tipoPdf);
+
+				System.out.println("580 linea codigo arc->" + arc);
+				imprimirPDFsRepository.actualizaCatFolio(folioEspecial.get(0).getFolioValor(), request.getNum_cli());
+
+				System.out.println("580 linea codigo folio->" + folio);
+
+			} else {
+				System.out.println("5801 linea codigo folioEspecialExiste->" + folioEspecialExiste);
+				folio = folioEspecialExiste.get(0).getFolioValor();
+
+				System.out.println("5801 linea codigo xxxxxxxxxxxxx folio->" + folio);
+				arc = pdfFoleado(request, folio, tipoPdf);
 			}
 
-			System.out.println("580 linea codigo folioEspecial->" + folioEspecial);
-			folio = folioEspecial.get(0).getFolioValor();
-
-			System.out.println("580 linea codigo xxxxxxxxxxxxx folio->" + folio);
-			arc = pdfFoleado(request, folio, tipoPdf);
-
-			System.out.println("580 linea codigo arc->" + arc);
-			imprimirPDFsRepository.actualizaCatFolio(folioEspecial.get(0).getFolioValor(), request.getNum_cli());
-
-			System.out.println("580 linea codigo folio->" + folio);
 		} else if (confPdf.get(0).getPdfTipo() == 0) {
 			arc = pdfNoFoleado(request, tipoPdf);
 		}
@@ -1239,7 +1256,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	public ImpresionResponse pdfFoleado(PlantillaPdfDTO request, String folio, List<CatPDFEspecial> tipoPdf)
 			throws GenericException, IOException {
 		ImpresionResponse arc = new ImpresionResponse();
-		Document documento = new Document();
+		Document documento = new Document(PageSize.A4, 36, 0, 108, 108);
 		FileOutputStream archivo;
 		InputStream ima1, ima2;
 		Blob blob1, blob2;
@@ -1284,28 +1301,53 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			documento.add(new Paragraph("          \n"));
 			documento.add(new Paragraph("          \n"));
 			documento.add(new Paragraph("          \n"));
-			documento.add(new Paragraph("          \n"));
-			documento.add(new Paragraph("          \n"));
-			documento.add(new Paragraph("          \n"));
-			documento.add(new Paragraph("          \n"));
 			documento.add(Chunk.NEWLINE);
 			Font ff = new Font();
 			ff.setStyle(Font.BOLD);
 			Paragraph p7 = new Paragraph();
 			p7.setFont(ff);
-			p7.setAlignment(Element.ALIGN_RIGHT);
-			p7.add("  " + fechaActual(new Date()));
+//			p7.setAlignment(Element.ALIGN_RIGHT);
+			p7.add("                                      " + fechaActual(new Date()));
 			Paragraph p8 = new Paragraph();
 			p8.setFont(ff);
 			p8.add(request.getNombreCliente());
 			Paragraph p9 = new Paragraph();
 			p9.setFont(ff);
 			p9.add(folio);
-			documento.add(Chunk.NEWLINE);
-			documento.add(new Paragraph(p7));
-			documento.add(Chunk.NEWLINE);
 
-			documento.add(new Paragraph("                      " + request.getNombreCliente()));
+			// We create the table (Creamos la tabla).
+			PdfPTable tableInfo = new PdfPTable(2);
+			// Ahora llenamos la tabla del PDF
+			tableInfo.setWidthPercentage(100);
+			tableInfo.setHorizontalAlignment(Element.ALIGN_CENTER);
+			PdfPCell columnHeader1Info = new PdfPCell(new Paragraph(""));
+//			columnHeader1Info.setFixedHeight(30f);
+			columnHeader1Info = new PdfPCell(new Paragraph(""));
+			columnHeader1Info.setHorizontalAlignment(Element.ALIGN_LEFT);
+			columnHeader1Info.setFixedHeight(28f);
+			columnHeader1Info.setBorder(PdfPCell.NO_BORDER);
+			tableInfo.addCell(columnHeader1Info);
+			columnHeader1Info = new PdfPCell(new Phrase(p7));
+//			columnHeader1Info.setHorizontalAlignment(Element.ALIGN_CENTER);
+			columnHeader1Info.setBorder(PdfPCell.NO_BORDER);
+			columnHeader1Info.setFixedHeight(28f);
+			tableInfo.addCell(columnHeader1Info);
+			columnHeader1Info = new PdfPCell(new Paragraph("                     " + request.getNombreCliente()));
+			columnHeader1Info.setBorder(PdfPCell.NO_BORDER);
+			tableInfo.addCell(columnHeader1Info);
+			columnHeader1Info = new PdfPCell(new Phrase(""));
+			columnHeader1Info.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			columnHeader1Info.setBorder(PdfPCell.NO_BORDER);
+			tableInfo.addCell(columnHeader1Info);
+
+			documento.add(tableInfo);
+
+//			
+//			documento.add(Chunk.NEWLINE);
+//			documento.add(new Paragraph(p7));
+//			documento.add(Chunk.NEWLINE);
+//
+//			documento.add(new Paragraph("                      " + request.getNombreCliente()));
 			documento.add(new Paragraph("          \n"));
 			documento.add(new Paragraph("          \n"));
 			documento.add(new Paragraph("          \n"));
@@ -1337,6 +1379,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		}
 		return arc;
 	}
+
+
 	public String fechaActual(Date date) {
 //		Date date = new Date();
 		String fechaComplete = "";
@@ -1378,31 +1422,24 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 //			file3 = getImagen(8); //imagen para foleado
 //			file3 = getImagen(9); // imagen para no foleado dentro del texto
 			file3 = tipoPdf.get(0).getArchivo();
-			
+
 			Image imagenGen2 = Image.getInstance(file2.toFile().getAbsolutePath());
 			System.out.println("62 linea codigo imagenGen2->" + imagenGen2);
 			imagenGen2.setAbsolutePosition(0f, 0f);
 			imagenGen2.scaleAbsolute(600f, 785f);
-			imagenGen2.setTransparency(new int[] { 0x00, 0x30 });
+			imagenGen2.setTransparency(new int[] { 0x00, 0x60 });
 			marcEvent.setImagen(imagenGen2);
-			
-			
+
 			System.out.println("54 linea codigo file1->" + file1);
 			Path testFile = Files.createTempFile("PDFestandar", ".pdf");
 			archivo = new FileOutputStream(testFile.toFile());
 //			PdfWriter.getInstance(documento, archivo);
-			
-			
-			//generar los eventos con el pdf
-	        PdfWriter writer = PdfWriter.getInstance(documento, archivo);
-	        // indicamos que objecto manejara los eventos al escribir el Pdf
-	        writer.setPageEvent(marcEvent);
-	        
-	        
-	        
-	        
-	        
-	        
+
+			// generar los eventos con el pdf
+			PdfWriter writer = PdfWriter.getInstance(documento, archivo);
+			// indicamos que objecto manejara los eventos al escribir el Pdf
+			writer.setPageEvent(marcEvent);
+
 			System.out.println("58 linea codigo request->" + request);
 			documento.open();
 			System.out.println("60 linea codigo file1->" + file1);
@@ -1424,7 +1461,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 
 			Image imagenGen3 = Image.getInstance(file3.toFile().getAbsolutePath());
 //			imagenGen3.setAbsolutePosition(0f, 780f);
-			imagenGen3.scaleAbsolute(500f, 540f);
+			imagenGen3.scaleAbsolute(520f, 400f);
 			imagenGen3.setAlignment(Chunk.ALIGN_CENTER);
 
 			documento.add(new Paragraph("          \n"));
@@ -1521,6 +1558,20 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 
 			documento.add(Chunk.NEWLINE);
 
+//			// We create the table (Creamos la tabla).
+//			PdfPTable tableimg = new PdfPTable(1);
+////			tableimg.setTotalWidth(550);
+//			tableimg.setWidthPercentage(100);
+//			tableimg.setHorizontalAlignment(Element.ALIGN_CENTER);
+//			// Ahora llenamos la tabla del PDF
+//			PdfPCell columnHeaderimg1;
+//			columnHeaderimg1 = new PdfPCell(imagenGen3, true);
+//			columnHeaderimg1.setBorder(PdfPCell.NO_BORDER);
+//			columnHeaderimg1.setFixedHeight(400f);
+//			tableimg.addCell(columnHeaderimg1);
+//			documento.add(tableimg);
+////			parte de abajo de la tabla
+
 			documento.add(imagenGen3);
 //			documento.add(imagenGen2);
 			documento.add(new Paragraph("          \n"));
@@ -1610,9 +1661,11 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			int numColumnsAviso = 1;
 			int numRowsAviso = avisoPdf.size();
 			String validaVacio = quitaSpacios(avisoPdf.get(0).getParametroAviso());
-			System.out.println("289 linea codigo avisoPdf.get(0).getParametroAviso() ->" + avisoPdf.get(0).getParametroAviso() + "mre");
+			System.out.println("289 linea codigo avisoPdf.get(0).getParametroAviso() ->"
+					+ avisoPdf.get(0).getParametroAviso() + "mre");
 			documento.add(Chunk.NEWLINE);
-			if (avisoPdf.get(0).getParametroAviso() == null || avisoPdf.get(0).getParametroAviso().equals("") || validaVacio.equals("")) {
+			if (avisoPdf.get(0).getParametroAviso() == null || avisoPdf.get(0).getParametroAviso().equals("")
+					|| validaVacio.equals("")) {
 				System.out.println("289 linea codigo request->" + request);
 			} else {
 				// We create the table (Creamos la tabla).
@@ -1676,6 +1729,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		}
 		return tipoPdf.get(0).getArchivo();
 	}
+	
 	public List<DiasFestivosResponseDTO> ObtenerDiasFeriados(int request) throws GenericException, IOException {
 		List<DiasFestivos> lstdias = new ArrayList<DiasFestivos>();
 		List<DiasFestivosResponseDTO> diasFestivosResponse = new ArrayList<DiasFestivosResponseDTO>();
@@ -1770,10 +1824,10 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		return diasFestivosResponse;
 	}
 	
-	public String quitaSpacios(String args) {
+    public String quitaSpacios(String args) {
 		String result = "";
 		System.out.println("911 line codigo args ->" + args + "dotos");
-		if ( args != null) {
+		if (args != null) {
 			result = args.replaceAll("\\s+", "");
 			System.out.println("911 line codigo result ->" + result + "dotos");
 		}

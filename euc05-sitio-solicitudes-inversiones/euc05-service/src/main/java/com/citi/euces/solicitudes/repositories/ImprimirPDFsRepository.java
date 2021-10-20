@@ -182,7 +182,27 @@ public class ImprimirPDFsRepository {
 	
 	@Transactional
 	public void actualizaCatFolio(String folioPdfEspecial, Long num_cli) {
-	    String query = "UPDATE PER_CAT_FOLIO SET PDF_FOLIO_ID_CLIENTE = " + num_cli + ", PDF_FOLIO_ESTATUS = 1 WHERE PDF_FOLIO_VALOR = '" + folioPdfEspecial+"'";
+        String query = "UPDATE PER_CAT_FOLIO SET PDF_FOLIO_ID_CLIENTE = " + num_cli + ", PDF_FOLIO_ESTATUS = 1 WHERE PDF_FOLIO_VALOR = '" + folioPdfEspecial+"'";
         jdbcTemplate.execute(query);
+	}
+	
+	
+
+	@Transactional
+	public List<CatFolioDTO> getFolioEspUtilizado(String folioId, Long num_cli)throws GenericException {
+		try {
+
+			String sql = "SELECT PDF_FOLIO_VALOR, PDF_FOLIO_ESPECIAL_OFERTA_ID, PDF_FOLIO_ID_CLIENTE, PDF_FOLIO_ESTATUS"
+					+ " FROM PER_CAT_FOLIO WHERE PDF_FOLIO_ESPECIAL_OFERTA_ID = '"+folioId+"' AND PDF_FOLIO_ESTATUS = 1 AND PDF_FOLIO_ID_CLIENTE = "+num_cli;
+
+			System.out.println("QUERY_SQL_ getFolioEsp :: ejecute:: " + sql);
+
+			return jdbcTemplate.query(sql, (rs, rowNum) -> new CatFolioDTO(rs.getString("PDF_FOLIO_VALOR"),rs.getString("PDF_FOLIO_ESPECIAL_OFERTA_ID"),
+					rs.getLong("PDF_FOLIO_ID_CLIENTE"),rs.getInt("PDF_FOLIO_ESTATUS")));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new GenericException("Error al ejecutar getFolioEsp :: ",
+					HttpStatus.NOT_FOUND.toString());
+		}
 	}
 }
