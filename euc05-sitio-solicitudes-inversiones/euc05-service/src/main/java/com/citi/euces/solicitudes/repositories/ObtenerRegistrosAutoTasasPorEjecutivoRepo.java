@@ -14,7 +14,7 @@ public interface ObtenerRegistrosAutoTasasPorEjecutivoRepo extends JpaRepository
             + " tas.SUC_SOLIC,sucu.NOMBRE_SUCURSAL as suc, tas.NUM_CTE, tas.NOM_CTE,  tas.CONTRATO,tas.NOMINA,tas.MONTO,tas.PLAZO, "
             + " tas.TASA_AUTORI, tas.TIPO_AUTORI, tas.SOEID_AUTORI, tas.SOEID_ASIG, tas.SOEID_OPE,tas.INIC_AUTORI, tas.CETE,tas.PORCEN_CETE, "
             + " REPLACE(eleg.autorizadores,'|',' ') as AUTORIZADORES,   tas.OBSERVA_WEB,   certifisicos.folio as certificado_fisico, certimorales.folio as certificado_moral ,"
-            + " tas.ID_CAMPANA, ofe.OFERTA_SIGUIENTE_PASO AS OFERTA_SIGUIENTE_PASO, ofe.OFERTA_PDF_ESPECIAL_ID AS OFERTA_PDF_ESPECIAL_ID,"
+            + " ofe.OFERTA_CAMPANIA_ID as ID_CAMPANA, ofe.OFERTA_SIGUIENTE_PASO AS OFERTA_SIGUIENTE_PASO, ofe.OFERTA_PDF_ESPECIAL_ID AS OFERTA_PDF_ESPECIAL_ID,"
             + " tas.NOMEJEC, tas.GATNOMINAOFER, tas.GATREALOFER,tas.RENDIMIENTOBRUTO  "
 			+ " FROM UEC_TB_AUTOTASAS tas  inner join PER_CAT_SUCURSALES sucu on tas.SUC_SOLIC = sucu.SIRH_SUCURSAL_ID "
             + " inner join PER_CAT_OFERTA ofe on ofe.OFERTA_ID =tas.TIPO_AUTORI "
