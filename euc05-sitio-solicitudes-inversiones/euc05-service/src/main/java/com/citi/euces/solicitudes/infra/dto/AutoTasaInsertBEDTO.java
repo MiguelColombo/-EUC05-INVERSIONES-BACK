@@ -1,5 +1,6 @@
 package com.citi.euces.solicitudes.infra.dto;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public class AutoTasaInsertBEDTO {
@@ -9,13 +10,13 @@ public class AutoTasaInsertBEDTO {
 	private String estatus;
 	private Long suc_Solic;
 	private String divicion;
-	private Long num_Cte;
+	private BigInteger num_Cte;
 	private String  nom_Cte;
 	private String soeid_Asig; 
-	private Long contrato;
+	private BigInteger contrato;
 	private String nomina;
 	private String nomejec;
-	private Long  monto;
+	private BigInteger  monto;
 	private Long plazo;
 	private Long tasa_Autori;
 	private String tipo_Autori;
@@ -55,10 +56,10 @@ public class AutoTasaInsertBEDTO {
 	public void setDivicion(String divicion) {
 		this.divicion = divicion;
 	}
-	public Long getNum_Cte() {
+	public BigInteger getNum_Cte() {
 		return num_Cte;
 	}
-	public void setNum_Cte(Long num_Cte) {
+	public void setNum_Cte(BigInteger num_Cte) {
 		this.num_Cte = num_Cte;
 	}
 	public String getNom_Cte() {
@@ -73,10 +74,10 @@ public class AutoTasaInsertBEDTO {
 	public void setSoeid_Asig(String soeid_Asig) {
 		this.soeid_Asig = soeid_Asig;
 	}
-	public Long getContrato() {
+	public BigInteger getContrato() {
 		return contrato;
 	}
-	public void setContrato(Long contrato) {
+	public void setContrato(BigInteger contrato) {
 		this.contrato = contrato;
 	}
 	public String getNomina() {
@@ -91,10 +92,10 @@ public class AutoTasaInsertBEDTO {
 	public void setNomejec(String nomejec) {
 		this.nomejec = nomejec;
 	}
-	public Long getMonto() {
+	public BigInteger getMonto() {
 		return monto;
 	}
-	public void setMonto(Long monto) {
+	public void setMonto(BigInteger monto) {
 		this.monto = monto;
 	}
 	public Long getPlazo() {

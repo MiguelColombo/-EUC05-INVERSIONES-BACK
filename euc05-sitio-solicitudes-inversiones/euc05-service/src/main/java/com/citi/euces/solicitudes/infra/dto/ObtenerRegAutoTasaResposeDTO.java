@@ -20,7 +20,7 @@ public class ObtenerRegAutoTasaResposeDTO implements Serializable {
 	private BigInteger CONTRATO;
 	private String NOMINA;
 	private String NOMEJEC;
-	private Long MONTO;
+	private BigInteger MONTO;
 	private Long PLAZO;
 	private Long TASA_AUTORI;
 	private String TIPO_AUTORI;
@@ -73,7 +73,7 @@ public class ObtenerRegAutoTasaResposeDTO implements Serializable {
 	 */
 	public ObtenerRegAutoTasaResposeDTO(BigInteger iD_TASAUTO, String fECHA_SOLIC, String fECHA_AUTORI,
 			String fECHA_PROCESS, String fECHA_ESTATUS, String eSTATUS, Long sUC_SOLIC, String dIVISION,
-			BigInteger nUM_CTE, String nOM_CTE, BigInteger cONTRATO, String nOMINA, String nOMEJEC, Long mONTO,
+			BigInteger nUM_CTE, String nOM_CTE, BigInteger cONTRATO, String nOMINA, String nOMEJEC, BigInteger mONTO,
 			Long pLAZO, Long tASA_AUTORI, String tIPO_AUTORI, String sOEID_AUTORI, String sOEID_ASIG,
 			String iNIC_AUTORI, Long nUM_AUTORI_UEC, Long cETE, String pORCEN_CETE, String oBSERVA_WEB,
 			String jUSTIFICACION, Long iS_PROCESS, String fECHA_SOLIC_CANCEL, String nOMINA_CANCEL,
@@ -189,10 +189,10 @@ public class ObtenerRegAutoTasaResposeDTO implements Serializable {
 	public void setNOMEJEC(String nOMEJEC) {
 		NOMEJEC = nOMEJEC;
 	}
-	public Long getMONTO() {
+	public BigInteger getMONTO() {
 		return MONTO;
 	}
-	public void setMONTO(Long mONTO) {
+	public void setMONTO(BigInteger mONTO) {
 		MONTO = mONTO;
 	}
 	public Long getPLAZO() {

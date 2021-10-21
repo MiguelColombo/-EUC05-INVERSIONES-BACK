@@ -46,7 +46,7 @@ public class AutoTasa implements Serializable {
     @Column(name ="NOMEJEC")
 	private String NOMEJEC;
     @Column(name ="MONTO")
-	private Long MONTO;
+	private BigInteger MONTO;
     @Column(name ="PLAZO")
 	private Long PLAZO;
     @Column(name ="TASA_AUTORI")
@@ -145,7 +145,7 @@ public class AutoTasa implements Serializable {
 	 */
 	public AutoTasa(BigInteger iD_TASAUTO, Timestamp fECHA_SOLIC, Timestamp fECHA_AUTORI, Timestamp fECHA_PROCESS,
 			Timestamp fECHA_ESTATUS, Long iS_PROCESS, String eSTATUS, Long sUC_SOLIC, String dIVISION,
-			BigInteger nUM_CTE, String nOM_CTE, BigInteger cONTRATO, String nOMINA, String nOMEJEC, Long mONTO,
+			BigInteger nUM_CTE, String nOM_CTE, BigInteger cONTRATO, String nOMINA, String nOMEJEC, BigInteger mONTO,
 			Long pLAZO, Long tASA_AUTORI, String tIPO_AUTORI, String sOEID_AUTORI, String iNIC_AUTORI,
 			Long nUM_AUTORI_UEC, String sOEID_ASIG, String sOEID_PROC, String sOEID_OPE, Long cETE, String pORCEN_CETE,
 			String oBSERVA_WEB, String jUSTIFICACION, String cEL, Long t_PER, Timestamp fECHA_SOLIC_CANCEL,
@@ -334,12 +334,12 @@ public class AutoTasa implements Serializable {
 	}
 
 
-	public Long getMONTO() {
+	public BigInteger getMONTO() {
 		return MONTO;
 	}
 
 
-	public void setMONTO(Long mONTO) {
+	public void setMONTO(BigInteger mONTO) {
 		MONTO = mONTO;
 	}
 

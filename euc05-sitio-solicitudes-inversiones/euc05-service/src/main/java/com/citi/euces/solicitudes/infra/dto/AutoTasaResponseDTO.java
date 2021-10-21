@@ -20,7 +20,7 @@ public class AutoTasaResponseDTO implements Serializable {
 	private BigInteger CONTRATO;
 	private String NOMINA;
 	private String NOMEJEC;
-	private Long  MONTO;
+	private BigInteger  MONTO;
 	private Long PLAZO;
 	private Long TASA_AUTORI;
 	private Long NUM_AUTORI_UEC;
@@ -58,7 +58,7 @@ public class AutoTasaResponseDTO implements Serializable {
 	 */
 	public AutoTasaResponseDTO(BigInteger iD_TASAUTO, String fECHA_SOLIC, String fECHA_ESTATUS,
 			String fECHA_PROCESS, String eSTATUS, Long sUC_SOLIC, String dIVISION, BigInteger nUM_CTE, String nOM_CTE,
-			BigInteger cONTRATO, String nOMINA, String nOMEJEC, Long mONTO, Long pLAZO, Long tASA_AUTORI,
+			BigInteger cONTRATO, String nOMINA, String nOMEJEC, BigInteger mONTO, Long pLAZO, Long tASA_AUTORI,
 			Long nUM_AUTORI_UEC, String oBSERVA_WEB, String jUSTIFICACION, String tIPO_AUTORI, String sOEID_ASIG,
 			String sOEID_PROC, String sOEID_OPE, Long iS_PROCESS) {
 		super();
@@ -158,10 +158,10 @@ public class AutoTasaResponseDTO implements Serializable {
 	public void setNOMEJEC(String nOMEJEC) {
 		NOMEJEC = nOMEJEC;
 	}
-	public Long getMONTO() {
+	public BigInteger getMONTO() {
 		return MONTO;
 	}
-	public void setMONTO(Long mONTO) {
+	public void setMONTO(BigInteger mONTO) {
 		MONTO = mONTO;
 	}
 	public Long getPLAZO() {
