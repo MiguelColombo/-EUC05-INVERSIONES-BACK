@@ -160,7 +160,6 @@ public class ImprimirPDFsRepository {
             throw new GenericException( "Error al obtener las imagenes :: " , HttpStatus.NOT_FOUND.toString());
         }
 	}
-	
 
 	@Transactional
 	public List<CatFolioDTO> getFolioEsp(String folioId)throws GenericException {

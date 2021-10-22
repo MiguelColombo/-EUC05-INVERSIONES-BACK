@@ -14,7 +14,9 @@ import org.apache.commons.io.FileUtils;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -1255,7 +1257,9 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			arc = pdfNoFoleado(request, tipoPdf);
 		}
 		return arc;
+
 	}
+	
 	public ImpresionResponse pdfFoleado(PlantillaPdfDTO request, String folio, List<CatPDFEspecial> tipoPdf)
 			throws GenericException, IOException {
 		ImpresionResponse arc = new ImpresionResponse();
@@ -1382,7 +1386,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		}
 		return arc;
 	}
-
+		
 
 	public String fechaActual(Date date) {
 //		Date date = new Date();
@@ -1527,7 +1531,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					columnHeader1.setHorizontalAlignment(Element.ALIGN_CENTER);
 					columnHeader1.setBackgroundColor(new BaseColor(192, 192, 192));
 					table.addCell(columnHeader1);
-					columnHeader2 = new PdfPCell(new Phrase(path.getTasaOfer() + "%", fnt));
+					columnHeader2 = new PdfPCell(new Phrase(formatNumber(path.getTasaOfer()) + "%", fnt));
 					columnHeader2.setHorizontalAlignment(Element.ALIGN_CENTER);
 					columnHeader2.setBackgroundColor(new BaseColor(192, 192, 192));
 					table.addCell(columnHeader2);
@@ -1535,7 +1539,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					columnHeader3.setHorizontalAlignment(Element.ALIGN_CENTER);
 					columnHeader3.setBackgroundColor(new BaseColor(192, 192, 192));
 					table.addCell(columnHeader3);
-					columnHeader4 = new PdfPCell(new Phrase("$" + path.getRendimientoBruto(), fnt));
+					columnHeader4 = new PdfPCell(new Phrase("$" + formatNumber(path.getRendimientoBruto()), fnt));
 					columnHeader4.setHorizontalAlignment(Element.ALIGN_CENTER);
 					columnHeader4.setBackgroundColor(new BaseColor(192, 192, 192));
 					table.addCell(columnHeader4);
@@ -1584,7 +1588,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					diasFestivosResponse = ObtenerDiasFeriados(path.getPlazoOfer());
 					documento.add(new Paragraph(path.getNombreOferta(), fuen));
 					documento.add(new Paragraph(
-							"GAT Nominal " + path.getGatNominalOfer() + "%  GAT Real " + path.getGatRealOfer() + "%",
+							"GAT Nominal " + formatNumber(path.getGatNominalOfer()) + "%  GAT Real " + formatNumber(path.getGatRealOfer()) + "%",
 							fuen));
 					documento.add(new Paragraph("Antes de impuestos, desde $" + path.getMontoOfer() + " a "
 							+ path.getPlazoOfer() + " días, calculado el " + fechaActual(new Date()) + ","
@@ -1836,6 +1840,14 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		}
 		return result;
 	}
+    
+    private BigDecimal formatNumber(double monto) {		
+		BigDecimal formatNumber = new BigDecimal(monto);
+		formatNumber = formatNumber.setScale(2, RoundingMode.HALF_UP);
+    return formatNumber;
+    }
+    
+    
 	@Override
 	public BigInteger CrearIdAutotsa() throws GenericException, IOException {
 		  String mensaje = null ;
