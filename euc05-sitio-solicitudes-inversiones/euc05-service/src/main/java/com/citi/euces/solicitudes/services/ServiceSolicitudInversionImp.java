@@ -1020,7 +1020,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		
 		List<EnviarPHPDTO> enviarPHPDTO= new ArrayList<EnviarPHPDTO>();
 		try {
-			List<AutoAutorizadorBEDTO> listadoAutorizadores = request.getListadoAutorizadores();
+			List<AutorizadoresDivisionalesResponseDTO> listadoAutorizadores = request.getListadoAutorizadores();
 			BigInteger folio = new BigInteger(request.getFolio());
 			AutoTasa solicitud = autoTasaRepo.buscarId(folio);
 			System.out.println("288 solicitud->" + solicitud);
@@ -1066,18 +1066,18 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     		System.out.println("288 tasa y MensajeHorror -> " + tasa + "  " + MensajeHorror);
     		
     		if (TieneError) {
-    			for (AutoAutorizadorBEDTO item : listadoAutorizadores) {
+    			for (AutorizadoresDivisionalesResponseDTO item : listadoAutorizadores) {
     	    		title += detailMail.GetTitleSolicitud() + "|";
-    	            cadenaIds += item.SOEID + "|";
+    	            cadenaIds += item.getSoeid() + "|";
     	            
-    	            if(item.SOEID.equals("VN86003")) {
+    	            if(item.getSoeid().equals("VN86003")) {
     	            	try{
     	            		System.out.println("entro 1103");
     	            		body += detailMail.BodySolicitudAutorizadorUEC(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
     	            				solicitud.getTIPO_AUTORI(), solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
     	            				solicitud.getNOM_CTE(), solicitud.getNUM_CTE(), solicitud.getCONTRATO(),
     	            				solicitud.getMONTO().toString() + "", solicitud.getPLAZO(), solicitud.getTASA_AUTORI() + "",
-    	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, MensajeHorror, item.SOEID)
+    	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, MensajeHorror, item.getSoeid())
     							+ "|";
     	            	} catch (Exception e) {
     						throw new GenericException("Error al obtener BodySolicitudAutorizadorUEC:: ",
@@ -1100,32 +1100,32 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 
     		int x = 0;
     		System.out.println("288 listadoAutorizadores->" + listadoAutorizadores);
-    		for (AutoAutorizadorBEDTO item : listadoAutorizadores) {
+    		for (AutorizadoresDivisionalesResponseDTO item : listadoAutorizadores) {
     			title += detailMail.GetTitleSolicitud() + "|";
-	            cadenaIds += item.SOEID + "|";
-	            if(item.SOEID.equals("VN86003")) {
+	            cadenaIds += item.getSoeid() + "|";
+	            if(item.getSoeid().equals("VN86003")) {
 	            	try{
 	            		System.out.println("entro 1136");
 	            		body += detailMail.BodySolicitudAutorizadorUEC(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
 	            				solicitud.getTIPO_AUTORI(), solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
 	            				solicitud.getNOM_CTE(), solicitud.getNUM_CTE(), solicitud.getCONTRATO(),
 	            				solicitud.getMONTO().toString() + "", solicitud.getPLAZO(), solicitud.getTASA_AUTORI() + "",
-	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.Nombre, item.SOEID)
+	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.getNombre(), item.getSoeid())
 							+ "|";
 	            	} catch (Exception e) {
 						throw new GenericException("Error al obtener BodySolicitudAutorizadorUEC:: ",
 								HttpStatus.INTERNAL_SERVER_ERROR.toString());
 					}
                 }else {
-                	if (!body.contains(item.Nombre)) {
+                	if (!body.contains(item.getNombre())) {
                 		try {
                 			System.out.println("entro 1150");
     						body += detailMail.BodySolicitud(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
     								solicitud.getTIPO_AUTORI(), solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
     								solicitud.getNOM_CTE(), solicitud.getNUM_CTE(), solicitud.getCONTRATO(),
     								solicitud.getMONTO().toString() + "", solicitud.getPLAZO(), solicitud.getTASA_AUTORI() + "",
-    								solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.Nombre,
-    								item.SOEID, request.getUrlRedirect(), linkAutorizas[x], linkRechazas[x]) + "|";
+    								solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.getNombre(),
+    								item.getSoeid(), request.getUrlRedirect(), linkAutorizas[x], linkRechazas[x]) + "|";
     					} catch (Exception e) {
     						throw new GenericException("Error al obtener BodySolicitud:: ",
     								HttpStatus.INTERNAL_SERVER_ERROR.toString());

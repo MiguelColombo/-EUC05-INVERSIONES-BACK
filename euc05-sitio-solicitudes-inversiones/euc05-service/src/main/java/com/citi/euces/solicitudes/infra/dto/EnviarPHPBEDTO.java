@@ -9,7 +9,7 @@ public class EnviarPHPBEDTO {
 	private String linkAutoriza;
 	private String linkRechaza;
 	private String urlRedirect;
-    private List<AutoAutorizadorBEDTO> listadoAutorizadores;
+    private List<AutorizadoresDivisionalesResponseDTO> listadoAutorizadores;
 	private String idAutorizadores;
 
 	public String getListAurotizadores() {
@@ -52,11 +52,11 @@ public class EnviarPHPBEDTO {
 
 	public void setIdAutorizadores(String idAutorizadores) { this.idAutorizadores = idAutorizadores; }
 
-	public List<AutoAutorizadorBEDTO> getListadoAutorizadores() {
+	public List<AutorizadoresDivisionalesResponseDTO> getListadoAutorizadores() {
 		return listadoAutorizadores;
 	}
 
-	public void setListadoAutorizadores(List<AutoAutorizadorBEDTO> listadoAutorizadores) {
+	public void setListadoAutorizadores(List<AutorizadoresDivisionalesResponseDTO> listadoAutorizadores) {
 		this.listadoAutorizadores = listadoAutorizadores;
 	}
 

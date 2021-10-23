@@ -7,15 +7,19 @@ public class AutorizadoresDivisionalesResponseDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 	
-	private String Soeid;
-	private String Division;
+	private String soeid;
+	private String division;
 	private String nombre;
-	private String Inic;
-	private String Fecha_Inicio;
-	private String Fecha_Termino;
-	private Long Alta;
+	private String inic;
+	private String fecha_Inicio;
+	private String fecha_Termino;
+	private Long alta;
 	private Long id_nivel_auto;
-	private String Correo;
+	private String correo;
+	
+	public AutorizadoresDivisionalesResponseDTO() {
+		
+	}
 	/**
 	 * @param soeid
 	 * @param division
@@ -30,27 +34,27 @@ public class AutorizadoresDivisionalesResponseDTO implements Serializable {
 	public AutorizadoresDivisionalesResponseDTO(String soeid, String division, String nombre, String inic,
 			String fecha_Inicio, String fecha_Termino, Long alta, Long id_nivel_auto, String correo) {
 		super();
-		Soeid = soeid;
-		Division = division;
+		this.soeid = soeid;
+		this.division = division;
 		this.nombre = nombre;
-		Inic = inic;
-		Fecha_Inicio = fecha_Inicio;
-		Fecha_Termino = fecha_Termino;
-		Alta = alta;
+		this.inic = inic;
+		this.fecha_Inicio = fecha_Inicio;
+		this.fecha_Termino = fecha_Termino;
+		this.alta = alta;
 		this.id_nivel_auto = id_nivel_auto;
-		Correo = correo;
+		this.correo = correo;
 	}
 	public String getSoeid() {
-		return Soeid;
+		return soeid;
 	}
 	public void setSoeid(String soeid) {
-		Soeid = soeid;
+		this.soeid = soeid;
 	}
 	public String getDivision() {
-		return Division;
+		return division;
 	}
 	public void setDivision(String division) {
-		Division = division;
+		this.division = division;
 	}
 	public String getNombre() {
 		return nombre;
@@ -59,28 +63,28 @@ public class AutorizadoresDivisionalesResponseDTO implements Serializable {
 		this.nombre = nombre;
 	}
 	public String getInic() {
-		return Inic;
+		return inic;
 	}
 	public void setInic(String inic) {
-		Inic = inic;
+		this.inic = inic;
 	}
 	public String getFecha_Inicio() {
-		return Fecha_Inicio;
+		return fecha_Inicio;
 	}
 	public void setFecha_Inicio(String fecha_Inicio) {
-		Fecha_Inicio = fecha_Inicio;
+		this.fecha_Inicio = fecha_Inicio;
 	}
 	public String getFecha_Termino() {
-		return Fecha_Termino;
+		return fecha_Termino;
 	}
 	public void setFecha_Termino(String fecha_Termino) {
-		Fecha_Termino = fecha_Termino;
+		this.fecha_Termino = fecha_Termino;
 	}
 	public Long getAlta() {
-		return Alta;
+		return alta;
 	}
 	public void setAlta(Long alta) {
-		Alta = alta;
+		this.alta = alta;
 	}
 	public Long getId_nivel_auto() {
 		return id_nivel_auto;
@@ -89,12 +93,14 @@ public class AutorizadoresDivisionalesResponseDTO implements Serializable {
 		this.id_nivel_auto = id_nivel_auto;
 	}
 	public String getCorreo() {
-		return Correo;
+		return correo;
 	}
 	public void setCorreo(String correo) {
-		Correo = correo;
+		this.correo = correo;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 	
-
 }
