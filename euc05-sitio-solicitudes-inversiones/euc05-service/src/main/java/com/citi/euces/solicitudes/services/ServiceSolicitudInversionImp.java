@@ -203,6 +203,19 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		responce.setNombre(t.getNombre());
 		responce.setValor(t.getVALOR());
 		
+		switch (t.getId()) {
+		
+		case 7:		
+			responce.setTipo_valor("ESPECIAL");
+		break;
+		case 8:
+			responce.setTipo_valor("AutCETE98");
+		break;	
+		default:
+			responce.setTipo_valor("EXCEPGER");		
+		break; 			
+	    }
+		
 		return responce;
 	}
 	
