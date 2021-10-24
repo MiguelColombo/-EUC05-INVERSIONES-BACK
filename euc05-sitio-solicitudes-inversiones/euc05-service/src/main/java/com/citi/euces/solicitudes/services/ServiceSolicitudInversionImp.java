@@ -127,7 +127,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	List<Autorizadores> lstAut = null;
 	List<DiasFestivos> lstdias = null;
 	List<DiasFestivosResponseDTO> diasFestivosResponse = new ArrayList<DiasFestivosResponseDTO>();
-	List<Autorango>   lstRango = null;
+	List<Autorango>   lstRango = null; 
 	List<TasaPorsentaje> listPorsentaje = null;
 	List<Sucursales> listSucursal = null;
 	List<AutoTasa> listAutoTasa = null;
