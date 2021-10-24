@@ -1864,7 +1864,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	@Override
 	public BigInteger CrearIdAutotsa() throws GenericException, IOException {
 		  String mensaje = null ;
-	         SimpleDateFormat objSDF2 = new SimpleDateFormat("ddMMyy");
+	         SimpleDateFormat objSDF2 = new SimpleDateFormat("yyMMdd");
 	         Date  fecha=  new Date();
 	         BigInteger id_Tasa_long_n =new BigInteger("1"); 
 	         BigInteger folio; 
