@@ -41,10 +41,10 @@ public interface ServiceSolicitudInversion {
 	List<AutoTasaResponseDTO> ObtenerRegCampTasa(AutoTasaBEDTO request) throws GenericException, IOException;
 	BigInteger ObtenerUltFolioAutoTasas() throws GenericException, IOException;
 	List<AutorizadoresDivisionalesResponseDTO> ObtenerAutorizadoresDivisionales(AutorizadoresBEDTO request)throws GenericException, IOException;
-	String Guardar_Autorizacion(TbAutorizadoresElegidosBEDTO request)throws GenericException, IOException,SQLException;
+	//String Guardar_Autorizacion(TbAutorizadoresElegidosBEDTO request)throws GenericException, IOException,SQLException;
 	List<AutorizadoresDivisionalesResponseDTO> ObtenerAutorizadorAutomatico()throws GenericException, IOException;
 	List<AutorizadoresDivisionalesResponseDTO> ObtenerAutorizadoresGerencia()throws GenericException, IOException;  
-	String Solicitar(AutoTasaInsertBEDTO respoce) throws GenericException, IOException, SQLException;
+	AutoTasaInsertResponseDTO Solicitar(AutoTasaInsertBEDTO respoce) throws GenericException, IOException, SQLException;
 	String UPDATE_Autorizador_Solicitud(AutoTasaUpdateRequest request)throws GenericException, IOException;
 	List<ObtenerRegAutoTasaResposeDTO> ObtenerRegAutoTasa(AutoTasaBEDTO request)throws GenericException, IOException;
 	List<ObtenerAutoDivisionalResposeDTO> ObtenerAutoDivisional(ObtenerAutoDivisionalBEDTO request)throws GenericException, IOException;
@@ -58,7 +58,7 @@ public interface ServiceSolicitudInversion {
 	List<EnviarPHPDTO> EnviarPHP(EnviarPHPBEDTO request)throws GenericException, IOException;
 	List<OfertaResponseDTO> ObtenerOferta(OfertaBEDTO request)throws GenericException, IOException;
 	ImpresionResponse pdfEspecial(PlantillaPdfDTO request)throws GenericException, IOException;
-	BigInteger CrearIdAutotsa()throws GenericException, IOException;
+//	BigInteger CrearIdAutotsa()throws GenericException, IOException;
 	
 	
 }

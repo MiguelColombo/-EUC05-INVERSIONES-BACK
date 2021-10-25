@@ -294,7 +294,7 @@ public class ServiceSolicitudInversionController  {
 	}
 	// ExisteFolioBancanet  F PEGUNTAR
 	
-	@ResponseStatus(code = HttpStatus.OK)
+/*	@ResponseStatus(code = HttpStatus.OK)
 	@PostMapping(path ="/GuardarAutorizacion", produces = "application/json") //btnSave_Click
 	public ResponseEntity<?> Guardar_Autorizacion(@RequestBody final TbAutorizadoresElegidosBEDTO request) {
 		try {
@@ -320,7 +320,7 @@ public class ServiceSolicitudInversionController  {
 			error.setError(e);
 			return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 		}	
-    }
+    }*/
 	
 	@ResponseStatus(code = HttpStatus.OK)
 	@GetMapping(path = "/ObtenerAutorizadorAutomatico", produces = "application/json") //Validar Folio btnSave_Click
@@ -376,11 +376,11 @@ public class ServiceSolicitudInversionController  {
 	@PostMapping(path ="/Solicitar", produces = "application/json") //btnSave_Click
 	public  ResponseEntity<?> Solicitar(@RequestBody final AutoTasaInsertBEDTO request) {
 		try {
-			String mensaje =serviceSolicitudInversionImp.Solicitar(request);
-			if(mensaje == null || mensaje.isEmpty()) {
+			
+			ConfirmacionSolicitarResponce response = new ConfirmacionSolicitarResponce(serviceSolicitudInversionImp.Solicitar(request), "200");
+			if(request == null ) {
 				throw new GenericException("No se puede procesar la solicitud","500");	
 			}else {
-				ConfirmacionSolicitarResponce response = new ConfirmacionSolicitarResponce(mensaje, "200",true);
 				return new ResponseEntity<ConfirmacionSolicitarResponce>(response,HttpStatus.OK);
 			}
 		} catch (GenericException ex) {
@@ -830,7 +830,7 @@ public class ServiceSolicitudInversionController  {
 		}
 	}
 	
-	@ResponseStatus(code = HttpStatus.OK)
+/*	@ResponseStatus(code = HttpStatus.OK)
 	@GetMapping(path ="/CrearIdAutotsa", produces = "application/json")//btnSave_Click put
 	public ResponseEntity<?> CrearIdAutotsa() {
 		 try{
@@ -853,6 +853,6 @@ public class ServiceSolicitudInversionController  {
 				error.setError(e);
 				return new ResponseEntity<ErrorGeneric>(error, HttpStatus.OK);
 			}
-	    }	
+	    }	*/
 	
 }

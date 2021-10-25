@@ -2,11 +2,11 @@ package com.citi.euces.solicitudes.models;
 
 import com.citi.euces.solicitudes.infra.dto.AutoTasaInsertResponseDTO;
 
-public class ConfirmacionSolicitarResponce {
+public class AutoTasaInsertResponse {
 	
 	private AutoTasaInsertResponseDTO autoTasaInsertResponseDTO;
 	private String code;
-	public ConfirmacionSolicitarResponce(AutoTasaInsertResponseDTO autoTasaInsertResponseDTO, String code) {
+	public AutoTasaInsertResponse(AutoTasaInsertResponseDTO autoTasaInsertResponseDTO, String code) {
 		super();
 		this.autoTasaInsertResponseDTO = autoTasaInsertResponseDTO;
 		this.code = code;
@@ -25,5 +25,5 @@ public class ConfirmacionSolicitarResponce {
 	}
 	
 	
-	
+
 }

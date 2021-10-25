@@ -63,6 +63,7 @@ import com.citi.euces.solicitudes.infra.dto.AutoAutorizadorBEDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoCetesResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaBEDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaInsertBEDTO;
+import com.citi.euces.solicitudes.infra.dto.AutoTasaInsertResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaUpdateVOBOBEDTO;
 import com.citi.euces.solicitudes.infra.dto.AutorangoResponseDTO;
@@ -295,51 +296,60 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 
 
 	@Override
-	public String Solicitar(AutoTasaInsertBEDTO request) throws GenericException, IOException, SQLException{ 
+	public AutoTasaInsertResponseDTO Solicitar(AutoTasaInsertBEDTO request) throws GenericException, IOException, SQLException{ 
          String mensaje = null ;
-         SimpleDateFormat objSDF2 = new SimpleDateFormat("ddMMyy");
-         Date  fecha=  new Date();
-         BigInteger id_Tasa_long_n =new BigInteger("1"); 
+         AutoTasaInsertResponseDTO autoTasaInsertResponseDTO =  new AutoTasaInsertResponseDTO();
 		try {
-		int salida = 0;
-		Timestamp timestamp = Timestamp.valueOf(request.getFecha_Solic());
-		BigInteger id_AutoTasa =new BigInteger(request.getId_TasAuto().toString());
-		BigInteger contrato =new BigInteger(request.getContrato().toString()); 
-		BigInteger num_cli =new BigInteger(request.getNum_Cte().toString()); 
-		BigInteger monto =new BigInteger(request.getMonto().toString());
-		salida = autoTasaRepo.SAVE_AUTOTASAS(id_AutoTasa, 
-				//request.getFecha_Solic(), 
-				timestamp,
-				request.getEstatus(), 
-				request.getSuc_Solic(), 
-				request.getDivicion(), 
-				num_cli, 
-				request.getNom_Cte(), 
-				request.getSoeid_Asig(), 
-				contrato, 
-				request.getNomina(), 
-				request.getNomejec(), 
-				monto, 
-				request.getPlazo(), 
-				request.getTasa_Autori(), 
-				request.getTipo_Autori(), 
-				request.getCete(), 
-				request.getPorcen_Cete(), 
-				request.getJustificacion(), 
-				request.getCel(), 
-				request.getPorta());
-		if(salida > 0) {
-			mensaje ="Guardado | id : "+ id_AutoTasa;	
+		int salidaAutori = 0;
+		BigInteger id_Tasa =new BigInteger(IdAutotsa().toString()); 
+		salidaAutori = tbAutorizadoresElegidosRepo.Guardar_Autorizacion(id_Tasa,request.getAutorizadores().replace("-", "|"));	
+		if(salidaAutori > 0) {
+			mensaje ="Guardado";	
+			int salida = 0;
+			Timestamp timestamp = Timestamp.valueOf(request.getFecha_Solic());
+			BigInteger contrato =new BigInteger(request.getContrato().toString()); 
+			BigInteger num_cli =new BigInteger(request.getNum_Cte().toString()); 
+			BigInteger monto =new BigInteger(request.getMonto().toString());
+			salida = autoTasaRepo.SAVE_AUTOTASAS(id_Tasa, 
+					//request.getFecha_Solic(), 
+					timestamp,
+					request.getEstatus(), 
+					request.getSuc_Solic(), 
+					request.getDivicion(), 
+					num_cli, 
+					request.getNom_Cte(), 
+					request.getSoeid_Asig(), 
+					contrato, 
+					request.getNomina(), 
+					request.getNomejec(), 
+					monto, 
+					request.getPlazo(), 
+					request.getTasa_Autori(), 
+					request.getTipo_Autori(), 
+					request.getCete(), 
+					request.getPorcen_Cete(), 
+					request.getJustificacion(), 
+					request.getCel(), 
+					request.getPorta());
+			if(salida > 0) {
+				autoTasaInsertResponseDTO.setMensaje(mensaje);
+				autoTasaInsertResponseDTO.setId_TasaAuto(id_Tasa);
+				autoTasaInsertResponseDTO.setEnviarCorreo(true);
+			}else {
+				mensaje = "Error en el Id_AutoTasa ya existe en autorizadores ";	
+				throw new GenericException("Error");
+			}
 			
 		}else {
-			mensaje = "Error";	
+			mensaje = "Error en el Id_AutoTasa ya existe en autorizadores";	
 			throw new GenericException("Error");
+		}	
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new GenericException("Error en el Id_AutoTasa ya existe en autorizadores ",
+					HttpStatus.INTERNAL_SERVER_ERROR.toString());
 		}
-		}catch (GenericException ex) {
-			System.out.println("ex ->" + ex.getMessage());
-			System.out.println("ex ->" + ex.getCause());
-		}
-		return mensaje;
+		return autoTasaInsertResponseDTO;
 		
 	}
 
@@ -613,7 +623,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 
 
 
-	@Override
+/*	@Override
 	public String Guardar_Autorizacion(TbAutorizadoresElegidosBEDTO request) throws GenericException, IOException {//si
 		String mensaje = null ;
 		
@@ -633,7 +643,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			System.out.println("ex ->" + ex.getCause());
 		}
 		return mensaje;
-	}
+	}*/
 
 
 
@@ -1861,8 +1871,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     }
     
     
-	@Override
-	public BigInteger CrearIdAutotsa() throws GenericException, IOException {
+	
+	public BigInteger IdAutotsa() throws GenericException, IOException {
 		  String mensaje = null ;
 	         SimpleDateFormat objSDF2 = new SimpleDateFormat("yyMMdd");
 	         Date  fecha=  new Date();
@@ -1911,4 +1921,9 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			}
 			return folio;
 	}
+/*	@Override
+	public BigInteger CrearIdAutotsa() throws GenericException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}*/
 }

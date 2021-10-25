@@ -25,7 +25,14 @@ public class AutoTasaInsertBEDTO {
 	private String justificacion;
 	private String cel;
 	private String porta; //folio bancario is_portabilidad
+	private String autorizadores;
 	
+	public String getAutorizadores() {
+		return autorizadores;
+	}
+	public void setAutorizadores(String autorizadores) {
+		this.autorizadores = autorizadores;
+	}
 	public Long getId_TasAuto() {
 		return id_TasAuto;
 	}
