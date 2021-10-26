@@ -20,7 +20,7 @@ public class MarcaAguaEvent extends  PdfPageEventHelper {
      * Manejador del evento onEndPage, usado para generar el encabezado onStartPage
      */
     @Override
-    public void onStartPage(PdfWriter writer, Document document) {
+    public void onEndPage(PdfWriter writer, Document document) {
 
         try{            
             document.add(this.imagen);            

@@ -903,7 +903,12 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		Long datetime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(datetime);
 		//puesto = (au.getDivision().equals("Gerencia")) ? "Gerencia:":"Divisional:";
-		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo(request.getNomina(), request.getNum_cte(), request.getYear());
+        if(request.getNomina().isEmpty() && !request.getNum_cte().isEmpty()) {
+    		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo2(request.getNomina(), request.getNum_cte(), request.getYear());
+        }else if (request.getNum_cte().isEmpty() && !request.getNomina().isEmpty()) {
+    		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo(request.getNomina(), request.getNum_cte(), request.getYear());
+        }
+        
 		for(AutoTasasPorEjecutivo porcentaje : listAutoTasaPor) {
 			
 			FECHA_SOLIC = (porcentaje.getTas_FECHA_SOLIC()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_SOLIC());
@@ -1081,7 +1086,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     			TieneError = false;
     		}  	
     		
-    		String tasa = solicitud.getTIPO_AUTORI() + "";
+    		String tasa = solicitud.getTASA_AUTORI() + "";
     		if (tasa.length() > 5){
                 TieneError = true;
                 MensajeHorror = "Error de Solicitud, Tasa Autorizada: " + tasa;
@@ -1292,6 +1297,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 
 	}
 	
+	
 	public ImpresionResponse pdfFoleado(PlantillaPdfDTO request, String folio, List<CatPDFEspecial> tipoPdf)
 			throws GenericException, IOException {
 		ImpresionResponse arc = new ImpresionResponse();
@@ -1417,8 +1423,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					HttpStatus.INTERNAL_SERVER_ERROR.toString());
 		}
 		return arc;
-	}
-		
+	}	
 
 	public String fechaActual(Date date) {
 //		Date date = new Date();
@@ -1863,7 +1868,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		return diasFestivosResponse;
 	}
 	
-    public String quitaSpacios(String args) {
+	public String quitaSpacios(String args) {
 		String result = "";
 		System.out.println("911 line codigo args ->" + args + "dotos");
 		if (args != null) {
