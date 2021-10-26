@@ -907,6 +907,11 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo2(request.getNomina(), request.getNum_cte(), request.getYear());
         }else if (request.getNum_cte().isEmpty() && !request.getNomina().isEmpty()) {
     		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo(request.getNomina(), request.getNum_cte(), request.getYear());
+        }else if(request.getNomina().isEmpty() && request.getNum_cte().isEmpty()) {
+        	PorsentajeResponce = null;
+        }else if(!request.getNomina().isEmpty() && !request.getNum_cte().isEmpty()) {
+    		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo3(request.getNomina(), request.getNum_cte(), request.getYear());
+
         }
         
 		for(AutoTasasPorEjecutivo porcentaje : listAutoTasaPor) {
