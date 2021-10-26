@@ -762,7 +762,7 @@ public class ServiceSolicitudInversionController  {
 	public ResponseEntity<?> EnviarPHP(@RequestBody final EnviarPHPBEDTO request) {
 		 try{
 			 EnviarPHPResponse response  = new EnviarPHPResponse(serviceSolicitudInversionImp.EnviarPHP(request), "200");
-			 if(response.getEnviarPHPDTO() == null || response.getEnviarPHPDTO().size() == 0) {
+			 if(response.getEnviarPHPDTO() == null ) {
 				throw new GenericException("No se puede procesar la solicitud","500");
 			}else {			
 				return new ResponseEntity<EnviarPHPResponse>(response, HttpStatus.OK);

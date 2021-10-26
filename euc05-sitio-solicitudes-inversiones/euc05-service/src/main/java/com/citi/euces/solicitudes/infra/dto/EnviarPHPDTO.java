@@ -13,16 +13,7 @@ public class EnviarPHPDTO {
 	 * @param acountEnc
 	 */
 	
-	public EnviarPHPDTO(String soeidEnc, String informeEnc, String titleEnc, String acountEnc) {
-		super();
-		this.soeidEnc = soeidEnc;
-		this.informeEnc = informeEnc;
-		this.titleEnc = titleEnc;
-		this.acountEnc = acountEnc;
-	}
-	/**
-	 * 
-	 */
+
 	public EnviarPHPDTO() {
 		super();
 	}

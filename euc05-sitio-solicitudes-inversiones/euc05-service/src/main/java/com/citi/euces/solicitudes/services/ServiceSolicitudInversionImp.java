@@ -1038,10 +1038,10 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		return sucursalesConsultaResponseDTO;
 	}
 	@Override
-	public List<EnviarPHPDTO> EnviarPHP(EnviarPHPBEDTO request)
+	public EnviarPHPDTO EnviarPHP(EnviarPHPBEDTO request)
 			throws GenericException, IOException {
 		
-		List<EnviarPHPDTO> enviarPHPDTO= new ArrayList<EnviarPHPDTO>();
+		EnviarPHPDTO response = new EnviarPHPDTO();
 		try {
 			List<AutorizadoresDivisionalesResponseDTO> listadoAutorizadores = request.getListadoAutorizadores();
 			BigInteger folio = new BigInteger(request.getFolio());
@@ -1118,7 +1118,13 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
                 }
                 
                 System.out.println("288 title y cadenaIds->" + title + "     " + cadenaIds);
-                enviarPHPDTO.add(new EnviarPHPDTO(cadenaIds,title,body, detailMail.GetBuzon()));
+                response.setSoeidEnc(cadenaIds);
+    			response.setTitleEnc(title);
+    			response.setInformeEnc(body);
+    			response.setAcountEnc(detailMail.GetBuzon());
+               // enviarPHPDTO.add(new EnviarPHPDTO(cadenaIds,title,body, detailMail.GetBuzon()));
+                System.out.println("288 response->" + response);
+    			return response;
     		}
 
     		int x = 0;
@@ -1166,13 +1172,16 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     			cadenaIds = cadenaIds.substring(0, cadenaIds.length() - 1);
     		}
     		System.out.println("288 title y cadenaIds->" + title + "     " + cadenaIds);
-    		enviarPHPDTO.add(new EnviarPHPDTO(cadenaIds,title,body, detailMail.GetBuzon()));
+            response.setSoeidEnc(cadenaIds);
+			response.setTitleEnc(title);
+			response.setInformeEnc(body);
+			response.setAcountEnc(detailMail.GetBuzon());
 		}catch (Exception ex) {
 			System.out.println("ex ->" + ex.getMessage());
 			System.out.println("ex ->" + ex.getCause());
 		}
 		
-		return enviarPHPDTO;
+		return response;
 	}
 	@Override
 	public List<OfertaResponseDTO> ObtenerOferta(OfertaBEDTO request) throws GenericException, IOException {
