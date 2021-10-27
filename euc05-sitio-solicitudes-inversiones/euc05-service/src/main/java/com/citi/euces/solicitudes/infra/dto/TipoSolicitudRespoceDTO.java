@@ -12,7 +12,8 @@ public class TipoSolicitudRespoceDTO implements Serializable{
 	private Integer id; 
 	private String nombre;
 	private String valor;
-	private String tipo_valor;
+	private String id_Campana;
+	private String id_Oferta;
 	
 	
 	public Integer getId() {
@@ -33,12 +34,19 @@ public class TipoSolicitudRespoceDTO implements Serializable{
 	public void setValor(String valor) {
 		this.valor = valor;
 	}
-	public String getTipo_valor() {
-		return tipo_valor;
+	public String getId_Campana() {
+		return id_Campana;
 	}
-	public void setTipo_valor(String tipo_valor) {
-		this.tipo_valor = tipo_valor;
+	public void setId_Campana(String id_Campana) {
+		this.id_Campana = id_Campana;
 	}
+	public String getId_Oferta() {
+		return id_Oferta;
+	}
+	public void setId_Oferta(String id_Oferta) {
+		this.id_Oferta = id_Oferta;
+	}
+	
 	
   
 

@@ -59,7 +59,6 @@ import com.citi.euces.solicitudes.entities.Tb_Auto_AutoRegionales;
 import com.citi.euces.solicitudes.entities.TipoSolicitud;
 import com.citi.euces.solicitudes.entities.Sucursales;
 import com.citi.euces.solicitudes.entities.SucursalesConsulta;
-import com.citi.euces.solicitudes.infra.dto.AutoAutorizadorBEDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoCetesResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaBEDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaInsertBEDTO;
@@ -88,7 +87,6 @@ import com.citi.euces.solicitudes.infra.dto.SucursalesConsultaResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.SucursalesPorSucResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.TasaPorsentajeBEDTO;
 import com.citi.euces.solicitudes.infra.dto.TasaPorsentajeResponceDTO;
-import com.citi.euces.solicitudes.infra.dto.TbAutorizadoresElegidosBEDTO;
 import com.citi.euces.solicitudes.infra.dto.TipoSolicitudRespoceDTO;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaUpdateCamTasasRequest;
 import com.citi.euces.solicitudes.infra.dto.AutoTasaUpdateRequest;
@@ -99,7 +97,6 @@ import com.citi.euces.solicitudes.infra.dto.ImpresionResponse;
 import com.citi.euces.solicitudes.infra.dto.MarcaAguaEvent;
 import com.citi.euces.solicitudes.infra.exceptions.GenericException;
 import com.citi.euces.solicitudes.infra.utils.BodyMail;
-import com.citi.euces.solicitudes.infra.utils.EncryptMail;
 import com.citi.euces.solicitudes.infra.utils.FormatUtils;
 import com.citi.euces.solicitudes.repositories.AutoCetesRepo;
 import com.citi.euces.solicitudes.repositories.AutoTasaRepo;
@@ -207,13 +204,16 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		switch (t.getId()) {
 		
 		case 7:		
-			responce.setTipo_valor("ESPECIAL");
+			responce.setId_Campana("DIVISIONALES");
+			responce.setId_Oferta("AUT.DIVISIONAL");
 		break;
 		case 8:
-			responce.setTipo_valor("AutCETE98");
+			responce.setId_Campana("DISTRITALES");
+			responce.setId_Oferta("AUT.DISTRITAL");
 		break;	
 		default:
-			responce.setTipo_valor("EXCEPGER");		
+			responce.setId_Campana("EXCEPGERENCIA");
+			responce.setId_Oferta("EXCEPCION GERENCIA");
 		break; 			
 	    }
 		
