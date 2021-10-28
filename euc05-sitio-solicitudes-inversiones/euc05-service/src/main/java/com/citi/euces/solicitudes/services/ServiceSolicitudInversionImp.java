@@ -204,16 +204,16 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		switch (t.getId()) {
 		
 		case 7:		
-			responce.setId_Campana("DIVISIONALES");
-			responce.setId_Oferta("AUT.DIVISIONAL");
+			responce.setId_Oferta("DIVISIONALES");
+			responce.setId_Campana("AUT.DIVISIONAL");
 		break;
 		case 8:
-			responce.setId_Campana("DISTRITALES");
-			responce.setId_Oferta("AUT.DISTRITAL");
+			responce.setId_Oferta("DISTRITALES");
+			responce.setId_Campana("AUT.DISTRITAL");
 		break;	
 		default:
-			responce.setId_Campana("EXCEPGERENCIA");
-			responce.setId_Oferta("EXCEPCION GERENCIA");
+			responce.setId_Oferta("EXCEPGERENCIA");
+			responce.setId_Campana("EXCEPCION GERENCIA");
 		break; 			
 	    }
 		
@@ -330,7 +330,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					request.getPorcen_Cete(), 
 					request.getJustificacion(), 
 					request.getCel(), 
-					request.getPorta());
+					request.getPorta(),
+					request.getTasa_Campana());
 			if(salida > 0) {
 				autoTasaInsertResponseDTO.setMensaje(mensaje);
 				autoTasaInsertResponseDTO.setId_TasaAuto(id_Tasa);

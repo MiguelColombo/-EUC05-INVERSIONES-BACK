@@ -26,6 +26,7 @@ public class AutoTasaInsertBEDTO {
 	private String cel;
 	private String porta; //folio bancario is_portabilidad
 	private String autorizadores;
+	private String tasa_Campana;
 	
 	public String getAutorizadores() {
 		return autorizadores;
@@ -152,6 +153,12 @@ public class AutoTasaInsertBEDTO {
 	}
 	public void setPorta(String porta) {
 		this.porta = porta;
+	}
+	public String getTasa_Campana() {
+		return tasa_Campana;
+	}
+	public void setTasa_Campana(String tasa_Campana) {
+		this.tasa_Campana = tasa_Campana;
 	}
 	
 	
