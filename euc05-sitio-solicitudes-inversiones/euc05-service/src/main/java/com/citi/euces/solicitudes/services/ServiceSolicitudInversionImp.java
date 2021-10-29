@@ -921,7 +921,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			FECHA_SOLIC = (porcentaje.getTas_FECHA_SOLIC()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_SOLIC());
 			FECHA_AUTORI = (porcentaje.getTas_FECHA_AUTORI()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_AUTORI());
 			FECHA_ESTATUS = (porcentaje.getTas_FECHA_ESTATUS() == null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_ESTATUS());
-			FECHA_FIN = objSDF2.format(porcentaje.getCAMPANIAS_FIN()); 
+			FECHA_FIN = (porcentaje.getTas_FECHA_ESTATUS() == null) ?  "" :objSDF2.format(porcentaje.getCAMPANIAS_FIN()); 
 			System.out.println("ext ->" + FECHA_ESTATUS);
 			PorsentajeResponce.add(new ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO(
 					porcentaje.getTas_ID_TASAUTO(),
