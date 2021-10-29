@@ -230,7 +230,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		LOGGER.debug( distrito );
 			switch (request.getId_Solicitud().intValue()) {
 				case 1:		
-					lstAut = autorizadoresRepo.ObtenerAutorizadoresDivisionalesXDivision(request.getDivision(),request.getSoeid());
+					lstAut = autorizadoresRepo.ObtenerAutorizadoresDivisionalesXDivision(request.getDivision(),"");
 					for(Autorizadores au : lstAut) {
 						puesto = (au.getDivision().equals("Gerencia")) ? "Gerencia:":"Divisional:";
 						lstAut2.add(new AutorizadoresResponseDTO (au.getSoeid(),puesto+au.getNombre()));
