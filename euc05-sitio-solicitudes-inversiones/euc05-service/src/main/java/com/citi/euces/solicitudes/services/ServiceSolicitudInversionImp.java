@@ -901,6 +901,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		String FECHA_SOLIC ;
 		String FECHA_AUTORI ;
 		String FECHA_ESTATUS ;
+		String FECHA_FIN ;
 		Long datetime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(datetime);
 		//puesto = (au.getDivision().equals("Gerencia")) ? "Gerencia:":"Divisional:";
@@ -920,7 +921,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			FECHA_SOLIC = (porcentaje.getTas_FECHA_SOLIC()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_SOLIC());
 			FECHA_AUTORI = (porcentaje.getTas_FECHA_AUTORI()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_AUTORI());
 			FECHA_ESTATUS = (porcentaje.getTas_FECHA_ESTATUS() == null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_ESTATUS());
-
+			FECHA_FIN = objSDF2.format(porcentaje.getCAMPANIAS_FIN()); 
 			System.out.println("ext ->" + FECHA_ESTATUS);
 			PorsentajeResponce.add(new ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO(
 					porcentaje.getTas_ID_TASAUTO(),
@@ -956,7 +957,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					porcentaje.getNOMEJEC(),
 					porcentaje.getGATNOMINAOFER(),
 					porcentaje.getGATREALOFER(),
-					porcentaje.getRENDIMIENTOBRUTO()));
+					porcentaje.getRENDIMIENTOBRUTO(),
+					FECHA_FIN));
 		}
 	}catch (Exception ex) {
 		System.out.println("ex ->" + ex.getMessage());

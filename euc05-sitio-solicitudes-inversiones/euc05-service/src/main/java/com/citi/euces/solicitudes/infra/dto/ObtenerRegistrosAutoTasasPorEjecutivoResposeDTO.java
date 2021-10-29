@@ -38,46 +38,15 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	private String GATNOMINAOFER;
 	private String GATREALOFER;
 	private String RENDIMIENTOBRUTO;
-	
-	/**
-	 * @param tas_ID_TASAUTO
-	 * @param tas_ESTATUS
-	 * @param tas_NUM_AUTORI_UEC
-	 * @param tas_Folio
-	 * @param tas_FECHA_SOLIC
-	 * @param tas_FECHA_AUTORI
-	 * @param tas_FECHA_ESTATUS
-	 * @param tas_SUC_SOLIC
-	 * @param suc
-	 * @param tas_NUM_CTE
-	 * @param tas_NOM_CTE
-	 * @param tas_CONTRATO
-	 * @param tas_NOMINA
-	 * @param tas_MONTO
-	 * @param tas_PLAZO
-	 * @param tas_TASA_AUTORI
-	 * @param tas_TIPO_AUTORI
-	 * @param tas_SOEID_AUTORI
-	 * @param tas_SOEID_ASIG
-	 * @param tas_SOEID_OPE
-	 * @param tas_INIC_AUTORI
-	 * @param tas_CETE
-	 * @param tas_PORCEN_CETE
-	 * @param eleg_autorizadores
-	 * @param tas_OBSERVA_WEB
-	 * @param certificado_fisico
-	 * @param certificado_moral
-	 * @param fecha_Lieracion
-	 * @param tas_Tipo_Campana
-	 */
-	public ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO(Long tas_ID_TASAUTO, String tas_ESTATUS,  Long tas_Folio,
+	private String FECHA_FIN;
+	public ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO(Long tas_ID_TASAUTO, String tas_ESTATUS, Long tas_Folio,
 			String tas_FECHA_SOLIC, String tas_FECHA_AUTORI, String tas_FECHA_ESTATUS, Long tas_SUC_SOLIC, String suc,
 			Long tas_NUM_CTE, String tas_NOM_CTE, Long tas_CONTRATO, String tas_NOMINA, Long tas_MONTO, Long tas_PLAZO,
 			String tas_TASA_AUTORI, String tas_TipoOferta, String tas_SOEID_AUTORI, String tas_SOEID_ASIG,
 			String tas_SOEID_OPE, String tas_INIC_AUTORI, Long tas_CETE, Long tas_PORCEN_CETE,
 			String eleg_autorizadores, String tas_OBSERVA_WEB, String certificado_fisico, String certificado_moral,
-			String fecha_Liberacion, String tas_Tipo_Campana, Long OFERTA_SIGUIENTE_PASO,
-	        String OFERTA_PDF_ESPECIAL_ID, String NOMEJEC, String GATNOMINAOFER,String GATREALOFER,String RENDIMIENTOBRUTO ) {
+			String fecha_Liberacion, String tas_Tipo_Campana, Long oFERTA_SIGUIENTE_PASO, String oFERTA_PDF_ESPECIAL_ID,
+			String nOMEJEC, String gATNOMINAOFER, String gATREALOFER, String rENDIMIENTOBRUTO, String fECHA_FIN) {
 		super();
 		this.tas_ID_TASAUTO = tas_ID_TASAUTO;
 		this.tas_ESTATUS = tas_ESTATUS;
@@ -107,20 +76,13 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 		this.certificado_moral = certificado_moral;
 		this.fecha_Liberacion = fecha_Liberacion;
 		this.tas_Tipo_Campana = tas_Tipo_Campana;
-		this.OFERTA_SIGUIENTE_PASO = OFERTA_SIGUIENTE_PASO;
-		this.OFERTA_PDF_ESPECIAL_ID = OFERTA_PDF_ESPECIAL_ID;
-		this.NOMEJEC = NOMEJEC;
-		this.GATNOMINAOFER = GATNOMINAOFER;
-		this.GATREALOFER = GATREALOFER;
-		this.RENDIMIENTOBRUTO =  RENDIMIENTOBRUTO;
-		
-		
-	}
-	/**
-	 * 
-	 */
-	public ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO() {
-		super();
+		OFERTA_SIGUIENTE_PASO = oFERTA_SIGUIENTE_PASO;
+		OFERTA_PDF_ESPECIAL_ID = oFERTA_PDF_ESPECIAL_ID;
+		NOMEJEC = nOMEJEC;
+		GATNOMINAOFER = gATNOMINAOFER;
+		GATREALOFER = gATREALOFER;
+		RENDIMIENTOBRUTO = rENDIMIENTOBRUTO;
+		FECHA_FIN = fECHA_FIN;
 	}
 	public Long getTas_ID_TASAUTO() {
 		return tas_ID_TASAUTO;
@@ -281,8 +243,8 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	public String getFecha_Liberacion() {
 		return fecha_Liberacion;
 	}
-	public void setFecha_Lieracion(String fecha_Lieracion) {
-		this.fecha_Liberacion = fecha_Lieracion;
+	public void setFecha_Liberacion(String fecha_Liberacion) {
+		this.fecha_Liberacion = fecha_Liberacion;
 	}
 	public String getTas_Tipo_Campana() {
 		return tas_Tipo_Campana;
@@ -326,7 +288,12 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	public void setRENDIMIENTOBRUTO(String rENDIMIENTOBRUTO) {
 		RENDIMIENTOBRUTO = rENDIMIENTOBRUTO;
 	}
-	
+	public String getFECHA_FIN() {
+		return FECHA_FIN;
+	}
+	public void setFECHA_FIN(String fECHA_FIN) {
+		FECHA_FIN = fECHA_FIN;
+	}
 	
 	
 }

@@ -78,7 +78,17 @@ public class AutoTasasPorEjecutivo {
 	private String GATREALOFER;
 	@Column(name ="RENDIMIENTOBRUTO")
 	private String RENDIMIENTOBRUTO;
+	@Column(name ="CAMPANIAS_FIN")
+	private Timestamp CAMPANIAS_FIN;
 	
+	public Timestamp getCAMPANIAS_FIN() {
+		return CAMPANIAS_FIN;
+	}
+
+	public void setCAMPANIAS_FIN(Timestamp cAMPANIAS_FIN) {
+		CAMPANIAS_FIN = cAMPANIAS_FIN;
+	}
+
 	public AutoTasasPorEjecutivo() {
 		
 	}
