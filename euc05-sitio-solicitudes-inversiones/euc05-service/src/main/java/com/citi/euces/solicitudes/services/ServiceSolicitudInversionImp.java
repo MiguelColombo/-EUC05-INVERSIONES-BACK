@@ -898,6 +898,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		List<ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO> PorsentajeResponce = new ArrayList<ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO>();
 		try {
 		SimpleDateFormat objSDF2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		SimpleDateFormat objSDF3 = new SimpleDateFormat("yyyy,MM,dd");
 		String FECHA_SOLIC ;
 		String FECHA_AUTORI ;
 		String FECHA_ESTATUS ;
@@ -921,7 +922,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			FECHA_SOLIC = (porcentaje.getTas_FECHA_SOLIC()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_SOLIC());
 			FECHA_AUTORI = (porcentaje.getTas_FECHA_AUTORI()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_AUTORI());
 			FECHA_ESTATUS = (porcentaje.getTas_FECHA_ESTATUS() == null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_ESTATUS());
-			FECHA_FIN = (porcentaje.getTas_FECHA_ESTATUS() == null) ?  "" :objSDF2.format(porcentaje.getCAMPANIAS_FIN()); 
+			FECHA_FIN = (porcentaje.getTas_FECHA_ESTATUS() == null) ?  "" :objSDF3.format(porcentaje.getCAMPANIAS_FIN()); 
 			System.out.println("ext ->" + FECHA_ESTATUS);
 			PorsentajeResponce.add(new ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO(
 					porcentaje.getTas_ID_TASAUTO(),
