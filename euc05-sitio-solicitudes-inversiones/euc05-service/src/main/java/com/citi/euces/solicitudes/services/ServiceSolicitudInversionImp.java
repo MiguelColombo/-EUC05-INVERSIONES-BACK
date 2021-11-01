@@ -309,7 +309,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			Timestamp timestamp = Timestamp.valueOf(request.getFecha_Solic());
 			BigInteger contrato =new BigInteger(request.getContrato().toString()); 
 			BigInteger num_cli =new BigInteger(request.getNum_Cte().toString()); 
-			BigInteger monto =new BigInteger(request.getMonto().toString());
+		//	BigInteger monto =new BigInteger(request.getMonto().toString());
 			salida = autoTasaRepo.SAVE_AUTOTASAS(id_Tasa, 
 					//request.getFecha_Solic(), 
 					timestamp,
@@ -322,7 +322,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					contrato, 
 					request.getNomina(), 
 					request.getNomejec(), 
-					monto, 
+					request.getMonto(), 
 					request.getPlazo(), 
 					request.getTasa_Autori(), 
 					request.getTipo_Autori(), 

@@ -16,9 +16,9 @@ public class AutoTasaInsertBEDTO {
 	private BigInteger contrato;
 	private String nomina;
 	private String nomejec;
-	private BigInteger  monto;
+	private String  monto;
 	private Long plazo;
-	private Long tasa_Autori;
+	private String tasa_Autori;
 	private String tipo_Autori;
 	private Long cete;
 	private String porcen_Cete;
@@ -100,10 +100,10 @@ public class AutoTasaInsertBEDTO {
 	public void setNomejec(String nomejec) {
 		this.nomejec = nomejec;
 	}
-	public BigInteger getMonto() {
+	public String getMonto() {
 		return monto;
 	}
-	public void setMonto(BigInteger monto) {
+	public void setMonto(String monto) {
 		this.monto = monto;
 	}
 	public Long getPlazo() {
@@ -112,10 +112,10 @@ public class AutoTasaInsertBEDTO {
 	public void setPlazo(Long plazo) {
 		this.plazo = plazo;
 	}
-	public Long getTasa_Autori() {
+	public String getTasa_Autori() {
 		return tasa_Autori;
 	}
-	public void setTasa_Autori(Long tasa_Autori) {
+	public void setTasa_Autori(String tasa_Autori) {
 		this.tasa_Autori = tasa_Autori;
 	}
 	public String getTipo_Autori() {
