@@ -8,7 +8,7 @@ import com.citi.euces.solicitudes.entities.DiasFestivos;
 
 public interface DiasFestivosRepo extends JpaRepository<DiasFestivos, Integer> { // extends JpaRepository<T, ID>
 	
-	@Query(value = " select * from UEC_TB_CAT_FECHAS_FESTIVAS a ",nativeQuery = true )
+	@Query(value = " select * from UEC_TB_CAT_FECHAS_FESTIVAS a order by  a.FECHA asc ",nativeQuery = true )
 	List<DiasFestivos> obtenerListaFechas();
 
 }

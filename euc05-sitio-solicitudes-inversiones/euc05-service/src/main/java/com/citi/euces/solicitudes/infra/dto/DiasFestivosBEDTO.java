@@ -2,12 +2,12 @@ package com.citi.euces.solicitudes.infra.dto;
 
 public class DiasFestivosBEDTO {
 
-	private Long plazo;
+	private int plazo;
 	
-	public Long getPlazo() {
+	public int getPlazo() {
 		return plazo;
 	}
-	public void setPlazo(Long plazo) {
+	public void setPlazo(int plazo) {
 		this.plazo = plazo;
 	}
 
