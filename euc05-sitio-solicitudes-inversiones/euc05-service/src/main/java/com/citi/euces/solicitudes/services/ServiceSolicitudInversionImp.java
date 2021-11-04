@@ -919,7 +919,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	}
 	@Override
 	public List<ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO> ObtenerRegistrosAutoTasasPorEjecutivo(
-			ObtenerRegistrosAutoTasasPorEjecutivoRequest request) {
+			ObtenerRegistrosAutoTasasPorEjecutivoRequest request) throws GenericException {
 		List<ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO> PorsentajeResponce = new ArrayList<ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO>();
 		try {
 		SimpleDateFormat objSDF2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -933,21 +933,27 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		//puesto = (au.getDivision().equals("Gerencia")) ? "Gerencia:":"Divisional:";
         if(request.getNomina().isEmpty() && !request.getNum_cte().isEmpty()) {
     		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo2(request.getNomina(), request.getNum_cte(), request.getYear());
+       System.out.println("1 entro");
         }else if (request.getNum_cte().isEmpty() && !request.getNomina().isEmpty()) {
     		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo(request.getNomina(), request.getNum_cte(), request.getYear());
+    	 System.out.println("2 entro");
         }else if(request.getNomina().isEmpty() && request.getNum_cte().isEmpty()) {
         	PorsentajeResponce = null;
         }else if(!request.getNomina().isEmpty() && !request.getNum_cte().isEmpty()) {
     		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo3(request.getNomina(), request.getNum_cte(), request.getYear());
-
+    		 System.out.println("3 entro");
         }
         
+        System.out.println("tamaño "+listAutoTasaPor.size());
 		for(AutoTasasPorEjecutivo porcentaje : listAutoTasaPor) {
-			
+			 System.out.println("1:: "+porcentaje.getTas_ID_TASAUTO());
 			FECHA_SOLIC = (porcentaje.getTas_FECHA_SOLIC()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_SOLIC());
+			System.out.println("2:: "+FECHA_SOLIC);
 			FECHA_AUTORI = (porcentaje.getTas_FECHA_AUTORI()== null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_AUTORI());
+			System.out.println("3:: "+FECHA_AUTORI);
 			FECHA_ESTATUS = (porcentaje.getTas_FECHA_ESTATUS() == null) ?  "" : objSDF2.format(porcentaje.getTas_FECHA_ESTATUS());
-			FECHA_FIN = (porcentaje.getTas_FECHA_ESTATUS() == null) ?  "" :objSDF3.format(porcentaje.getCAMPANIAS_FIN()); 
+			System.out.println("4:: "+FECHA_ESTATUS);
+			FECHA_FIN = (porcentaje.getCAMPANIAS_FIN() == null) ?  "" :objSDF3.format(porcentaje.getCAMPANIAS_FIN()); 
 			System.out.println("ext ->" + FECHA_ESTATUS);
 			PorsentajeResponce.add(new ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO(
 					porcentaje.getTas_ID_TASAUTO(),
@@ -986,9 +992,10 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					porcentaje.getRENDIMIENTOBRUTO(),
 					FECHA_FIN));
 		}
-	}catch (Exception ex) {
-		System.out.println("ex ->" + ex.getMessage());
-		System.out.println("ex ->" + ex.getCause());
+	}catch (Exception e) {
+		e.printStackTrace();
+		throw new GenericException("Error :: ",
+				HttpStatus.NOT_FOUND.toString());
 	}
 		return PorsentajeResponce;
 	}
@@ -1809,96 +1816,122 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	}
 	
 	public List<DiasFestivosResponseDTO> ObtenerDiasFeriados(int request) throws GenericException, IOException {
-		List<DiasFestivos> lstdias = new ArrayList<DiasFestivos>();
-		List<DiasFestivosResponseDTO> diasFestivosResponse = new ArrayList<DiasFestivosResponseDTO>();
-
-		Date actual = new Date();
+		//.intValue()
+		SimpleDateFormat objSDF = new SimpleDateFormat("dd/MM/yyyy"); 
+		Date  actual=  new Date();
+		Date  actuals=  new Date();
 		Calendar c = Calendar.getInstance();
-		SimpleDateFormat objSDF = new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat objSDF2 = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat objSDF2 = new SimpleDateFormat("dd/MM/yyyy"); 
 		int aumento = 0;
 		int plazo = 0;
 		int validacion = 0;
+		int a = 0;
+		int p = request;
 		lstdias = diasFestivosRepo.obtenerListaFechas();
-		try {
-
-			c.setTime(actual);
-			c.add(Calendar.DATE, request);
-			actual = c.getTime();
-			objSDF.applyLocalizedPattern("E");
-			for (DiasFestivos dia : lstdias) {
-				objSDF.applyLocalizedPattern("E");
-				// diasFestivosResponse.add(new
-				// DiasFestivosResponseDTO(plazo,"1"+objSDF2.format(actual)));
-				if (objSDF2.format(actual).toString().equals(objSDF2.format(dia.getFECHA()))) {
-					if (dia.getDESCRIPCION().equals("Semana Santa")) {
-						c.setTime(actual);
-						aumento = (objSDF.format(actual).toString().equals("jue")) ? aumento + 2 : aumento + 1;
-						// aumento = aumento+1;
-						c.add(Calendar.DATE, aumento);
-						actual = c.getTime();
-						validacion = 1;
-						if (objSDF.format(actual).toString().equals("sáb")) {
+		List<DiasFestivosResponseDTO> diasFestivosResponse = new ArrayList<DiasFestivosResponseDTO>();
+		try{
+		    c.setTime(actual);
+	        c.add(Calendar.DATE, p);
+	        actual = c.getTime();
+	        objSDF.applyLocalizedPattern("E");
+	        System.out.println( "1 :: "+objSDF2.format(actual).toString());
+			for(DiasFestivos dia : lstdias) {
+		        System.out.println( "2 ::: "+objSDF2.format(actual).toString());
+				c.setTime(actual);
+		        c.add(Calendar.DATE, aumento);
+		       actual = c.getTime();
+		       System.out.println( "56 ::: "+objSDF2.format(actual).toString());
+				if(objSDF2.format(actual).toString().equals(objSDF2.format(dia.getFECHA()))) {
+					 System.out.println( ":: "+objSDF2.format(dia.getFECHA()).toString());
+			            validacion =1;
+			            if(objSDF.format(actual).toString().equals("sáb") || objSDF.format(actual).toString().equals("Sat")) {
+			            	c.setTime(actual);
+			            	aumento = 2;
+			                c.add(Calendar.DATE, 2);
+			                actual = c.getTime();
+			                plazo = p +aumento;
+			                System.out.println("e1");
+			                System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual));
+			                diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
+			            }else if (objSDF.format(actual).toString().equals("dom") || objSDF.format(actual).toString().equals("Sun")) {
 							c.setTime(actual);
-							aumento = aumento + 2;
-							c.add(Calendar.DATE, 2);
+							aumento = 1;
+							c.add(Calendar.DATE, aumento);
 							actual = c.getTime();
-							plazo = request + aumento;
-							diasFestivosResponse
-									.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
-						} else {
-							plazo = request + aumento;
-							diasFestivosResponse
-									.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
+							plazo = p+aumento;
+							 System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual));
+							 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
+							System.out.println("e4");
 						}
-					} else {
-						c.setTime(actual);
-						aumento = aumento + 1;
-						c.add(Calendar.DATE, aumento);
-						actual = c.getTime();
-						validacion = 1;
-						if (objSDF.format(actual).toString().equals("sáb")) {
-							c.setTime(actual);
-							aumento = aumento + 2;
-							c.add(Calendar.DATE, 2);
-							actual = c.getTime();
-							plazo = request + aumento;
-							diasFestivosResponse
-									.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
-						} else {
-							plazo = request + aumento;
-							diasFestivosResponse
-									.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
-						}
-					}
-
+			            	a =1;
+			            	aumento++;	
+			            	System.out.println("aumento "+ aumento);
 				}
 			}
-			if (validacion == 0) {
-				if (objSDF.format(actual).toString().equals("sáb")) {
+			if(a == 1) {
+				plazo = p +aumento;
+				c.setTime(actuals);
+	            c.add(Calendar.DATE, (p +aumento));
+	            actuals = c.getTime();
+	            if(objSDF.format(actuals).toString().equals("sáb") || objSDF.format(actuals).toString().equals("Sat")) {
+	            	c.setTime(actuals);
+	            	aumento = 2;
+	                c.add(Calendar.DATE, 2);
+	                actuals = c.getTime();
+	                plazo = p +aumento;
+	                System.out.println("e1");
+	                System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actuals));
+	                diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actuals)));
+	            }else if (objSDF.format(actuals).toString().equals("dom") || objSDF.format(actuals).toString().equals("Sun")) {
+					c.setTime(actuals);
+					aumento = 1;
+					c.add(Calendar.DATE, aumento);
+					actuals = c.getTime();
+					plazo = p+aumento;
+					 System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actuals));
+					 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actuals)));
+					System.out.println("e4");
+				}else {
+					 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actuals)));
+				}
+	      
+
+			}
+
+			System.out.println(aumento+ " :: " +objSDF2.format(actual));
+			if(validacion == 0) {
+				if(objSDF.format(actual).toString().equals("sáb") || objSDF.format(actual).toString().equals("Sat")) {
 					c.setTime(actual);
 					aumento = 2;
 					c.add(Calendar.DATE, aumento);
 					actual = c.getTime();
-					plazo = request + aumento;
-					diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
-				} else if (objSDF.format(actual).toString().equals("dom")) {
+					plazo = p +aumento;
+					 System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual));
+					 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
+					System.out.println("e3");
+				}else if (objSDF.format(actual).toString().equals("dom") || objSDF.format(actual).toString().equals("Sun")) {
 					c.setTime(actual);
 					aumento = 1;
 					c.add(Calendar.DATE, aumento);
 					actual = c.getTime();
-					plazo = request + aumento;
-					diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), fechaActual(actual)));
-				} else {
-					diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(request), fechaActual(actual)));
+					plazo = p +aumento;
+					 System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual));
+					 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
+					System.out.println("e4");
+				}else {
+					 System.out.println("plazo "+p+" fecha "+objSDF2.format(actual));
+					 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(request), objSDF2.format(actual)));
+					System.out.println("e5");
 
 				}
+				
 			}
-
-		} catch (Exception ex) {
+			
+		}catch (Exception ex) {
 			System.out.println("ex ->" + ex.getMessage());
 			System.out.println("ex ->" + ex.getCause());
 		}
+		
 		return diasFestivosResponse;
 	}
 	
