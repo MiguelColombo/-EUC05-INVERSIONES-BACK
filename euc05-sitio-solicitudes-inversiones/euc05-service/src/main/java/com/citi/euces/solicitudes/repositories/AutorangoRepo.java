@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import com.citi.euces.solicitudes.entities.*;
 public interface AutorangoRepo extends JpaRepository<Autorango, Integer>{
 	
-	@Query(value = "select * from UEC_TB_AUTORANGOS a ",nativeQuery = true )
+	@Query(value = "SELECT * FROM UEC_TB_AUTORANGOS a ORDER BY a.ID_RANGO ",nativeQuery = true )
 	 List<Autorango> autoRango();
 }

@@ -14,7 +14,7 @@ import com.citi.euces.solicitudes.entities.TbAutorizadoresElegidos;
 public interface TbAutorizadoresElegidosRepo extends JpaRepository<TbAutorizadoresElegidos, Integer>{
 	@Transactional
 	@Modifying
-	@Query(value = "INSERT INTO UEC_TB_AUTORIZADORES_ELEGIDOS (id_TasaAuto, Autorizadores) "
+	@Query(value = "INSERT INTO UEC_TB_AUTORIZADORES_ELEGIDOS (id_TasaAuto, Autorizadores) " 
 			+ "  VALUES ( :Id_TasaAuto,:Autorizadores )  ",nativeQuery = true )
 	int Guardar_Autorizacion(@Param("Id_TasaAuto") BigInteger Id_TasaAuto, @Param("Autorizadores") String Autorizadores);
 }
