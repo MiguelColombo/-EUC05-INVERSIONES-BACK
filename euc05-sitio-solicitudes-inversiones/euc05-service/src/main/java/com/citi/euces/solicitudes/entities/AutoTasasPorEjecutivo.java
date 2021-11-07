@@ -1,5 +1,6 @@
 package com.citi.euces.solicitudes.entities;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -37,7 +38,7 @@ public class AutoTasasPorEjecutivo {
 	@Column(name ="NOMINA")
 	private String tas_NOMINA;
 	@Column(name ="MONTO")
-	private Long tas_MONTO;
+	private BigInteger tas_MONTO;
 	@Column(name ="PLAZO")
 	private Long tas_PLAZO;
 	@Column(name ="TASA_AUTORI")
@@ -189,11 +190,11 @@ public class AutoTasasPorEjecutivo {
 		this.tas_NOMINA = tas_NOMINA;
 	}
 
-	public Long getTas_MONTO() {
+	public BigInteger getTas_MONTO() {
 		return tas_MONTO;
 	}
 
-	public void setTas_MONTO(Long tas_MONTO) {
+	public void setTas_MONTO(BigInteger tas_MONTO) {
 		this.tas_MONTO = tas_MONTO;
 	}
 

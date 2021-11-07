@@ -1,5 +1,6 @@
 package com.citi.euces.solicitudes.infra.dto;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
@@ -16,7 +17,7 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	private String tas_NOM_CTE;
 	private Long tas_CONTRATO;
 	private String tas_NOMINA;
-	private Long tas_MONTO;
+	private BigInteger tas_MONTO;
 	private Long tas_PLAZO;
 	private String tas_TASA_AUTORI;
 	private String tas_TipoOferta;
@@ -41,7 +42,7 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	private String FECHA_FIN;
 	public ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO(Long tas_ID_TASAUTO, String tas_ESTATUS, Long tas_Folio,
 			String tas_FECHA_SOLIC, String tas_FECHA_AUTORI, String tas_FECHA_ESTATUS, Long tas_SUC_SOLIC, String suc,
-			Long tas_NUM_CTE, String tas_NOM_CTE, Long tas_CONTRATO, String tas_NOMINA, Long tas_MONTO, Long tas_PLAZO,
+			Long tas_NUM_CTE, String tas_NOM_CTE, Long tas_CONTRATO, String tas_NOMINA, BigInteger tas_MONTO, Long tas_PLAZO,
 			String tas_TASA_AUTORI, String tas_TipoOferta, String tas_SOEID_AUTORI, String tas_SOEID_ASIG,
 			String tas_SOEID_OPE, String tas_INIC_AUTORI, Long tas_CETE, Long tas_PORCEN_CETE,
 			String eleg_autorizadores, String tas_OBSERVA_WEB, String certificado_fisico, String certificado_moral,
@@ -156,10 +157,10 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	public void setTas_NOMINA(String tas_NOMINA) {
 		this.tas_NOMINA = tas_NOMINA;
 	}
-	public Long getTas_MONTO() {
+	public BigInteger getTas_MONTO() {
 		return tas_MONTO;
 	}
-	public void setTas_MONTO(Long tas_MONTO) {
+	public void setTas_MONTO(BigInteger tas_MONTO) {
 		this.tas_MONTO = tas_MONTO;
 	}
 	public Long getTas_PLAZO() {
