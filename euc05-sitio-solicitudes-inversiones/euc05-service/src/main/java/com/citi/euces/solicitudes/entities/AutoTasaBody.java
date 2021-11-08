@@ -54,7 +54,7 @@ private Double  MONTO;
 @Column(name ="PLAZO")
 private Long PLAZO;
 @Column(name ="TASA_AUTORI")
-private Long TASA_AUTORI;
+private Double TASA_AUTORI;
 @Column(name ="TIPO_AUTORI")
 private String TIPO_AUTORI;
 @Column(name ="SOEID_AUTORI")
@@ -269,12 +269,12 @@ public void setPLAZO(Long pLAZO) {
 }
 
 
-public Long getTASA_AUTORI() {
+public Double getTASA_AUTORI() {
 	return TASA_AUTORI;
 }
 
 
-public void setTASA_AUTORI(Long tASA_AUTORI) {
+public void setTASA_AUTORI(Double tASA_AUTORI) {
 	TASA_AUTORI = tASA_AUTORI;
 }
 
