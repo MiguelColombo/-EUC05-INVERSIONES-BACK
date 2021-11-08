@@ -936,10 +936,11 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		Long datetime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(datetime);
 		//puesto = (au.getDivision().equals("Gerencia")) ? "Gerencia:":"Divisional:";
+        System.out.println(request.getNum_cte()+ ""+request.getNomina());
         if(request.getNomina().isEmpty() && !request.getNum_cte().isEmpty()) {
     		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo2(request.getNomina(), request.getNum_cte(), request.getYear());
        System.out.println("1 entro");
-        }else if (request.getNum_cte().isEmpty() && !request.getNomina().isEmpty()) {
+        }else if(!request.getNomina().isEmpty() && request.getNum_cte().isEmpty() ) {
     		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo(request.getNomina(), request.getNum_cte(), request.getYear());
     	 System.out.println("2 entro");
         }else if(request.getNomina().isEmpty() && request.getNum_cte().isEmpty()) {
@@ -947,7 +948,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
         }else if(!request.getNomina().isEmpty() && !request.getNum_cte().isEmpty()) {
     		listAutoTasaPor = obtenerRegistrosAutoTasasPorEjecutivoRepo.ObtenerRegistrosAutoTasasPorEjecutivo3(request.getNomina(), request.getNum_cte(), request.getYear());
     		 System.out.println("3 entro");
-        }
+        } 
         
         System.out.println("tamaño "+listAutoTasaPor.size());
 		for(AutoTasasPorEjecutivo porcentaje : listAutoTasaPor) {
