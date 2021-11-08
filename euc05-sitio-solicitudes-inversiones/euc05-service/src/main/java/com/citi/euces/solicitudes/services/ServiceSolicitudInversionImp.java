@@ -46,6 +46,7 @@ import java.util.Base64;
 import org.springframework.http.HttpStatus;
 import com.citi.euces.solicitudes.entities.AutoCetes;
 import com.citi.euces.solicitudes.entities.AutoTasa;
+import com.citi.euces.solicitudes.entities.AutoTasaBody;
 import com.citi.euces.solicitudes.entities.AutoTasasPorEjecutivo;
 import com.citi.euces.solicitudes.entities.Autorizadores;
 import com.citi.euces.solicitudes.entities.DiasFestivos;
@@ -101,6 +102,7 @@ import com.citi.euces.solicitudes.infra.exceptions.GenericException;
 import com.citi.euces.solicitudes.infra.utils.BodyMail;
 import com.citi.euces.solicitudes.infra.utils.FormatUtils;
 import com.citi.euces.solicitudes.repositories.AutoCetesRepo;
+import com.citi.euces.solicitudes.repositories.AutoTasaBodyRepo;
 import com.citi.euces.solicitudes.repositories.AutoTasaRepo;
 import com.citi.euces.solicitudes.repositories.AutorizadoresRepo;
 import com.citi.euces.solicitudes.repositories.DiasFestivosRepo;
@@ -158,6 +160,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	AutorangoRepo tbAutorangoRepo;
 	@Autowired
 	AutoTasaRepo autoTasaRepo;
+	@Autowired
+	AutoTasaBodyRepo autoTasaBodyRepo;
 	@Autowired
 	TbAutorizadoresElegidosRepo tbAutorizadoresElegidosRepo;
 	@Autowired
@@ -1093,7 +1097,9 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			List<AutorizadoresDivisionalesResponseDTO> listadoAutorizadores = request.getListadoAutorizadores();
 			BigInteger folio = new BigInteger(request.getFolio());
 			Integer oferta = 0;
-			AutoTasa solicitud = autoTasaRepo.buscarId(folio);
+			//AutoTasa solicitud = autoTasaRepo.buscarId(folio);
+			AutoTasaBody solicitud = autoTasaBodyRepo.buscarId(folio);
+			
 			System.out.println("288 solicitud->" + solicitud);
 			
 			if (solicitud == null) {
@@ -1149,7 +1155,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     	            		body += detailMail.BodySolicitudAutorizadorUEC(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
     	            				solicitud.getTIPO_AUTORI(),oferta, solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
     	            				solicitud.getNOM_CTE(),   solicitud.getNUM_CTE().longValue(), solicitud.getCONTRATO().longValue(),
-    	            				Double.parseDouble(solicitud.getMONTO().toString()) + "",Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
+    	            				solicitud.getMONTO().toString()+ "",Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
     	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, MensajeHorror, item.getSoeid())
     							+ "|";
     	            	} catch (Exception e) {
@@ -1188,7 +1194,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	            		body += detailMail.BodySolicitudAutorizadorUEC(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
 	            				solicitud.getTIPO_AUTORI(),oferta, solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
 	            				solicitud.getNOM_CTE(), solicitud.getNUM_CTE().longValue(), solicitud.getCONTRATO().longValue(),
-	            				Double.parseDouble(solicitud.getMONTO().toString()) + "", Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
+	            				solicitud.getMONTO().toString() + "", Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
 	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.getNombre(), item.getSoeid())
 							+ "|";
 	            	} catch (Exception e) {
@@ -1202,7 +1208,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     						body += detailMail.BodySolicitud(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
     								solicitud.getTIPO_AUTORI(),oferta, solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
     								solicitud.getNOM_CTE(), solicitud.getNUM_CTE().longValue(), solicitud.getCONTRATO().longValue(),
-    								Double.parseDouble(solicitud.getMONTO().toString()) + "",  Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
+    								solicitud.getMONTO().toString() + "",  Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
     								solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.getNombre(),
     								item.getSoeid(), request.getUrlRedirect(), linkAutorizas[x], linkRechazas[x]) + "|";
     					} catch (Exception e) {
