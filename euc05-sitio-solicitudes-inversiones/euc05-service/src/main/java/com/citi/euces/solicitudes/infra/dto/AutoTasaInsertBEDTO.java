@@ -27,6 +27,7 @@ public class AutoTasaInsertBEDTO {
 	private String porta; //folio bancario is_portabilidad
 	private String autorizadores;
 	private String tasa_Campana;
+	private String plazo_Sin_Calculo;
 	
 	public String getAutorizadores() {
 		return autorizadores;
@@ -159,6 +160,12 @@ public class AutoTasaInsertBEDTO {
 	}
 	public void setTasa_Campana(String tasa_Campana) {
 		this.tasa_Campana = tasa_Campana;
+	}
+	public String getPlazo_Sin_Calculo() {
+		return plazo_Sin_Calculo;
+	}
+	public void setPlazo_Sin_Calculo(String plazo_Sin_Calculo) {
+		this.plazo_Sin_Calculo = plazo_Sin_Calculo;
 	}
 	
 	

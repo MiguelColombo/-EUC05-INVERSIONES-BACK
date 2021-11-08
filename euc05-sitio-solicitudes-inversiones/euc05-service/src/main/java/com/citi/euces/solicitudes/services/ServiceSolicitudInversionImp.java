@@ -333,7 +333,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 					request.getJustificacion(), 
 					request.getCel(), 
 					request.getPorta(),
-					request.getTasa_Campana());
+					request.getTasa_Campana(),
+					request.getPlazo_Sin_Calculo());
 			if(salida > 0) {
 				autoTasaInsertResponseDTO.setMensaje(mensaje);
 				autoTasaInsertResponseDTO.setId_TasaAuto(id_Tasa);
@@ -1148,7 +1149,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     	            		body += detailMail.BodySolicitudAutorizadorUEC(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
     	            				solicitud.getTIPO_AUTORI(),oferta, solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
     	            				solicitud.getNOM_CTE(),   solicitud.getNUM_CTE().longValue(), solicitud.getCONTRATO().longValue(),
-    	            				solicitud.getMONTO().toString() + "",Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
+    	            				Double.parseDouble(solicitud.getMONTO().toString()) + "",Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
     	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, MensajeHorror, item.getSoeid())
     							+ "|";
     	            	} catch (Exception e) {
@@ -1187,7 +1188,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	            		body += detailMail.BodySolicitudAutorizadorUEC(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
 	            				solicitud.getTIPO_AUTORI(),oferta, solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
 	            				solicitud.getNOM_CTE(), solicitud.getNUM_CTE().longValue(), solicitud.getCONTRATO().longValue(),
-	            				solicitud.getMONTO().toString() + "", Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
+	            				Double.parseDouble(solicitud.getMONTO().toString()) + "", Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
 	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.getNombre(), item.getSoeid())
 							+ "|";
 	            	} catch (Exception e) {
@@ -1201,7 +1202,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     						body += detailMail.BodySolicitud(solicitud.getFECHA_SOLIC(), solicitud.getIS_PORTABILIDAD(),
     								solicitud.getTIPO_AUTORI(),oferta, solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
     								solicitud.getNOM_CTE(), solicitud.getNUM_CTE().longValue(), solicitud.getCONTRATO().longValue(),
-    								solicitud.getMONTO().toString() + "",  Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
+    								Double.parseDouble(solicitud.getMONTO().toString()) + "",  Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
     								solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.getNombre(),
     								item.getSoeid(), request.getUrlRedirect(), linkAutorizas[x], linkRechazas[x]) + "|";
     					} catch (Exception e) {
