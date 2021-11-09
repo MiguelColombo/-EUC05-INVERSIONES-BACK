@@ -30,11 +30,11 @@ public class AutoTasasPorEjecutivo {
 	@Column(name ="suc")
 	private String suc;
 	@Column(name ="NUM_CTE")
-	private Long tas_NUM_CTE;
+	private String tas_NUM_CTE;
 	@Column(name ="NOM_CTE")
 	private String tas_NOM_CTE;
 	@Column(name ="CONTRATO")
-	private Long tas_CONTRATO;
+	private String tas_CONTRATO;
 	@Column(name ="NOMINA")
 	private String tas_NOMINA;
 	@Column(name ="MONTO")
@@ -158,11 +158,11 @@ public class AutoTasasPorEjecutivo {
 		this.suc = suc;
 	}
 
-	public Long getTas_NUM_CTE() {
+	public String getTas_NUM_CTE() {
 		return tas_NUM_CTE;
 	}
 
-	public void setTas_NUM_CTE(Long tas_NUM_CTE) {
+	public void setTas_NUM_CTE(String tas_NUM_CTE) {
 		this.tas_NUM_CTE = tas_NUM_CTE;
 	}
 
@@ -174,11 +174,11 @@ public class AutoTasasPorEjecutivo {
 		this.tas_NOM_CTE = tas_NOM_CTE;
 	}
 
-	public Long getTas_CONTRATO() {
+	public String getTas_CONTRATO() {
 		return tas_CONTRATO;
 	}
 
-	public void setTas_CONTRATO(Long tas_CONTRATO) {
+	public void setTas_CONTRATO(String tas_CONTRATO) {
 		this.tas_CONTRATO = tas_CONTRATO;
 	}
 

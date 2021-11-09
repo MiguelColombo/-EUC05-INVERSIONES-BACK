@@ -372,6 +372,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat objSDF2 = new SimpleDateFormat("dd/MM/yyyy"); 
 		int aumento = 0;
+		int aument2 = 0;
 		int plazo = 0;
 		int validacion = 0;
 		int a = 0;
@@ -380,102 +381,96 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		List<DiasFestivosResponseDTO> diasFestivosResponse = new ArrayList<DiasFestivosResponseDTO>();
 		try{
 		    c.setTime(actual);
-	        c.add(Calendar.DATE, p);
+	        c.add(Calendar.DATE, p); //4  12 ->20 13 21
 	        actual = c.getTime();
 	        objSDF.applyLocalizedPattern("E");
 	        System.out.println( "1 :: "+objSDF2.format(actual).toString());
+	        /////////////
+	        
+	        if(objSDF.format(actual).toString().equals("sáb") || objSDF.format(actual).toString().equals("Sat")) {
+				c.setTime(actual);
+				aumento = 2;
+				c.add(Calendar.DATE, aumento);  //22
+				actual = c.getTime();
+				plazo = p +aumento; //12+2 14
+				 System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual));
+			//	 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
+				System.out.println("e3");
+				aumento= 0;
+				p= plazo;
+			}else if (objSDF.format(actual).toString().equals("dom") || objSDF.format(actual).toString().equals("Sun")) {
+				c.setTime(actual);
+				aumento = 1;
+				c.add(Calendar.DATE, aumento); //21 +1 22
+				actual = c.getTime();
+				plazo = p +aumento; //13+1 14
+				 System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual));
+			//	 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
+				System.out.println("e4");
+				aumento= 0;
+				p= plazo;
+			}else {
+				 System.out.println("plazo "+p+" fecha "+objSDF2.format(actual));
+				 plazo = p;
+				// diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(request.getPlazo()), objSDF2.format(actual)));
+				System.out.println("e5");
+
+			}
+	        
+	        
+	        
+	        
+	        ////////////////
 			for(DiasFestivos dia : lstdias) {
 		        System.out.println( "2 ::: "+objSDF2.format(actual).toString());
 				c.setTime(actual);
-		        c.add(Calendar.DATE, aumento);
+		        c.add(Calendar.DATE,0); //12  15 16   
 		       actual = c.getTime();
 		       System.out.println( "56 ::: "+objSDF2.format(actual).toString());
 				if(objSDF2.format(actual).toString().equals(objSDF2.format(dia.getFECHA()))) {
 					 System.out.println( ":: "+objSDF2.format(dia.getFECHA()).toString());
 			            validacion =1;
+			            
+			            aumento++;	//1 //2 //3 // 1
+			           
+			            plazo = aument2+p +aumento; // 0+4+1 = 5  2+4+2 =8  2+4+3 = 9   0+14+1 15
+						c.setTime(actual);// 12 15 16 //22
+			            c.add(Calendar.DATE, +1); // 13 16 17 //23
+			            actual = c.getTime();
+			            System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual));
+			            
 			            if(objSDF.format(actual).toString().equals("sáb") || objSDF.format(actual).toString().equals("Sat")) {
-			            	c.setTime(actual);
-			            	aumento = 2;
-			                c.add(Calendar.DATE, 2);
+			            	c.setTime(actual); //13 
+			            	aument2 = 2;
+			                c.add(Calendar.DATE, 2); //15
 			                actual = c.getTime();
-			                plazo = p +aumento;
+			                plazo = p+aument2+aumento; // 4+1+2 = 7
 			                System.out.println("e1");
-			                System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual));
-			                diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
+			                System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual)); //7 15
+			                a =1;
+			              //  diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
 			            }else if (objSDF.format(actual).toString().equals("dom") || objSDF.format(actual).toString().equals("Sun")) {
 							c.setTime(actual);
-							aumento = 1;
+							//aumento = 1;
 							c.add(Calendar.DATE, aumento);
 							actual = c.getTime();
-							plazo = p+aumento;
+							plazo = (p+aumento)+1;
 							 System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual));
-							 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
+						//	 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
 							System.out.println("e4");
 						}
-			            	a =1;
-			            	aumento++;	
-			            	System.out.println("aumento "+ aumento);
+			            //	a =1;
+			            //	aumento++;	
+			            	System.out.println("aumento "+ aumento); //1
+			            	
+			            	
 				}
-			}
-			if(a == 1) {
-				plazo = p +aumento;
-				c.setTime(actuals);
-	            c.add(Calendar.DATE, (p +aumento));
-	            actuals = c.getTime();
-	            if(objSDF.format(actuals).toString().equals("sáb") || objSDF.format(actuals).toString().equals("Sat")) {
-	            	c.setTime(actuals);
-	            	aumento = 2;
-	                c.add(Calendar.DATE, 2);
-	                actuals = c.getTime();
-	                plazo = p +aumento;
-	                System.out.println("e1");
-	                System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actuals));
-	                diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actuals)));
-	            }else if (objSDF.format(actuals).toString().equals("dom") || objSDF.format(actuals).toString().equals("Sun")) {
-					c.setTime(actuals);
-					aumento = 1;
-					c.add(Calendar.DATE, aumento);
-					actuals = c.getTime();
-					plazo = p+aumento;
-					 System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actuals));
-					 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actuals)));
-					System.out.println("e4");
-				}else {
-					 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actuals)));
-				}
-	      
-
-			}
-
-			System.out.println(aumento+ " :: " +objSDF2.format(actual));
-			if(validacion == 0) {
-				if(objSDF.format(actual).toString().equals("sáb") || objSDF.format(actual).toString().equals("Sat")) {
-					c.setTime(actual);
-					aumento = 2;
-					c.add(Calendar.DATE, aumento);
-					actual = c.getTime();
-					plazo = p +aumento;
-					 System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual));
-					 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
-					System.out.println("e3");
-				}else if (objSDF.format(actual).toString().equals("dom") || objSDF.format(actual).toString().equals("Sun")) {
-					c.setTime(actual);
-					aumento = 1;
-					c.add(Calendar.DATE, aumento);
-					actual = c.getTime();
-					plazo = p +aumento;
-					 System.out.println("plazo "+Long.valueOf(plazo)+" fecha "+objSDF2.format(actual));
-					 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
-					System.out.println("e4");
-				}else {
-					 System.out.println("plazo "+p+" fecha "+objSDF2.format(actual));
-					 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(request.getPlazo()), objSDF2.format(actual)));
-					System.out.println("e5");
-
-				}
-				
 			}
 			
+			 diasFestivosResponse.add(new DiasFestivosResponseDTO(Long.valueOf(plazo), objSDF2.format(actual)));
+
+			System.out.println(aumento+ " :: " +objSDF2.format(actual));
+
 		}catch (Exception ex) {
 			System.out.println("ex ->" + ex.getMessage());
 			System.out.println("ex ->" + ex.getCause());

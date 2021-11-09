@@ -13,9 +13,9 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	private String tas_FECHA_ESTATUS;
 	private Long tas_SUC_SOLIC;
 	private String suc;
-	private Long tas_NUM_CTE;
+	private String tas_NUM_CTE;
 	private String tas_NOM_CTE;
-	private Long tas_CONTRATO;
+	private String tas_CONTRATO;
 	private String tas_NOMINA;
 	private double tas_MONTO;
 	private Long tas_PLAZO;
@@ -42,7 +42,7 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	private String FECHA_FIN;
 	public ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO(Long tas_ID_TASAUTO, String tas_ESTATUS, Long tas_Folio,
 			String tas_FECHA_SOLIC, String tas_FECHA_AUTORI, String tas_FECHA_ESTATUS, Long tas_SUC_SOLIC, String suc,
-			Long tas_NUM_CTE, String tas_NOM_CTE, Long tas_CONTRATO, String tas_NOMINA, double tas_MONTO, Long tas_PLAZO,
+			String tas_NUM_CTE, String tas_NOM_CTE, String tas_CONTRATO, String tas_NOMINA, double tas_MONTO, Long tas_PLAZO,
 			String tas_TASA_AUTORI, String tas_TipoOferta, String tas_SOEID_AUTORI, String tas_SOEID_ASIG,
 			String tas_SOEID_OPE, String tas_INIC_AUTORI, Long tas_CETE, Long tas_PORCEN_CETE,
 			String eleg_autorizadores, String tas_OBSERVA_WEB, String certificado_fisico, String certificado_moral,
@@ -133,10 +133,10 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	public void setSuc(String suc) {
 		this.suc = suc;
 	}
-	public Long getTas_NUM_CTE() {
+	public String getTas_NUM_CTE() {
 		return tas_NUM_CTE;
 	}
-	public void setTas_NUM_CTE(Long tas_NUM_CTE) {
+	public void setTas_NUM_CTE(String tas_NUM_CTE) {
 		this.tas_NUM_CTE = tas_NUM_CTE;
 	}
 	public String getTas_NOM_CTE() {
@@ -145,10 +145,10 @@ public class ObtenerRegistrosAutoTasasPorEjecutivoResposeDTO {
 	public void setTas_NOM_CTE(String tas_NOM_CTE) {
 		this.tas_NOM_CTE = tas_NOM_CTE;
 	}
-	public Long getTas_CONTRATO() {
+	public String getTas_CONTRATO() {
 		return tas_CONTRATO;
 	}
-	public void setTas_CONTRATO(Long tas_CONTRATO) {
+	public void setTas_CONTRATO(String tas_CONTRATO) {
 		this.tas_CONTRATO = tas_CONTRATO;
 	}
 	public String getTas_NOMINA() {
