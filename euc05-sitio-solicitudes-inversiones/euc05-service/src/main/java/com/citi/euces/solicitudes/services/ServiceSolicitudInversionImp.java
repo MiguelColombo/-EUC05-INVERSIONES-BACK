@@ -44,6 +44,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import java.util.Base64;
 import org.springframework.http.HttpStatus;
+
+
 import com.citi.euces.solicitudes.entities.AutoCetes;
 import com.citi.euces.solicitudes.entities.AutoTasa;
 import com.citi.euces.solicitudes.entities.AutoTasaBody;
@@ -74,6 +76,7 @@ import com.citi.euces.solicitudes.infra.dto.AutorizadoresDivisionalesResponseDTO
 import com.citi.euces.solicitudes.infra.dto.AutorizadoresResponseDTO;
 import com.citi.euces.solicitudes.infra.dto.CatFolioDTO;
 import com.citi.euces.solicitudes.infra.dto.CatPDFEspecial;
+import com.citi.euces.solicitudes.infra.dto.Cat_SucBEDTO;
 import com.citi.euces.solicitudes.infra.dto.ConfigPdfDTO;
 import com.citi.euces.solicitudes.infra.dto.DiasFestivosBEDTO;
 import com.citi.euces.solicitudes.infra.dto.DiasFestivosResponseDTO;
@@ -120,6 +123,7 @@ import com.citi.euces.solicitudes.repositories.Tb_Auto_AutoDivisionalesRepo;
 import com.citi.euces.solicitudes.repositories.Tb_Auto_AutoFacultadosRepo;
 import com.citi.euces.solicitudes.repositories.Tb_Auto_AutoRegionalesRepo;
 import com.citi.euces.solicitudes.repositories.TipoSolicitudRepo;
+import com.citi.euces.solicitudes.repositories.solicitudCampanaJDBCRepository;
 import com.citi.euces.solicitudes.services.api.ServiceSolicitudInversion;
 
 @Service 
@@ -188,6 +192,8 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	OfertaRepo ofertaRepo;  
 	@Autowired
 	ImprimirPDFsRepository imprimirPDFsRepository;
+	@Autowired
+	private solicitudCampanaJDBCRepository solicitudCampanaJDBCRepository;
 
 	@Override
 	public List<TipoSolicitudRespoceDTO> obtenerSolicitudes() throws GenericException, IOException {
@@ -601,6 +607,19 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 		return listSucursalesPorSucResponse;
 	}
 
+	public String ObtenerSucursalesPorSuc(Long request) throws GenericException, IOException {
+		String respuesta = new String();
+		List<Cat_SucBEDTO> cte = new ArrayList<Cat_SucBEDTO>();
+
+		try {
+			cte = solicitudCampanaJDBCRepository.GetItem(Long.parseLong(request+""));
+			respuesta = cte.get(0).getNUMSUC() + " - " + cte.get(0).getSUCURSAL() + " - " + cte.get(0).getDIVISION();
+		} catch (Exception ex) {
+			System.out.println("ex ->" + ex.getMessage());
+			System.out.println("ex ->" + ex.getCause());
+		}
+		return respuesta;
+	}
 
 
 	@Override
@@ -1117,13 +1136,25 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 			boolean TieneError = false;
 			System.out.println("288 TieneError->" + TieneError);
 			BigInteger id = new BigInteger(solicitud.getSUC_SOLIC().toString());
-        	listSucursal = sucursalesRepo.ObtenerSucursalesPorSuc(id);
-    		String sucursal = null;
-    		
-    		for(Sucursales suc : listSucursal) {
-    			sucursal = suc.getSUCURSAL();
-    			LOGGER.debug( sucursal);
-    		}
+        	
+//			listSucursal = sucursalesRepo.ObtenerSucursalesPorSuc(id);
+//    		
+//        	String sucursal = null;
+//    		
+//    		for(Sucursales suc : listSucursal) {
+//    			sucursal = suc.getSUCURSAL();
+//    			LOGGER.debug( sucursal);
+//    		}
+			
+			
+			String suc;
+			try {
+				suc = ObtenerSucursalesPorSuc(solicitud.getSUC_SOLIC());
+			} catch (Exception e) {
+				throw new GenericException("Error al obtener ObtenerSucursalesPorSuc:: ",
+						HttpStatus.INTERNAL_SERVER_ERROR.toString());
+			}
+			
     		
     		String MensajeHorror = "Error de Solicitud";
     		if(solicitud.getCONTRATO() == null || solicitud.getNUM_CTE() == null || solicitud.getTIPO_AUTORI() == null ){
@@ -1152,7 +1183,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     	            				solicitud.getTIPO_AUTORI(),oferta, solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
     	            				solicitud.getNOM_CTE(),   solicitud.getNUM_CTE().longValue(), solicitud.getCONTRATO().longValue(),
     	            				solicitud.getMONTO().toString()+ "",Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
-    	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, MensajeHorror, item.getSoeid())
+    	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, suc, MensajeHorror, item.getSoeid())
     							+ "|";
     	            	} catch (Exception e) {
     						throw new GenericException("Error al obtener BodySolicitudAutorizadorUEC:: ",
@@ -1191,7 +1222,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
 	            				solicitud.getTIPO_AUTORI(),oferta, solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
 	            				solicitud.getNOM_CTE(), solicitud.getNUM_CTE().longValue(), solicitud.getCONTRATO().longValue(),
 	            				solicitud.getMONTO().toString() + "", Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
-	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.getNombre(), item.getSoeid())
+	            				solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, suc, item.getNombre(), item.getSoeid())
 							+ "|";
 	            	} catch (Exception e) {
 						throw new GenericException("Error al obtener BodySolicitudAutorizadorUEC:: ",
@@ -1205,7 +1236,7 @@ public class ServiceSolicitudInversionImp implements ServiceSolicitudInversion {
     								solicitud.getTIPO_AUTORI(),oferta, solicitud.getJUSTIFICACION(), solicitud.getNOMEJEC(),
     								solicitud.getNOM_CTE(), solicitud.getNUM_CTE().longValue(), solicitud.getCONTRATO().longValue(),
     								solicitud.getMONTO().toString() + "",  Integer.parseInt(solicitud.getPLAZO().toString()), solicitud.getTASA_AUTORI() + "",
-    								solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, sucursal, item.getNombre(),
+    								solicitud.getID_TASAUTO() + "", strAceptada, strRechadaza, suc, item.getNombre(),
     								item.getSoeid(), request.getUrlRedirect(), linkAutorizas[x], linkRechazas[x]) + "|";
     					} catch (Exception e) {
     						throw new GenericException("Error al obtener BodySolicitud:: ",
